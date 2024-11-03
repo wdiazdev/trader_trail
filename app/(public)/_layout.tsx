@@ -1,6 +1,6 @@
 import { Stack } from "expo-router"
 
-const Layout = () => {
+const RootLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -8,4 +8,4 @@ const Layout = () => {
   )
 }
 
-export default Layout
+export default RootLayout

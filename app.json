@@ -27,7 +27,10 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": true
     },
@@ -36,6 +39,12 @@
         "projectId": "0bad5265-4c23-4ec5-844b-23ab6605f3ab"
       }
     },
-    "owner": "wdiazdev"
+    "owner": "wdiazdev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0bad5265-4c23-4ec5-844b-23ab6605f3ab"
+    }
   }
 }
