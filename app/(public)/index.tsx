@@ -7,19 +7,16 @@ import { Ionicons } from "@expo/vector-icons"
 export default function Index() {
   const colorScheme = useColorScheme()
 
-  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({
-    strategy: "oauth_google",
-  })
+  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: "oauth_google" })
 
   const handleGoogleLogin = async () => {
     try {
-      const { createdSessionId, setActive } = await startGoogleOAuthFlow()
-      console.log("createdSessionId:", createdSessionId)
+      const { createdSessionId, setActive } = await googleAuth()
       if (createdSessionId) {
         setActive!({ session: createdSessionId })
       }
     } catch (error) {
-      console.log("error:", error)
+      console.log("OAuth error:", error)
     }
   }
 
