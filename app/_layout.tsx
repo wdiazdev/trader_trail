@@ -1,7 +1,4 @@
 import { Slot } from "expo-router"
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
-import { tokenCache } from "@/utils/cache"
-import { LogBox } from "react-native"
 import {
   useFonts,
   DMSans_400Regular,
@@ -14,9 +11,8 @@ import * as SplashScreen from "expo-splash-screen"
 // Prevent auto hide splash screen
 SplashScreen.preventAutoHideAsync()
 
-LogBox.ignoreLogs(["Clerk has been loaded with development keys"])
-
-const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY
+// Ignore logs
+// LogBox.ignoreLogs([""])
 
 const InitialLayout = () => {
   let [fontsLoaded] = useFonts({
@@ -35,17 +31,5 @@ const InitialLayout = () => {
 }
 
 export default function RootLayout() {
-  if (!clerkPublishableKey) {
-    throw new Error(
-      "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env",
-    )
-  }
-
-  return (
-    <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
-      <ClerkLoaded>
-        <InitialLayout />
-      </ClerkLoaded>
-    </ClerkProvider>
-  )
+  return <InitialLayout />
 }
