@@ -42,8 +42,9 @@ userSchema.statics.signup = async function (email: string, password: string) {
 
   //toObject() to convert the Mongoose document to a plain JavaScript object
   const user = await this.create({ email, password: hashPassword })
-  const { password: _password, email: _email, createdAt, updatedAt, __v, ...rest } = user.toObject()
-  return rest
+
+  const { _id } = user.toObject()
+  return { _id }
 }
 
 userSchema.statics.login = async function (email: string, password: string) {
@@ -67,17 +68,16 @@ userSchema.statics.login = async function (email: string, password: string) {
     throw new Error("The password you entered is incorrect.")
   }
 
-  const { password: _password, email: _email, createdAt, updatedAt, __v, ...rest } = user.toObject()
-
-  return rest
+  const { _id } = user.toObject()
+  return { _id }
 }
 
-type User = InferSchemaType<typeof userSchema> & { _id: string }
+type User = InferSchemaType<typeof userSchema>
 
 // Defines the IUserModel interface with static methods
 interface IUserModel extends Model<User> {
-  signup(email: string, password: string): Promise<User>
-  login(email: string, password: string): Promise<User>
+  signup(email: string, password: string): Promise<{ _id: string }>
+  login(email: string, password: string): Promise<{ _id: string }>
 }
 
 // Defines and export the User model
