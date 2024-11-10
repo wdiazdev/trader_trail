@@ -1,0 +1,35 @@
+import { Slot } from "expo-router"
+import {
+  useFonts,
+  DMSans_400Regular,
+  DMSans_500Medium,
+  DMSans_700Bold,
+} from "@expo-google-fonts/dm-sans"
+import { useEffect } from "react"
+import * as SplashScreen from "expo-splash-screen"
+
+// Prevent auto hide splash screen
+SplashScreen.preventAutoHideAsync()
+
+// Ignore logs
+// LogBox.ignoreLogs([""])
+
+const InitialLayout = () => {
+  let [fontsLoaded] = useFonts({
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_700Bold,
+  })
+
+  useEffect(() => {
+    if (!fontsLoaded) {
+      SplashScreen.hideAsync()
+    }
+  }, [fontsLoaded])
+
+  return <Slot />
+}
+
+export default function RootLayout() {
+  return <InitialLayout />
+}
