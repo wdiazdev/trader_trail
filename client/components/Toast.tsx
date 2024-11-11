@@ -45,7 +45,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
         }).start(onHide)
       }, 2500)
     })
-  }, [opacity, onHide])
+  }, [])
 
   return (
     <Animated.View

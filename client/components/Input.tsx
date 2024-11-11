@@ -49,7 +49,7 @@ export default function TextInput({
           name={leftIconName}
           color={COLORS[colorScheme].icon}
           size={16}
-          style={{ marginHorizontal: 6, marginTop: 1 }}
+          style={{ marginHorizontal: 6 }}
         />
       )}
       <DefaultTextInput
@@ -70,7 +70,7 @@ export default function TextInput({
           name={"close-circle"}
           color={COLORS[colorScheme].icon}
           size={16}
-          style={{ marginHorizontal: 6, marginTop: 1 }}
+          style={{ marginHorizontal: 6 }}
           onPress={clearValue}
         />
       )}
