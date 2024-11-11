@@ -7,6 +7,8 @@ import {
 } from "@expo-google-fonts/dm-sans"
 import { useEffect } from "react"
 import * as SplashScreen from "expo-splash-screen"
+import { ToastProvider } from "./context/toastContext"
+import { AppContextProvider } from "./store/storeContext"
 
 // Prevent auto hide splash screen
 SplashScreen.preventAutoHideAsync()
@@ -27,9 +29,15 @@ const InitialLayout = () => {
     }
   }, [fontsLoaded])
 
-  return <Slot />
+  return (
+    <AppContextProvider>
+      <ToastProvider>
+        <Slot />
+      </ToastProvider>
+    </AppContextProvider>
+  )
 }
 
-export default function RootLayout() {
+export default function App() {
   return <InitialLayout />
 }

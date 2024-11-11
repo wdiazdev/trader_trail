@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors"
 import useColorScheme from "@/hooks/useColorScheme"
 import { Pressable, TextInput as DefaultTextInput, TextInputProps, StyleSheet } from "react-native"
-import { ReactNode, useRef, useState } from "react"
+import { ReactNode, useRef } from "react"
 import { Ionicons } from "@expo/vector-icons"
 
 type IoniconName = React.ComponentProps<typeof Ionicons>["name"]
@@ -10,6 +10,8 @@ interface CustomTextInputProps extends TextInputProps {
   leftIcon?: ReactNode
   leftIconName?: IoniconName
   rightIconVisible?: boolean
+  clearValue?: () => void
+  value: string
 }
 
 export default function TextInput({
@@ -17,21 +19,15 @@ export default function TextInput({
   rightIconVisible,
   style,
   onChangeText,
+  clearValue,
+  value,
   ...props
 }: CustomTextInputProps) {
   const colorScheme = useColorScheme()
   const inputRef = useRef<DefaultTextInput>(null)
-  const [value, setValue] = useState("")
 
   const handlePress = () => {
     inputRef.current?.focus()
-  }
-
-  const handleChangeText = (value: string) => {
-    setValue(value)
-    if (onChangeText) {
-      onChangeText(value)
-    }
   }
 
   return (
@@ -58,7 +54,8 @@ export default function TextInput({
       )}
       <DefaultTextInput
         {...props}
-        onChangeText={handleChangeText}
+        clearButtonMode="always"
+        onChangeText={onChangeText}
         value={value}
         ref={inputRef}
         placeholderTextColor={COLORS[colorScheme].inputPlaceholder}
@@ -74,7 +71,7 @@ export default function TextInput({
           color={COLORS[colorScheme].icon}
           size={16}
           style={{ marginHorizontal: 6, marginTop: 1 }}
-          onPress={() => setValue("")}
+          onPress={clearValue}
         />
       )}
     </Pressable>
