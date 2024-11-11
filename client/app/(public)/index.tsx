@@ -15,7 +15,7 @@ interface AuthTypes {
 
 export default function Home() {
   const { state, dispatch } = useAppContext()
-  // console.log("state:", state.token)
+  console.log("state:", state.token)
   const { showToast } = useToast()
   const [inputValues, setInputValues] = useState<AuthTypes>({
     email: "",
@@ -38,9 +38,9 @@ export default function Home() {
 
   const handleLogin = () => {
     // dispatch({ type: CHANGE_STORE, payload: { token: "testTOKEN" } })
-    // if (!inputValues.email || !inputValues.password) {
-    //   showToast("All fields are required!")
-    // }
+    if (!inputValues.email || !inputValues.password) {
+      showToast("success", "All fields are required!")
+    }
   }
 
   return (

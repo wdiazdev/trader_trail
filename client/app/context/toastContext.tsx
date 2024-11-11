@@ -1,8 +1,10 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from "react"
 import Toast from "../../components/Toast"
 
+type ToastType = "success" | "warning" | "error"
+
 interface ToastContextType {
-  showToast: (message: string) => void
+  showToast: (type: ToastType, message: string) => void
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined)
@@ -20,23 +22,28 @@ interface ToastProviderProps {
 }
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {
-  const [toast, setToast] = useState<{ visible: boolean; message: string }>({
+  const [toast, setToast] = useState<{ visible: boolean; type: ToastType; message: string }>({
     visible: false,
+    type: "success",
     message: "",
   })
 
-  const showToast = useCallback((message: string) => {
-    setToast({ visible: true, message })
-  }, [])
+  const showToast = useCallback(
+    (type: ToastType, message: string) => {
+      if (toast.visible) return
+      setToast({ visible: true, type, message })
+    },
+    [toast.visible],
+  )
 
   const hideToast = useCallback(() => {
-    setToast({ visible: false, message: "" })
+    setToast({ visible: false, type: "success", message: "" })
   }, [])
 
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      {toast.visible && <Toast message={toast.message} onHide={hideToast} />}
+      {toast.visible && <Toast type={toast.type} message={toast.message} onHide={hideToast} />}
     </ToastContext.Provider>
   )
 }
