@@ -62,7 +62,12 @@ export default function Home() {
           leftIconName={"lock-closed"}
           rightIconVisible
         />
-        <Button title={"Login"} onPress={handleLogin} />
+        <Button
+          id="login"
+          accessibilityLabel="login button"
+          title={"Login"}
+          onPress={handleLogin}
+        />
       </View>
     </Container>
   )
