@@ -16,6 +16,7 @@ interface AuthTypes {
 export default function Home() {
   const { state, dispatch } = useAppContext()
   const { showToast } = useToast()
+
   const [inputValues, setInputValues] = useState<AuthTypes>({
     email: "",
     password: "",
@@ -36,10 +37,11 @@ export default function Home() {
   }
 
   const handleLogin = () => {
-    // dispatch({ type: CHANGE_STORE, payload: { token: "testTOKEN" } })
+    // dispatch({ type: "change_store", payload: { token: "testTOKEN" } })
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
     }
+    showToast("success", "Login successful!")
   }
 
   return (
@@ -67,6 +69,8 @@ export default function Home() {
           accessibilityLabel="login button"
           title={"Login"}
           onPress={handleLogin}
+          disabled={!inputValues.email || !inputValues.password}
+          // loading={false}
         />
       </View>
     </Container>
