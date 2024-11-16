@@ -23,6 +23,7 @@ export const signupUser: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const loginUser: AsyncRequestHandler = async (req, res, next) => {
+  console.log("req:", req.body)
   const { email, password } = req.body
 
   try {
@@ -36,7 +37,7 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
       message: "User logged in successfully",
       data: { ...user, token: token },
     }
-    res.status(201).json(response)
+    res.status(200).json(response)
   } catch (error) {
     next(error)
   }

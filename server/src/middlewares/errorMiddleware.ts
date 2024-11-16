@@ -8,7 +8,7 @@ interface CustomError extends Error {
 const errorMiddleware = (error: CustomError, req: Request, res: Response, next: NextFunction) => {
   // Set default status code and status if not provided by the error
   error.statusCode = error.statusCode || 500
-  error.status = error.status || "error"
+  error.status = error.status || "Internal Server Error"
 
   // Send response with error details
   res.status(error.statusCode).json({

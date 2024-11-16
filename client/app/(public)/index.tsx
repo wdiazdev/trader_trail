@@ -16,7 +16,7 @@ interface AuthTypes {
 export default function Home() {
   const { state, dispatch } = useAppContext()
   const { showToast } = useToast()
-
+  const [isLoading, setIsLoading] = useState(false)
   const [inputValues, setInputValues] = useState<AuthTypes>({
     email: "",
     password: "",
@@ -36,12 +36,38 @@ export default function Home() {
     }))
   }
 
-  const handleLogin = () => {
-    // dispatch({ type: "change_store", payload: { token: "testTOKEN" } })
+  // const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  const handleLogin = async () => {
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
     }
-    showToast("success", "Login successful!")
+    setIsLoading(true)
+    // await delay(2000)
+    try {
+      const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: inputValues.email,
+          password: inputValues.password,
+        }),
+      })
+
+      if (!response.ok) {
+        showToast("error", "Login failed. Please try again.")
+        throw new Error(`Error: ${response.status} ${response.statusText}`)
+      }
+
+      const responseData = await response.json()
+      dispatch({ type: "change_store", payload: { token: responseData.data.token } })
+      showToast("success", "Login successful!")
+    } catch (error: any) {
+      console.error("Login failed:", error.message)
+    }
+    setIsLoading(false)
   }
 
   return (
@@ -70,7 +96,7 @@ export default function Home() {
           title={"Login"}
           onPress={handleLogin}
           disabled={!inputValues.email || !inputValues.password}
-          // loading={false}
+          loading={isLoading}
         />
       </View>
     </Container>
