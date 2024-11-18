@@ -23,7 +23,6 @@ export const signupUser: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const loginUser: AsyncRequestHandler = async (req, res, next) => {
-  console.log("req:", req.body)
   const { email, password } = req.body
 
   try {
