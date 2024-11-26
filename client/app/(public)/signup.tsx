@@ -16,7 +16,7 @@ interface AuthTypes {
   password: string
 }
 
-export default function Home() {
+export default function Signup() {
   const { state, dispatch } = useAppContext()
   const { showToast } = useToast()
   const router = useRouter()
@@ -44,41 +44,41 @@ export default function Home() {
 
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-  const handleLogin = async () => {
+  const handleSignup = async () => {
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
     }
-    setIsLoading(true)
-    await delay(2000)
-    try {
-      const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: inputValues.email,
-          password: inputValues.password,
-        }),
-      })
+    // setIsLoading(true)
+    // await delay(2000)
+    // try {
+    //   const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       email: inputValues.email,
+    //       password: inputValues.password,
+    //     }),
+    //   })
 
-      if (!response.ok) {
-        showToast("error", "Login failed. Please try again.")
-        throw new Error(`Error: ${response.status} ${response.statusText}`)
-      }
+    //   if (!response.ok) {
+    //     showToast("error", "Login failed. Please try again.")
+    //     throw new Error(`Error: ${response.status} ${response.statusText}`)
+    //   }
 
-      const responseData = await response.json()
-      dispatch({ type: "change_store", payload: { token: responseData.data.token } })
-      showToast("success", "Login successful!")
-    } catch (error: any) {
-      console.error("Login failed:", error.message)
-    }
-    setIsLoading(false)
+    //   const responseData = await response.json()
+    //   dispatch({ type: "change_store", payload: { token: responseData.data.token } })
+    //   showToast("success", "Login successful!")
+    // } catch (error: any) {
+    //   console.error("Login failed:", error.message)
+    // }
+    // setIsLoading(false)
   }
 
   return (
     <Container paddingHorizontal={30}>
-      <Text>Welcome back!</Text>
+      <Text>Hello! Register to get started</Text>
       <View style={{ flexDirection: "column", gap: 16, marginVertical: 10 }}>
         <Input
           value={inputValues.email}
@@ -97,10 +97,10 @@ export default function Home() {
           rightIconVisible
         />
         <Button
-          id="login"
-          accessibilityLabel="login button"
-          title={"Login"}
-          onPress={handleLogin}
+          id="signup"
+          accessibilityLabel="signup button"
+          title={"Sign Up"}
+          onPress={handleSignup}
           disabled={!inputValues.email || !inputValues.password}
           loading={isLoading}
         />
@@ -114,9 +114,9 @@ export default function Home() {
           bottom: 60,
         }}
       >
-        <Text>Don't have an account?</Text>
+        <Text>Already have an account?</Text>
         <TouchableOpacity
-          onPress={() => router.push("./signup")}
+          onPress={() => router.push("/")}
           style={{
             paddingHorizontal: 12,
             paddingVertical: 6,
@@ -124,7 +124,7 @@ export default function Home() {
             backgroundColor: COLORS[colorScheme].primaryBtnBackground,
           }}
         >
-          <Text style={{ color: COLORS[colorScheme].primaryBtnText }}>Sign up</Text>
+          <Text style={{ color: COLORS[colorScheme].primaryBtnText }}>Sign in</Text>
         </TouchableOpacity>
       </View>
     </Container>
