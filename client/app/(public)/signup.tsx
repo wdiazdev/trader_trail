@@ -42,14 +42,12 @@ export default function Signup() {
     }))
   }
 
-  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
   const handleSignup = async () => {
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
     }
     // setIsLoading(true)
-    // await delay(2000)
+
     // try {
     //   const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
     //     method: "POST",

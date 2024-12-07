@@ -6,10 +6,10 @@ import { useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { useToast } from "../context/toastContext"
 import { useAppContext } from "../store/storeContext"
-import { CHANGE_STORE } from "../store/reducer"
 import { useRouter } from "expo-router"
 import { COLORS } from "@/constants/Colors"
 import useColorScheme from "@/hooks/useColorScheme"
+import agent from "../api/agent"
 
 interface AuthTypes {
   email: string
@@ -42,38 +42,23 @@ export default function Home() {
     }))
   }
 
-  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
   const handleLogin = async () => {
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
     }
-    setIsLoading(true)
-    await delay(2000)
     try {
-      const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: inputValues.email,
-          password: inputValues.password,
-        }),
+      setIsLoading(true)
+      const response = await agent.Account.login(inputValues)
+      dispatch({
+        type: "change_store",
+        payload: { token: response.data.token, _id: response.data._id },
       })
-
-      if (!response.ok) {
-        showToast("error", "Login failed. Please try again.")
-        throw new Error(`Error: ${response.status} ${response.statusText}`)
-      }
-
-      const responseData = await response.json()
-      dispatch({ type: "change_store", payload: { token: responseData.data.token } })
       showToast("success", "Login successful!")
     } catch (error: any) {
       console.error("Login failed:", error.message)
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   return (

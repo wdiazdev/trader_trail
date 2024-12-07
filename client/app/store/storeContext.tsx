@@ -2,10 +2,12 @@ import { createContext, Dispatch, ReactNode, useContext, useReducer } from "reac
 import { changeReducer } from "./reducer"
 
 type InitialState = {
+  _id: string
   token: string
 }
 
 const initialState = {
+  _id: "",
   token: "",
 }
 
