@@ -1,5 +1,5 @@
-import { COLORS } from "@/constants/Colors"
-import useColorScheme from "@/hooks/useColorScheme"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
 import { Text as DefaultText, TextProps } from "react-native"
 
 interface CustomTextProps extends TextProps {}

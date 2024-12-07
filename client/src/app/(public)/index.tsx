@@ -1,15 +1,15 @@
-import Button from "@/components/Button"
-import Container from "@/components/Container"
-import Input from "@/components/Input"
-import Text from "@/components/Text"
+import Button from "@/src/components/Button"
+import Container from "@/src/components/Container"
+import Input from "@/src/components/Input"
+import Text from "@/src/components/Text"
 import { useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { useToast } from "../context/toastContext"
-import { useAppContext } from "../store/storeContext"
 import { useRouter } from "expo-router"
-import { COLORS } from "@/constants/Colors"
-import useColorScheme from "@/hooks/useColorScheme"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
 import agent from "../api/agent"
+import { useAppContext } from "../store/storeContext"
 
 interface AuthTypes {
   email: string
@@ -18,13 +18,14 @@ interface AuthTypes {
 
 export default function Home() {
   const { state, dispatch } = useAppContext()
+  const { registrationEmail } = state
   const { showToast } = useToast()
   const router = useRouter()
   const colorScheme = useColorScheme()
 
   const [isLoading, setIsLoading] = useState(false)
   const [inputValues, setInputValues] = useState<AuthTypes>({
-    email: "",
+    email: registrationEmail || "",
     password: "",
   })
 
@@ -51,11 +52,15 @@ export default function Home() {
       const response = await agent.Account.login(inputValues)
       dispatch({
         type: "change_store",
-        payload: { token: response.data.token, _id: response.data._id },
+        payload: {
+          user: { _id: response.data._id, token: response.data.token },
+          registrationEmail: null,
+        },
       })
       showToast("success", "Login successful!")
     } catch (error: any) {
-      console.error("Login failed:", error.message)
+      showToast("error", "Login failed, please try again.")
+      console.log("Login failed:", error.message)
     } finally {
       setIsLoading(false)
     }
@@ -80,6 +85,7 @@ export default function Home() {
           placeholder="Password"
           leftIconName={"lock-closed"}
           rightIconVisible
+          secureTextEntry={true}
         />
         <Button
           id="login"

@@ -1,5 +1,5 @@
-import { COLORS } from "@/constants/Colors"
-import useColorScheme from "@/hooks/useColorScheme"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
 import { ReactNode } from "react"
 import { View, ViewStyle } from "react-native"
 

@@ -1,5 +1,5 @@
-import { COLORS } from "@/constants/Colors"
-import useColorScheme from "@/hooks/useColorScheme"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
 import { Pressable, TextInput as DefaultTextInput, TextInputProps, StyleSheet } from "react-native"
 import { ReactNode, useRef } from "react"
 import { Ionicons } from "@expo/vector-icons"

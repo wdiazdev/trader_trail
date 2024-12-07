@@ -1,5 +1,5 @@
-import { COLORS } from "@/constants/Colors"
-import useColorScheme from "@/hooks/useColorScheme"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
 import React from "react"
 import { TouchableOpacity, Text, TouchableOpacityProps, StyleSheet } from "react-native"
 import Loader from "./Loader"

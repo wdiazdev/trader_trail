@@ -1,15 +1,15 @@
-import Button from "@/components/Button"
-import Container from "@/components/Container"
-import Input from "@/components/Input"
-import Text from "@/components/Text"
+import Button from "@/src/components/Button"
+import Container from "@/src/components/Container"
+import Input from "@/src/components/Input"
+import Text from "@/src/components/Text"
 import { useState } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { useToast } from "../context/toastContext"
-import { useAppContext } from "../store/storeContext"
-import { CHANGE_STORE } from "../store/reducer"
 import { useRouter } from "expo-router"
-import { COLORS } from "@/constants/Colors"
-import useColorScheme from "@/hooks/useColorScheme"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
+import agent from "../api/agent"
+import { useAppContext } from "../store/storeContext"
 
 interface AuthTypes {
   email: string
@@ -17,10 +17,10 @@ interface AuthTypes {
 }
 
 export default function Signup() {
-  const { state, dispatch } = useAppContext()
-  const { showToast } = useToast()
-  const router = useRouter()
+  const { dispatch } = useAppContext()
   const colorScheme = useColorScheme()
+  const router = useRouter()
+  const { showToast } = useToast()
 
   const [isLoading, setIsLoading] = useState(false)
   const [inputValues, setInputValues] = useState<AuthTypes>({
@@ -46,32 +46,23 @@ export default function Signup() {
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
     }
-    // setIsLoading(true)
-
-    // try {
-    //   const response = await fetch("http://10.0.2.2:5000/api/auth/login", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       email: inputValues.email,
-    //       password: inputValues.password,
-    //     }),
-    //   })
-
-    //   if (!response.ok) {
-    //     showToast("error", "Login failed. Please try again.")
-    //     throw new Error(`Error: ${response.status} ${response.statusText}`)
-    //   }
-
-    //   const responseData = await response.json()
-    //   dispatch({ type: "change_store", payload: { token: responseData.data.token } })
-    //   showToast("success", "Login successful!")
-    // } catch (error: any) {
-    //   console.error("Login failed:", error.message)
-    // }
-    // setIsLoading(false)
+    try {
+      setIsLoading(true)
+      await agent.Account.register(inputValues)
+      dispatch({
+        type: "change_store",
+        payload: {
+          registrationEmail: inputValues.email,
+        },
+      })
+      showToast("success", "Registration successful! Welcome aboard!")
+      router.push("/")
+    } catch (error: any) {
+      showToast("error", "Registration failed. Please try again.")
+      console.log("Registration failed:", error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -93,6 +84,7 @@ export default function Signup() {
           placeholder="Password"
           leftIconName={"lock-closed"}
           rightIconVisible
+          secureTextEntry={true}
         />
         <Button
           id="signup"
