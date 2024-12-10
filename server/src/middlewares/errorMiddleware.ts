@@ -3,18 +3,17 @@ import { Request, Response, NextFunction } from "express"
 interface CustomError extends Error {
   statusCode?: number
   status?: string
+  details?: any
 }
 
 const errorMiddleware = (error: CustomError, req: Request, res: Response, next: NextFunction) => {
-  // Set default status code and status if not provided by the error
-  error.statusCode = error.statusCode || 500
-  error.status = error.status || "Internal Server Error"
+  const isProduction = process.env.NODE_ENV === "production"
 
-  // Send response with error details
-  res.status(error.statusCode).json({
+  res.status(error.statusCode || 500).json({
     success: false,
     status: error.status,
     message: error.message,
+    ...(isProduction ? {} : { stack: error.stack, details: error.details }),
   })
 }
 
