@@ -7,8 +7,8 @@ import {
 } from "@expo-google-fonts/dm-sans"
 import { useEffect } from "react"
 import * as SplashScreen from "expo-splash-screen"
-import { ToastProvider } from "./context/toastContext"
-import { AppContextProvider } from "./store/storeContext"
+import { AppContextProvider } from "../store/storeContext"
+import { ToastProvider } from "../context/toastContext"
 
 // Prevent auto hide splash screen
 SplashScreen.preventAutoHideAsync()

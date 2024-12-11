@@ -3,13 +3,11 @@ import Container from "@/src/components/Container"
 import Input from "@/src/components/Input"
 import Text from "@/src/components/Text"
 import { useState } from "react"
-import { TouchableOpacity, View } from "react-native"
-import { useToast } from "../context/toastContext"
+import { View } from "react-native"
+import { useToast } from "../../context/toastContext"
 import { useRouter } from "expo-router"
-import { COLORS } from "@/src/constants/Colors"
-import useColorScheme from "@/src/hooks/useColorScheme"
-import agent from "../api/agent"
-import { useAppContext } from "../store/storeContext"
+import agent from "../../api/agent"
+import { useAppContext } from "../../store/storeContext"
 
 interface AuthTypes {
   email: string
@@ -18,7 +16,6 @@ interface AuthTypes {
 
 export default function Signup() {
   const { dispatch } = useAppContext()
-  const colorScheme = useColorScheme()
   const router = useRouter()
   const { showToast } = useToast()
 
@@ -94,28 +91,6 @@ export default function Signup() {
           disabled={!inputValues.email || !inputValues.password}
           loading={isLoading}
         />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 12,
-          position: "absolute",
-          bottom: 60,
-        }}
-      >
-        <Text>Already have an account?</Text>
-        <TouchableOpacity
-          onPress={() => router.push("/")}
-          style={{
-            paddingHorizontal: 12,
-            paddingVertical: 6,
-            borderRadius: 14,
-            backgroundColor: COLORS[colorScheme].primaryBtnBackground,
-          }}
-        >
-          <Text style={{ color: COLORS[colorScheme].primaryBtnText }}>Sign in</Text>
-        </TouchableOpacity>
       </View>
     </Container>
   )

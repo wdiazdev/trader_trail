@@ -1,9 +1,9 @@
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { ReactNode } from "react"
-import { View, ViewStyle } from "react-native"
+import { View, ViewProps, ViewStyle } from "react-native"
 
-interface Props {
+interface Props extends ViewProps {
   children: ReactNode
   flex?: number
   paddingVertical?: number
@@ -19,6 +19,7 @@ export default function Container({
   paddingHorizontal = 18,
   justifyContent = "center",
   alignItems = "center",
+  ...props
 }: Props) {
   const colorScheme = useColorScheme()
   return (
@@ -32,6 +33,7 @@ export default function Container({
         alignItems,
         backgroundColor: COLORS[colorScheme].background,
       }}
+      {...props}
     >
       {children}
     </View>

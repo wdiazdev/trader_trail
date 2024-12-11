@@ -3,13 +3,13 @@ import Container from "@/src/components/Container"
 import Input from "@/src/components/Input"
 import Text from "@/src/components/Text"
 import { useState } from "react"
-import { TouchableOpacity, View } from "react-native"
-import { useToast } from "../context/toastContext"
-import { useRouter } from "expo-router"
+import { View } from "react-native"
+import { useToast } from "../../context/toastContext"
+import { Link, useRouter } from "expo-router"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import agent from "../api/agent"
-import { useAppContext } from "../store/storeContext"
+import agent from "../../api/agent"
+import { useAppContext } from "../../store/storeContext"
 
 interface AuthTypes {
   email: string
@@ -58,6 +58,7 @@ export default function Home() {
         },
       })
       showToast("success", "Login successful!")
+      router.push("/(private)/Home")
     } catch (error: any) {
       showToast("error", "Login failed, please try again.")
       console.log("Login failed:", error.message)
@@ -106,17 +107,18 @@ export default function Home() {
         }}
       >
         <Text>Don't have an account?</Text>
-        <TouchableOpacity
-          onPress={() => router.push("./signup")}
+        <Link
+          href="/signup"
           style={{
             paddingHorizontal: 12,
             paddingVertical: 6,
             borderRadius: 14,
             backgroundColor: COLORS[colorScheme].primaryBtnBackground,
+            color: COLORS[colorScheme].primaryBtnText,
           }}
         >
-          <Text style={{ color: COLORS[colorScheme].primaryBtnText }}>Sign up</Text>
-        </TouchableOpacity>
+          Sign up
+        </Link>
       </View>
     </Container>
   )
