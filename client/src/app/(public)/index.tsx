@@ -58,7 +58,7 @@ export default function Home() {
         },
       })
       showToast("success", "Login successful!")
-      router.push("/(private)/Home")
+      router.push("/(tabs)/home")
     } catch (error: any) {
       showToast("error", "Login failed, please try again.")
       console.log("Login failed:", error.message)

@@ -5,10 +5,10 @@ import { Ionicons } from "@expo/vector-icons"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { COLORS } from "@/src/constants/Colors"
 
-export default function PublicLayout() {
+export default function RootLayout() {
   const colorScheme = useColorScheme()
   return (
-    <Stack screenOptions={{ animation: "ios" }}>
+    <Stack screenOptions={{ animation: "ios_from_right" }}>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen
         name="signup"
