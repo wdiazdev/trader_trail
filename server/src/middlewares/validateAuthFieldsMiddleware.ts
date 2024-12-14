@@ -5,7 +5,7 @@ type ValidationOptions = {
   requireStrongPassword?: boolean
 }
 
-export const validateAuthMiddleware = (options: ValidationOptions): AsyncRequestHandler => {
+export const validateAuthFieldsMiddleware = (options: ValidationOptions): AsyncRequestHandler => {
   return async (req, res, next) => {
     const { email, password } = req.body
 

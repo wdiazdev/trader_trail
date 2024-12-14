@@ -45,7 +45,7 @@ export default function Signup() {
     }
     try {
       setIsLoading(true)
-      await agent.Account.register(inputValues)
+      await agent.Auth.register(inputValues)
       dispatch({
         type: "change_store",
         payload: {

@@ -49,7 +49,7 @@ export default function Home() {
     }
     try {
       setIsLoading(true)
-      const response = await agent.Account.login(inputValues)
+      const response = await agent.Auth.login(inputValues)
       dispatch({
         type: "change_store",
         payload: {

@@ -56,12 +56,20 @@ const requests = {
   delete: (url: string) => axios.delete(url).then(responseBody),
 }
 
+const Auth = {
+  login: (values: { email: string; password: string }) => requests.post("/auth/login", values),
+  register: (values: { email: string; password: string }) => requests.post("/auth/signup", values),
+}
+
 const Account = {
-  login: (values: any) => requests.post("/auth/login", values),
-  register: (values: any) => requests.post("/auth/signup", values),
+  createAccount: (values: { userId: string; nickname?: string }) =>
+    requests.post("/account/create", values),
+  getAccounts: (userId: string) => requests.get(`/account/?userId=${userId}`),
+  deleteAccount: (accountId: string) => requests.delete(`/account/delete/?accountId=${accountId}`),
 }
 
 const agent = {
+  Auth,
   Account,
 }
 
