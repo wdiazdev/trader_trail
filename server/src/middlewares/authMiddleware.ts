@@ -1,6 +1,11 @@
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import env from "../utils/validateEnv"
 import { AsyncRequestHandler } from "../utils/requestHandler"
+import User from "../models/userModel"
+
+interface CustomJwtPayload extends JwtPayload {
+  userId: string
+}
 
 const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
   const authHeader = req.headers.authorization
@@ -8,23 +13,31 @@ const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
-      message: "Unauthorized. No token provided.",
+      statusCode: 401,
+      message: "Unauthorized. No access token provided.",
     })
   }
 
-  const token = authHeader.split(" ")[1]
-
   try {
-    // Verify the token and extract the payload
+    const token = authHeader.split(" ")[1]
     const decoded = jwt.verify(token, env.JWT_SECRET)
+    const userId = (decoded as CustomJwtPayload).userId
+    const user = await User.findById(userId)
 
-    // Attach user data to the request object
-    req.user = { userId: decoded.userId }
-    next()
-  } catch (error) {
-    return res.status(401).json({
+    if (user) next()
+  } catch (error: any) {
+    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        success: false,
+        statusCode: 401,
+        message: "Unauthorized. Invalid or expired token.",
+      })
+    }
+
+    return res.status(500).json({
       success: false,
-      message: "Unauthorized. Invalid or expired token.",
+      statusCode: 500,
+      message: "Internal server error.",
     })
   }
 }
