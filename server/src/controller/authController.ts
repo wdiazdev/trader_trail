@@ -11,7 +11,11 @@ export const signupUser: AsyncRequestHandler = async (req, res, next) => {
     const exists = await User.findOne({ email })
 
     if (exists) {
-      throw new Error("Email already in use.")
+      return res.status(400).json({
+        success: false,
+        statusCode: 400,
+        message: "Email already in use.",
+      })
     }
 
     const hashPassword = bcryptjs.hashSync(password, 10)
@@ -37,14 +41,23 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-      throw new Error("No account found.")
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "No user account found.",
+      })
     }
 
     const validPassword = bcryptjs.compareSync(password, user.password)
 
     if (!validPassword) {
-      throw new Error("The password you entered is incorrect.")
+      return res.status(400).json({
+        success: false,
+        statusCode: 400,
+        message: "Incorrect password.",
+      })
     }
+
     const userId = user._id.toString()
 
     const token = jwt.sign({ userId }, env.JWT_SECRET, {
