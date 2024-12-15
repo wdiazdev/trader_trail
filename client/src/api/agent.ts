@@ -54,6 +54,7 @@ const requests = {
   post: (url: string, body: object) => axios.post(url, body).then(responseBody),
   put: (url: string, body: object) => axios.put(url, body).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
+  patch: (url: string, body: object) => axios.patch(url, body).then(responseBody),
 }
 
 const Auth = {
@@ -62,10 +63,12 @@ const Auth = {
 }
 
 const Account = {
-  createAccount: (values: { userId: string; nickname?: string }) =>
-    requests.post("/account/create", values),
-  getAccounts: (userId: string) => requests.get(`/account/?userId=${userId}`),
-  deleteAccount: (accountId: string) => requests.delete(`/account/delete/?accountId=${accountId}`),
+  createAccount: (body: { userId: string; nickname?: string }) =>
+    requests.post("/account/create", body),
+  getAccounts: (userId: string) => requests.get(`/account/user/${userId}`),
+  updateAccount: (accountId: string, body: { nickname: string }) =>
+    requests.patch(`/account/update/${accountId}`, body),
+  deleteAccount: (accountId: string) => requests.delete(`/account/delete/${accountId}`),
 }
 
 const agent = {
