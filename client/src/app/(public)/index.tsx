@@ -10,10 +10,21 @@ import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import agent from "../../api/agent"
 import { useAppContext } from "../../store/storeContext"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 interface AuthTypes {
   email: string
   password: string
+}
+
+const storeData = async (value: any) => {
+  try {
+    if (value) {
+      await AsyncStorage.setItem("token", value)
+    }
+  } catch (e) {
+    console.log("e:", e)
+  }
 }
 
 export default function Home() {
@@ -57,6 +68,7 @@ export default function Home() {
           registrationEmail: null,
         },
       })
+      storeData(response.data.token)
       showToast("success", "Login successful!")
       router.push("/(tabs)/home")
     } catch (error: any) {

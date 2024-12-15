@@ -17,6 +17,7 @@ axios.interceptors.response.use(
     if (__DEV__) await sleep()
     return response
   },
+
   function (error: AxiosError) {
     if (error) {
       const { data, status } = error.response as AxiosResponse
