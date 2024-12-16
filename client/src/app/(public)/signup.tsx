@@ -56,7 +56,7 @@ export default function Signup() {
       router.push("/")
     } catch (error: any) {
       showToast("error", "Registration failed. Please try again.")
-      console.log("Registration failed:", error.message)
+      console.error("Registration failed:", error.message)
     } finally {
       setIsLoading(false)
     }

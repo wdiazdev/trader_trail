@@ -17,16 +17,6 @@ interface AuthTypes {
   password: string
 }
 
-const storeData = async (value: any) => {
-  try {
-    if (value) {
-      await AsyncStorage.setItem("token", value)
-    }
-  } catch (e) {
-    console.log("e:", e)
-  }
-}
-
 export default function Home() {
   const { state, dispatch } = useAppContext()
   const { registrationEmail } = state
@@ -57,6 +47,7 @@ export default function Home() {
   const handleLogin = async () => {
     if (!inputValues.email || !inputValues.password) {
       showToast("error", "All fields are required!")
+      return
     }
     try {
       setIsLoading(true)
@@ -64,16 +55,16 @@ export default function Home() {
       dispatch({
         type: "change_store",
         payload: {
-          user: { _id: response.data._id, token: response.data.token },
+          user: { _id: response.data.userId, token: response.data.token },
           registrationEmail: null,
         },
       })
-      storeData(response.data.token)
+      await AsyncStorage.setItem("token", response.data.token)
       showToast("success", "Login successful!")
       router.push("/(tabs)/home")
     } catch (error: any) {
       showToast("error", "Login failed, please try again.")
-      console.log("Login failed:", error.message)
+      console.error("Login failed:", error)
     } finally {
       setIsLoading(false)
     }
@@ -105,7 +96,7 @@ export default function Home() {
           accessibilityLabel="login button"
           title={"Login"}
           onPress={handleLogin}
-          disabled={!inputValues.email || !inputValues.password}
+          disabled={!inputValues.email || !inputValues.password || isLoading}
           loading={isLoading}
         />
       </View>

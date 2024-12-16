@@ -1,5 +1,7 @@
 import Toast from "@/src/components/Toast"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosError, AxiosResponse } from "axios"
+import { UserAccount, ApiResponse } from "../types"
 
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -12,42 +14,55 @@ axios.defaults.withCredentials = true
 
 const responseBody = (response: AxiosResponse) => response.data
 
+axios.interceptors.request.use(
+  async (config) => {
+    const authToken = await AsyncStorage.getItem("token")
+    if (authToken) {
+      config.headers.Authorization = `Bearer ${authToken}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
+
 axios.interceptors.response.use(
   async function (response) {
     if (__DEV__) await sleep()
     return response
   },
 
-  function (error: AxiosError) {
-    if (error) {
-      const { data, status } = error.response as AxiosResponse
-      switch (status) {
-        case 400:
-          if (data && data.errors) {
-            const modelStateErrors: string[] = []
-            for (const key in data.errors) {
-              modelStateErrors.push(data.errors[key])
-            }
-            throw modelStateErrors.flat()
-          }
-          //   toast.error(data.title)
-          break
-        case 401:
-          //   toast.error(data.title)
-          break
-        case 500:
-          // router.navigate("/server-error", { state: { error: data } })
-          break
-        case 404:
-          // router.navigate("/not-found")
-          break
-        default:
-          //   toast.error("An unexpected error occurred")
-          break
-      }
-      return Promise.reject(error.response)
-    }
-  },
+  // function (error: AxiosError) {
+  //   if (error) {
+  //     const { data, status } = error.response as AxiosResponse
+  //     switch (status) {
+  //       case 400:
+  //         // if (data && data.errors) {
+  //         //   const modelStateErrors: string[] = []
+  //         //   for (const key in data.errors) {
+  //         //     modelStateErrors.push(data.errors[key])
+  //         //   }
+  //         //   throw modelStateErrors.flat()
+  //         // }
+  //         //   toast.error(data.title)
+  //         break
+  //       case 401:
+  //         //   toast.error(data.title)
+  //         break
+  //       case 500:
+  //         // router.navigate("/server-error", { state: { error: data } })
+  //         break
+  //       case 404:
+  //         // router.navigate("/not-found")
+  //         break
+  //       default:
+  //         //   toast.error("An unexpected error occurred")
+  //         break
+  //     }
+  //     return Promise.reject(error.response)
+  //   }
+  // },
 )
 
 const requests = {
@@ -66,7 +81,8 @@ const Auth = {
 const Account = {
   createAccount: (body: { userId: string; nickname?: string }) =>
     requests.post("/account/create", body),
-  getAccounts: (userId: string) => requests.get(`/account/user/${userId}`),
+  getAccounts: (userId: string): Promise<ApiResponse<UserAccount[]>> =>
+    requests.get(`/account/user/${userId}`),
   updateAccount: (accountId: string, body: { nickname: string }) =>
     requests.patch(`/account/update/${accountId}`, body),
   deleteAccount: (accountId: string) => requests.delete(`/account/delete/${accountId}`),
