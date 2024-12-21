@@ -6,6 +6,7 @@ import { useAppContext } from "@/src/store/storeContext"
 import { UserAccount } from "@/src/types"
 import Loader from "@/src/components/Loader"
 import dayjs from "dayjs"
+import SelectOverlay from "@/src/components/SelectOverlay"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -44,6 +45,7 @@ export default function Home() {
 
   return (
     <Container>
+      <SelectOverlay />
       <Text>Home</Text>
       {data?.map((account) => {
         const formattedDate =
