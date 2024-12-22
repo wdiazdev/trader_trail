@@ -4,6 +4,7 @@ import { useAppContext } from "@/src/store/storeContext"
 import { Ionicons } from "@expo/vector-icons"
 import { COLORS } from "@/src/constants/Colors"
 import { useEffect } from "react"
+import Text from "@/src/components/Text"
 
 export default function TabsLayout() {
   const { state } = useAppContext()
@@ -31,17 +32,25 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          headerShown: false,
-          title: "Home",
-
+          headerShown: true,
+          headerTitle: () => <Text style={{ fontSize: 20 }}>Home</Text>,
+          headerStyle: {
+            backgroundColor: COLORS[colorScheme].background,
+          },
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => <Ionicons name="home-outline" size={22} color={color} />,
         }}
       />
+
       <Tabs.Screen
         name="settings"
         options={{
-          headerShown: false,
-          title: "Settings",
+          headerShown: true,
+          headerTitle: () => <Text style={{ fontSize: 20 }}>Settings</Text>,
+          headerStyle: {
+            backgroundColor: COLORS[colorScheme].background,
+          },
+          headerTitleAlign: "center",
           tabBarIcon: ({ color }) => <Ionicons name="settings-outline" size={22} color={color} />,
         }}
       />

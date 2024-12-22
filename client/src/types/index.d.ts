@@ -10,8 +10,14 @@ export interface User {
   token: string
 }
 
-interface UserAccount {
+export interface UserAccount {
   accountId: string
+  accountName: string
   nickname: string
   createdAt: string
+}
+
+export interface SelectOverlayOption {
+  label: string
+  description: string | number
 }

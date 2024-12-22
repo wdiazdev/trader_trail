@@ -24,10 +24,23 @@ export const createAccount: AsyncRequestHandler = async (req, res, next) => {
       })
     }
 
+    const createdDate = new Date()
+    const month = createdDate.toLocaleString("en-US", { month: "short" }).toUpperCase()
+    const day = createdDate.getDate()
+    const year = createdDate.getFullYear()
+    const accountName = `${month}${day}${year.toString().slice(-2)}`
+
     const newAccount = await Account.create({
       nickname,
       user: userId,
+      accountName,
     })
+
+    const lastFourId = newAccount._id.toString().slice(-4).toUpperCase()
+    const finalAccountName = `${accountName}${lastFourId}`
+
+    newAccount.accountName = finalAccountName
+    await newAccount.save()
 
     const response = {
       success: true,
@@ -35,6 +48,7 @@ export const createAccount: AsyncRequestHandler = async (req, res, next) => {
       message: "Account created successfully",
       data: {
         accountId: newAccount._id,
+        accountName: finalAccountName,
         nickname: newAccount.nickname,
         createdAt: newAccount.createdAt,
         userId: newAccount.user,
@@ -76,6 +90,7 @@ export const getAccounts: AsyncRequestHandler = async (req, res, next) => {
       message: "User accounts retrieved successfully",
       data: accounts.map((account) => ({
         accountId: account._id,
+        accountName: account.accountName,
         nickname: account.nickname,
         createdAt: account.createdAt,
       })),
@@ -147,6 +162,7 @@ export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
       message: "Account updated successfully",
       data: {
         accountId: updatedAccount._id,
+        accountName: updatedAccount.accountName,
         nickname: updatedAccount.nickname,
         createdAt: updatedAccount.createdAt,
       },
