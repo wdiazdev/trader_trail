@@ -3,6 +3,7 @@ import User from "../models/userModel"
 import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import env from "../utils/validateEnv"
+import Account from "../models/accountModel"
 
 export const signupUser: AsyncRequestHandler = async (req, res, next) => {
   const { email, password } = req.body
@@ -44,7 +45,7 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         statusCode: 404,
-        message: "No user account found.",
+        message: "User not found.",
       })
     }
 
@@ -71,6 +72,38 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
       data: { userId: user._id, token: token },
     }
     res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteUser: AsyncRequestHandler = async (req, res, next) => {
+  const { userId } = req.params
+
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      statusCode: 400,
+      message: "accountId is required",
+    })
+  }
+
+  try {
+    const user = await User.findById(userId)
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "User not found.",
+      })
+    }
+
+    await Account.deleteMany({ user: userId })
+
+    await User.findByIdAndDelete(userId)
+
+    res.status(204).end()
   } catch (error) {
     next(error)
   }

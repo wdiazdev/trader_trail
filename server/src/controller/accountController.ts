@@ -108,7 +108,7 @@ export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
     return res.status(400).json({
       success: false,
       statusCode: 400,
-      message: "accountId is required",
+      message: "A valid accountId is required.",
     })
   }
 
@@ -123,7 +123,7 @@ export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
       })
     }
 
-    res.status(204).json()
+    res.status(204).end()
   } catch (error) {
     next(error)
   }
