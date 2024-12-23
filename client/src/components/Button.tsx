@@ -18,10 +18,10 @@ export default function Button({ title, loading, disabled, ...props }: ButtonPro
       disabled={disabled}
       style={{
         backgroundColor: COLORS[colorScheme].primaryBtnBackground,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: COLORS[colorScheme].border,
+        borderWidth: 1,
+        borderColor: "transparent",
         padding: 14,
-        borderRadius: 16,
+        borderRadius: 14,
         opacity: disabled ? 0.5 : 1,
       }}
     >

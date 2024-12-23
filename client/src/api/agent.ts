@@ -1,20 +1,24 @@
-import Toast from "@/src/components/Toast"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import axios, { AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios"
 import { UserAccount, ApiResponse } from "../types"
+
+interface ErrorResponse {
+  message?: string
+}
 
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000))
 
-axios.defaults.baseURL = process.env.EXPO_PUBLIC_API_URL
-
-// Includes credentials in cross-origin requests by default.
-// This is useful for making authenticated API requests to a
-// server that is different from the one serving your web application.
-axios.defaults.withCredentials = true
+const apiClient: AxiosInstance = axios.create({
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  // Includes credentials in cross-origin requests by default.
+  // This is useful for making authenticated API requests to a
+  // server that is different from the one serving your web application.
+  withCredentials: true,
+})
 
 const responseBody = (response: AxiosResponse) => response.data
 
-axios.interceptors.request.use(
+apiClient.interceptors.request.use(
   async (config) => {
     const authToken = await AsyncStorage.getItem("token")
     if (authToken) {
@@ -27,55 +31,54 @@ axios.interceptors.request.use(
   },
 )
 
-axios.interceptors.response.use(
-  async function (response) {
+apiClient.interceptors.response.use(
+  async (response: AxiosResponse) => {
     if (__DEV__) await sleep()
     return response
   },
 
-  // function (error: AxiosError) {
-  //   if (error) {
-  //     const { data, status } = error.response as AxiosResponse
-  //     switch (status) {
-  //       case 400:
-  //         // if (data && data.errors) {
-  //         //   const modelStateErrors: string[] = []
-  //         //   for (const key in data.errors) {
-  //         //     modelStateErrors.push(data.errors[key])
-  //         //   }
-  //         //   throw modelStateErrors.flat()
-  //         // }
-  //         //   toast.error(data.title)
-  //         break
-  //       case 401:
-  //         //   toast.error(data.title)
-  //         break
-  //       case 500:
-  //         // router.navigate("/server-error", { state: { error: data } })
-  //         break
-  //       case 404:
-  //         // router.navigate("/not-found")
-  //         break
-  //       default:
-  //         //   toast.error("An unexpected error occurred")
-  //         break
-  //     }
-  //     return Promise.reject(error.response)
-  //   }
-  // },
+  (error: AxiosError) => {
+    if (axios.isAxiosError(error)) {
+      const response = error.response as AxiosResponse<ErrorResponse>
+      if (response) {
+        const { status, data } = response
+        let errorMessage = "An unexpected error occurred"
+
+        switch (status) {
+          case 400:
+            errorMessage = data?.message || "Bad Request"
+            break
+          case 401:
+            errorMessage = data?.message || "Unauthorized"
+            break
+          case 404:
+            errorMessage = data?.message || "Resource Not Found"
+            break
+          case 500:
+            errorMessage = data?.message || "Internal Server Error"
+            break
+          default:
+            errorMessage = data?.message || errorMessage
+            break
+        }
+      }
+    }
+    return Promise.reject(error)
+  },
 )
 
 const requests = {
-  get: (url: string, params?: URLSearchParams) => axios.get(url, { params }).then(responseBody),
-  post: (url: string, body: object) => axios.post(url, body).then(responseBody),
-  put: (url: string, body: object) => axios.put(url, body).then(responseBody),
-  delete: (url: string) => axios.delete(url).then(responseBody),
-  patch: (url: string, body: object) => axios.patch(url, body).then(responseBody),
+  get: (url: string, params?: URLSearchParams) => apiClient.get(url, { params }).then(responseBody),
+  post: (url: string, body: object) => apiClient.post(url, body).then(responseBody),
+  put: (url: string, body: object) => apiClient.put(url, body).then(responseBody),
+  delete: (url: string) => apiClient.delete(url).then(responseBody),
+  patch: (url: string, body: object) => apiClient.patch(url, body).then(responseBody),
 }
 
 const Auth = {
   login: (values: { email: string; password: string }) => requests.post("/auth/login", values),
   register: (values: { email: string; password: string }) => requests.post("/auth/signup", values),
+  delete: (userId: string) => requests.delete(`/auth/delete/${userId}`),
 }
 
 const Account = {

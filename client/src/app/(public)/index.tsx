@@ -63,8 +63,9 @@ export default function Home() {
       showToast("success", "Login successful!")
       router.push("/(tabs)/home")
     } catch (error: any) {
-      showToast("error", "Login failed, please try again.")
-      console.error("Login failed:", error)
+      const errorMessage = error?.response?.data?.message || "Login failed, please try again."
+      showToast("error", errorMessage)
+      console.log("Error:", error?.response?.data)
     } finally {
       setIsLoading(false)
     }
@@ -115,7 +116,9 @@ export default function Home() {
           style={{
             paddingHorizontal: 12,
             paddingVertical: 6,
-            borderRadius: 14,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: "transparent",
             backgroundColor: COLORS[colorScheme].primaryBtnBackground,
             color: COLORS[colorScheme].primaryBtnText,
           }}

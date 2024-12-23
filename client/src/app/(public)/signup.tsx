@@ -1,13 +1,15 @@
+import { useState } from "react"
+import { View } from "react-native"
+import { Link, useRouter } from "expo-router"
 import Button from "@/src/components/Button"
 import Container from "@/src/components/Container"
 import Input from "@/src/components/Input"
 import Text from "@/src/components/Text"
-import { useState } from "react"
-import { View } from "react-native"
 import { useToast } from "../../context/toastContext"
-import { useRouter } from "expo-router"
 import agent from "../../api/agent"
 import { useAppContext } from "../../store/storeContext"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
 
 interface AuthTypes {
   email: string
@@ -18,6 +20,7 @@ export default function Signup() {
   const { dispatch } = useAppContext()
   const router = useRouter()
   const { showToast } = useToast()
+  const colorScheme = useColorScheme()
 
   const [isLoading, setIsLoading] = useState(false)
   const [inputValues, setInputValues] = useState<AuthTypes>({
@@ -55,8 +58,10 @@ export default function Signup() {
       showToast("success", "Registration successful! Welcome aboard!")
       router.push("/")
     } catch (error: any) {
-      showToast("error", "Registration failed. Please try again.")
-      console.error("Registration failed:", error.message)
+      const errorMessage =
+        error?.response?.data?.message || "Registration failed. Please try again."
+      showToast("error", errorMessage)
+      console.log("Error:", error?.response?.data)
     } finally {
       setIsLoading(false)
     }
@@ -91,6 +96,31 @@ export default function Signup() {
           disabled={!inputValues.email || !inputValues.password}
           loading={isLoading}
         />
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 12,
+          position: "absolute",
+          bottom: 60,
+        }}
+      >
+        <Text>Already have an account?</Text>
+        <Link
+          href="/"
+          style={{
+            paddingHorizontal: 12,
+            paddingVertical: 6,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: "transparent",
+            backgroundColor: COLORS[colorScheme].primaryBtnBackground,
+            color: COLORS[colorScheme].primaryBtnText,
+          }}
+        >
+          Login
+        </Link>
       </View>
     </Container>
   )

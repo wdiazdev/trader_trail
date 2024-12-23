@@ -6,9 +6,15 @@ import { useAppContext } from "@/src/store/storeContext"
 import { SelectOverlayOption, UserAccount } from "@/src/types"
 import Loader from "@/src/components/Loader"
 import SelectOverlay from "@/src/components/SelectOverlay"
+import Button from "@/src/components/Button"
+import { COLORS } from "@/src/constants/Colors"
+import useColorScheme from "@/src/hooks/useColorScheme"
+import { View } from "react-native"
 
 export default function Home() {
   const { state } = useAppContext()
+  const colorScheme = useColorScheme()
+
   const [isLoading, setIsLoading] = useState(false)
   const [accountsData, setaAccountsData] = useState<UserAccount[]>()
   const [selectedAccount, setSelectedAccount] = useState<UserAccount | undefined>(undefined)
@@ -59,10 +65,27 @@ export default function Home() {
   }
 
   return (
-    <Container>
-      <SelectOverlay options={selectOptions} onSelectionChange={handleSelectionChange} />
-      <Text>Home</Text>
-      <Text>{selectedAccount?.accountName || "No account selected"}</Text>
+    <Container justifyContent="flex-start">
+      {accountsData && accountsData.length > 0 ? (
+        <View style={{ width: "100%" }}>
+          <SelectOverlay options={selectOptions} onSelectionChange={handleSelectionChange} />
+          <Text>Home</Text>
+          <Text>{selectedAccount?.accountName || "No account selected"}</Text>
+        </View>
+      ) : (
+        <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", gap: 16 }}>
+          <Text
+            style={{
+              textAlign: "center",
+              color: COLORS[colorScheme].altText,
+            }}
+          >
+            It looks like you don’t have any accounts logged yet. Start by creating a trading
+            account to track your trades and improve your performance!
+          </Text>
+          <Button title="Log a Trading Account" />
+        </View>
+      )}
     </Container>
   )
 }

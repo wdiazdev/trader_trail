@@ -31,10 +31,23 @@ export default function SelectOverlay({ options, onSelectionChange }: Props) {
   return (
     <TouchableOpacity
       onPress={toggleOverlay}
-      style={{ width: "100%", height: 200 }}
+      style={{
+        width: "100%",
+        padding: 12,
+        borderWidth: 1,
+        borderRadius: 8,
+        borderColor: COLORS[colorScheme].altText,
+      }}
       disabled={!options?.length}
     >
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 6,
+          justifyContent: "space-between",
+        }}
+      >
         <Text>{selectedOption?.label}</Text>
         <Ionicons
           name={isOverlayVisible ? "chevron-up" : "chevron-down"}
@@ -53,8 +66,8 @@ export default function SelectOverlay({ options, onSelectionChange }: Props) {
             onPress={toggleOverlay}
             style={{
               flex: 1,
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
-              paddingHorizontal: 26,
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              paddingHorizontal: 18,
             }}
           >
             <View

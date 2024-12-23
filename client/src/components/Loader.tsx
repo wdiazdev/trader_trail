@@ -10,7 +10,7 @@ export default function Loader({ size = "small", color }: Props) {
   const colorScheme = useColorScheme()
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size={size} color={color ?? COLORS[colorScheme].text} />
+      <ActivityIndicator size={size} color={color ?? COLORS[colorScheme].icon} />
     </View>
   )
 }

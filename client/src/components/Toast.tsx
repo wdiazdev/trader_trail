@@ -69,7 +69,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
         color={toastStyles[type].textColor}
         style={{ marginHorizontal: 8 }}
       />
-      <Text style={{ color: toastStyles[type].textColor }} numberOfLines={1}>
+      <Text style={{ color: toastStyles[type].textColor }} numberOfLines={2}>
         {message}
       </Text>
     </Animated.View>
