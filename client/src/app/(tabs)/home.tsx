@@ -9,7 +9,9 @@ import SelectOverlay from "@/src/components/SelectOverlay"
 import Button from "@/src/components/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
+import { useNavigation } from "expo-router"
+import { Ionicons } from "@expo/vector-icons"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -18,6 +20,18 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [accountsData, setaAccountsData] = useState<UserAccount[]>()
   const [selectedAccount, setSelectedAccount] = useState<UserAccount | undefined>(undefined)
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity style={{ paddingHorizontal: 12 }}>
+          <Ionicons name="person-circle-outline" size={32} color={COLORS[colorScheme].icon} />
+        </TouchableOpacity>
+      ),
+    })
+  }, [navigation])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,11 +81,21 @@ export default function Home() {
   return (
     <Container justifyContent="flex-start">
       {accountsData && accountsData.length > 0 ? (
-        <View style={{ width: "100%" }}>
+        <>
           <SelectOverlay options={selectOptions} onSelectionChange={handleSelectionChange} />
-          <Text>Home</Text>
-          <Text>{selectedAccount?.accountName || "No account selected"}</Text>
-        </View>
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 12,
+            }}
+          >
+            <Text>Home</Text>
+            <Text>{selectedAccount?.accountName || "No account selected"}</Text>
+          </View>
+        </>
       ) : (
         <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", gap: 16 }}>
           <Text

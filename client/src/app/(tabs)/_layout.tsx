@@ -5,7 +5,6 @@ import { Ionicons } from "@expo/vector-icons"
 import { COLORS } from "@/src/constants/Colors"
 import { useEffect } from "react"
 import Text from "@/src/components/Text"
-import { TouchableOpacity } from "react-native"
 
 export default function TabsLayout() {
   const { state } = useAppContext()
@@ -40,11 +39,6 @@ export default function TabsLayout() {
           },
           headerTitleAlign: "center",
           tabBarIcon: ({ color }) => <Ionicons name="home-outline" size={22} color={color} />,
-          headerRight: () => (
-            <TouchableOpacity style={{ paddingHorizontal: 12 }}>
-              <Ionicons name="person-circle-outline" size={32} color={COLORS[colorScheme].icon} />
-            </TouchableOpacity>
-          ),
         }}
       />
 
