@@ -9,9 +9,7 @@ import SelectOverlay from "@/src/components/SelectOverlay"
 import Button from "@/src/components/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { TouchableOpacity, View } from "react-native"
-import { useNavigation } from "expo-router"
-import { Ionicons } from "@expo/vector-icons"
+import { View } from "react-native"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -20,18 +18,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [accountsData, setaAccountsData] = useState<UserAccount[]>()
   const [selectedAccount, setSelectedAccount] = useState<UserAccount | undefined>(undefined)
-
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity style={{ paddingHorizontal: 12 }}>
-          <Ionicons name="person-circle-outline" size={32} color={COLORS[colorScheme].icon} />
-        </TouchableOpacity>
-      ),
-    })
-  }, [navigation])
 
   useEffect(() => {
     const fetchData = async () => {

@@ -5,6 +5,7 @@ import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
 import { SelectOverlayOption } from "../types"
 import { Ionicons } from "@expo/vector-icons"
+import { shadowStyles } from "../helpers/shadowStyles"
 
 type Props = {
   options: SelectOverlayOption[] | undefined
@@ -34,9 +35,11 @@ export default function SelectOverlay({ options, onSelectionChange }: Props) {
       style={{
         width: "100%",
         padding: 12,
-        borderWidth: 1,
-        borderRadius: 8,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 10,
         borderColor: COLORS[colorScheme].altText,
+        backgroundColor: COLORS[colorScheme].background,
+        ...shadowStyles(colorScheme),
       }}
       disabled={!options?.length}
     >

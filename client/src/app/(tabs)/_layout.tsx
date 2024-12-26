@@ -23,10 +23,10 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarActiveTintColor: COLORS[colorScheme].icon,
         tabBarInactiveTintColor: COLORS[colorScheme].altText,
-
         tabBarStyle: {
           backgroundColor: COLORS[colorScheme].background,
         },
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen

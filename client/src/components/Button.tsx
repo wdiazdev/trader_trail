@@ -1,8 +1,9 @@
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import React from "react"
-import { TouchableOpacity, Text, TouchableOpacityProps, StyleSheet } from "react-native"
+import { TouchableOpacity, Text, TouchableOpacityProps } from "react-native"
 import Loader from "./Loader"
+import { shadowStyles } from "../helpers/shadowStyles"
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string
@@ -21,8 +22,9 @@ export default function Button({ title, loading, disabled, ...props }: ButtonPro
         borderWidth: 1,
         borderColor: "transparent",
         padding: 14,
-        borderRadius: 14,
+        borderRadius: 10,
         opacity: disabled ? 0.5 : 1,
+        ...shadowStyles(colorScheme),
       }}
     >
       <Text

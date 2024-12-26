@@ -10,6 +10,7 @@ import agent from "../../api/agent"
 import { useAppContext } from "../../store/storeContext"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
+import { shadowStyles } from "@/src/helpers/shadowStyles"
 
 interface AuthTypes {
   email: string
@@ -112,11 +113,12 @@ export default function Signup() {
           style={{
             paddingHorizontal: 12,
             paddingVertical: 6,
-            borderRadius: 12,
+            borderRadius: 10,
             borderWidth: 1,
             borderColor: "transparent",
             backgroundColor: COLORS[colorScheme].primaryBtnBackground,
             color: COLORS[colorScheme].primaryBtnText,
+            ...shadowStyles(colorScheme),
           }}
         >
           Login

@@ -3,6 +3,7 @@ import useColorScheme from "@/src/hooks/useColorScheme"
 import { Pressable, TextInput as DefaultTextInput, TextInputProps } from "react-native"
 import { ReactNode, useRef } from "react"
 import { Ionicons } from "@expo/vector-icons"
+import { shadowStyles } from "../helpers/shadowStyles"
 
 type IoniconName = React.ComponentProps<typeof Ionicons>["name"]
 
@@ -40,8 +41,9 @@ export default function TextInput({
         borderWidth: 1,
         borderColor: COLORS[colorScheme].inputPlaceholder,
         padding: 8,
-        borderRadius: 14,
-        backgroundColor: COLORS[colorScheme].inputBackground,
+        borderRadius: 10,
+        backgroundColor: COLORS[colorScheme].secondaryBackground,
+        ...shadowStyles(colorScheme),
       }}
     >
       {leftIconName && (
