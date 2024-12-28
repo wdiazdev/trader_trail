@@ -1,6 +1,6 @@
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { Pressable, TextInput as DefaultTextInput, TextInputProps } from "react-native"
+import { Pressable, TextInput as DefaultTextInput, TextInputProps, StyleSheet } from "react-native"
 import { ReactNode, useRef } from "react"
 import { Ionicons } from "@expo/vector-icons"
 import { shadowStyles } from "../helpers/shadowStyles"
@@ -38,7 +38,7 @@ export default function TextInput({
         flexDirection: "row",
         alignItems: "center",
         width: "100%",
-        borderWidth: 1,
+        borderWidth: StyleSheet.hairlineWidth,
         borderColor: COLORS[colorScheme].inputPlaceholder,
         padding: 8,
         borderRadius: 10,
