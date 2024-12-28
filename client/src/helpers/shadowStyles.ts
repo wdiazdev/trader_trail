@@ -6,6 +6,6 @@ export const shadowStyles = (colorScheme: string) => ({
   shadowOpacity: 0.6,
   shadowRadius: 6,
   ...Platform.select({
-    android: { elevation: 2 },
+    android: { elevation: 1 },
   }),
 })

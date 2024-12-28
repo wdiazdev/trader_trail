@@ -2,7 +2,7 @@ import Button from "@/src/components/Button"
 import Container from "@/src/components/Container"
 import Input from "@/src/components/Input"
 import Text from "@/src/components/Text"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View } from "react-native"
 import { useToast } from "../../context/toastContext"
 import { Link, useRouter } from "expo-router"
@@ -30,6 +30,15 @@ export default function Home() {
     email: registrationEmail || "",
     password: "",
   })
+
+  useEffect(() => {
+    ;(async () => {
+      const storageToken = await AsyncStorage.getItem("token")
+      if (storageToken) {
+        router.push("/(private)/home")
+      }
+    })()
+  }, [])
 
   const handleTextChange = (value: string, type: "email" | "password") => {
     setInputValues((prev) => ({
@@ -77,6 +86,8 @@ export default function Home() {
       <Text>Welcome back!</Text>
       <View style={{ flexDirection: "column", gap: 16, marginVertical: 10 }}>
         <Input
+          id="email"
+          accessibilityLabel="email input"
           value={inputValues.email}
           onChangeText={(value) => handleTextChange(value, "email")}
           clearValue={() => clearValues("email")}
@@ -85,6 +96,8 @@ export default function Home() {
           rightIconVisible
         />
         <Input
+          id="password"
+          accessibilityLabel="password input"
           value={inputValues.password}
           onChangeText={(value) => handleTextChange(value, "password")}
           clearValue={() => clearValues("password")}
@@ -113,6 +126,8 @@ export default function Home() {
       >
         <Text>Don't have an account?</Text>
         <Link
+          id="signup"
+          accessibilityLabel="signup link"
           href="/signup"
           style={{
             paddingHorizontal: 12,

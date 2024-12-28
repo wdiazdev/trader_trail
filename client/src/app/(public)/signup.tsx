@@ -73,6 +73,8 @@ export default function Signup() {
       <Text>Hello! Register to get started</Text>
       <View style={{ flexDirection: "column", gap: 16, marginVertical: 10 }}>
         <Input
+          id="email"
+          accessibilityLabel="email input"
           value={inputValues.email}
           onChangeText={(value) => handleTextChange(value, "email")}
           clearValue={() => clearValues("email")}
@@ -81,6 +83,8 @@ export default function Signup() {
           rightIconVisible
         />
         <Input
+          id="password"
+          accessibilityLabel="password input"
           value={inputValues.password}
           onChangeText={(value) => handleTextChange(value, "password")}
           clearValue={() => clearValues("password")}
@@ -109,6 +113,8 @@ export default function Signup() {
       >
         <Text>Already have an account?</Text>
         <Link
+          id="login"
+          accessibilityLabel="login link"
           href="/"
           style={{
             paddingHorizontal: 12,

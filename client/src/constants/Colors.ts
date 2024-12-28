@@ -9,6 +9,7 @@ export const COLORS = {
     inputPlaceholder: "#969895",
     primaryBtnBackground: "#3490D8",
     primaryBtnText: "#FFFFFF",
+    border: "#D1D1D1",
   },
   dark: {
     text: "#FFFFFF",
@@ -20,5 +21,6 @@ export const COLORS = {
     inputPlaceholder: "#969895",
     primaryBtnBackground: "#90D5FF",
     primaryBtnText: "#181818",
+    border: "#3C3C3C",
   },
 }

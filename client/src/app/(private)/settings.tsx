@@ -1,9 +1,8 @@
 import React, { useState } from "react"
-import { StyleSheet, Switch, TouchableOpacity, View } from "react-native"
+import { StyleSheet, TouchableOpacity, View } from "react-native"
 import Container from "@/src/components/Container"
 import { useAppContext } from "@/src/store/storeContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { shadowStyles } from "@/src/helpers/shadowStyles"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { COLORS } from "@/src/constants/Colors"
 import { Ionicons } from "@expo/vector-icons"
@@ -12,6 +11,8 @@ import CustomAlert from "@/src/components/AlertModal"
 import agent from "@/src/api/agent"
 import { useRouter } from "expo-router"
 import { useToast } from "@/src/context/toastContext"
+import Switch from "@/src/components/Switch"
+import BorderedContainer from "@/src/components/BorderedContainer"
 
 export default function Settings() {
   const { state, dispatch } = useAppContext()
@@ -19,10 +20,21 @@ export default function Settings() {
   const router = useRouter()
   const { showToast } = useToast()
 
-  const [isSwitchEnabled, setIsSwitchEnabled] = useState(false)
+  const [isFaceIdEnabled, setIsFaceIdEnable] = useState(false)
+  const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false)
   const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false)
 
-  const toggleSwitch = () => setIsSwitchEnabled((previousState) => !previousState)
+  const toggleSwitch = (type: string) => {
+    if (type === "fadeId") {
+      setIsFaceIdEnable((previousState) => !previousState)
+    } else if (type === "darkMode") {
+      setIsDarkModeEnabled((previousState) => !previousState)
+    }
+  }
+
+  const handleModalVisible = () => {
+    setDeleteAccountModalVisible((previousState) => !previousState)
+  }
 
   const handleLogOut = async () => {
     dispatch({
@@ -32,10 +44,6 @@ export default function Settings() {
       },
     })
     await AsyncStorage.removeItem("token")
-  }
-
-  const handleModalVisible = () => {
-    setDeleteAccountModalVisible((previousState) => !previousState)
   }
 
   const handleDeleteAccount = async () => {
@@ -67,76 +75,86 @@ export default function Settings() {
           flex: 1,
         }}
       >
-        <View style={{ gap: 12 }}>
-          <View style={{ gap: 8 }}>
-            <Text style={{ fontWeight: "bold" }}>App</Text>
+        <View style={{ marginTop: 20, gap: 10 }}>
+          <Text style={{ fontWeight: "bold" }}>App</Text>
+          <BorderedContainer>
             <View
               style={{
-                flexDirection: "column",
-                padding: 12,
-                borderRadius: 10,
-                backgroundColor: COLORS[colorScheme].secondaryBackground,
-                ...shadowStyles(colorScheme),
+                minHeight: 50,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingVertical: 8,
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                borderColor: COLORS[colorScheme].border,
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text>Dark Mode</Text>
-                <Switch
-                  thumbColor={isSwitchEnabled ? COLORS[colorScheme].icon : "#3E3E3E"}
-                  ios_backgroundColor="#3E3E3E"
-                  onValueChange={toggleSwitch}
-                  value={isSwitchEnabled}
-                />
-              </View>
+              <Text>Fade ID</Text>
+              <Switch
+                id="fadeId"
+                accessibilityLabel="Face ID switch"
+                onValueChange={() => toggleSwitch("fadeId")}
+                value={isFaceIdEnabled}
+              />
             </View>
-          </View>
 
-          <View style={{ gap: 8 }}>
-            <Text style={{ fontWeight: "bold" }}>Account</Text>
             <View
               style={{
-                flexDirection: "column",
-                padding: 12,
-                borderRadius: 10,
-                backgroundColor: COLORS[colorScheme].secondaryBackground,
-                ...shadowStyles(colorScheme),
+                minHeight: 50,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingVertical: 8,
               }}
             >
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  paddingVertical: 8,
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  borderColor: COLORS[colorScheme].altText,
-                }}
-                onPress={handleModalVisible}
-              >
-                <Text>Delete Account</Text>
-                <Ionicons name="chevron-forward" size={22} color={COLORS[colorScheme].text} />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  paddingVertical: 8,
-                }}
-                onPress={handleLogOut}
-              >
-                <Text>Log Out</Text>
-                <Ionicons name="exit-outline" size={22} color={COLORS[colorScheme].text} />
-              </TouchableOpacity>
+              <Text>Dark Mode</Text>
+              <Switch
+                id="darkMode"
+                accessibilityLabel="Dark Mode switch"
+                onValueChange={() => toggleSwitch("darkMode")}
+                value={isDarkModeEnabled}
+              />
             </View>
-          </View>
+          </BorderedContainer>
+        </View>
+
+        <View style={{ marginTop: 20, gap: 10 }}>
+          <Text style={{ fontWeight: "bold" }}>Account</Text>
+          <BorderedContainer>
+            <TouchableOpacity
+              id="deleteAccount"
+              accessibilityLabel="Delete Account"
+              style={{
+                minHeight: 50,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingVertical: 8,
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                borderColor: COLORS[colorScheme].border,
+              }}
+              onPress={handleModalVisible}
+            >
+              <Text>Delete Account</Text>
+              <Ionicons name="chevron-forward" size={22} color={COLORS[colorScheme].text} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              id="logOut"
+              accessibilityLabel="Log Out"
+              style={{
+                minHeight: 50,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingVertical: 8,
+              }}
+              onPress={handleLogOut}
+            >
+              <Text>Log Out</Text>
+              <Ionicons name="exit-outline" size={22} color={COLORS[colorScheme].text} />
+            </TouchableOpacity>
+          </BorderedContainer>
         </View>
       </View>
       <CustomAlert

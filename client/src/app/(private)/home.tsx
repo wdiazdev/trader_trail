@@ -93,7 +93,11 @@ export default function Home() {
             It looks like you don’t have any accounts logged yet. Start by creating a trading
             account to track your trades and improve your performance!
           </Text>
-          <Button title="Log a Trading Account" />
+          <Button
+            id="logAccount"
+            accessibilityLabel="Log a trading account"
+            title="Log a Trading Account"
+          />
         </View>
       )}
     </Container>
