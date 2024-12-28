@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Switch, TouchableOpacity, View } from "react-native"
+import { StyleSheet, Switch, TouchableOpacity, View } from "react-native"
 import Container from "@/src/components/Container"
 import { useAppContext } from "@/src/store/storeContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -9,10 +9,15 @@ import { COLORS } from "@/src/constants/Colors"
 import { Ionicons } from "@expo/vector-icons"
 import Text from "@/src/components/Text"
 import CustomAlert from "@/src/components/AlertModal"
+import agent from "@/src/api/agent"
+import { useRouter } from "expo-router"
+import { useToast } from "@/src/context/toastContext"
 
 export default function Settings() {
-  const { dispatch } = useAppContext()
+  const { state, dispatch } = useAppContext()
   const colorScheme = useColorScheme()
+  const router = useRouter()
+  const { showToast } = useToast()
 
   const [isSwitchEnabled, setIsSwitchEnabled] = useState(false)
   const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false)
@@ -31,6 +36,27 @@ export default function Settings() {
 
   const handleModalVisible = () => {
     setDeleteAccountModalVisible((previousState) => !previousState)
+  }
+
+  const handleDeleteAccount = async () => {
+    try {
+      if (state.user && state.user._id) {
+        await agent.Auth.delete(state.user._id)
+        dispatch({
+          type: "change_store",
+          payload: {
+            user: null,
+          },
+        })
+      }
+      await AsyncStorage.removeItem("token")
+      showToast("success", "Account deleted successfully.")
+      router.push("/(public)")
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message || "Error deleting account"
+      showToast("error", errorMessage)
+      console.log("Error:", error?.response?.data)
+    }
   }
 
   return (
@@ -58,7 +84,6 @@ export default function Settings() {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  paddingVertical: 8,
                 }}
               >
                 <Text>Dark Mode</Text>
@@ -89,6 +114,8 @@ export default function Settings() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   paddingVertical: 8,
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  borderColor: COLORS[colorScheme].altText,
                 }}
                 onPress={handleModalVisible}
               >
@@ -115,7 +142,7 @@ export default function Settings() {
       <CustomAlert
         visible={deleteAccountModalVisible}
         onCancel={handleModalVisible}
-        onConfirm={() => console.log("Account Deleted")}
+        onConfirm={handleDeleteAccount}
       />
     </Container>
   )

@@ -62,7 +62,7 @@ export default function Home() {
       })
       await AsyncStorage.setItem("token", response.data.token)
       showToast("success", "Login successful!")
-      router.push("/(tabs)/home")
+      router.push("/(private)/home")
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Login failed, please try again."
       showToast("error", errorMessage)
