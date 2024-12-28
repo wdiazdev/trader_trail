@@ -45,7 +45,7 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         statusCode: 404,
-        message: "User not found.",
+        message: "Invalid username or password.",
       })
     }
 
