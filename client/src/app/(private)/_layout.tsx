@@ -5,20 +5,19 @@ import { Ionicons } from "@expo/vector-icons"
 import { COLORS } from "@/src/constants/Colors"
 import { useEffect } from "react"
 import Text from "@/src/components/Text"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function TabsLayout() {
-  const { dispatch } = useAppContext()
+  const { state } = useAppContext()
   const colorScheme = useColorScheme()
   const router = useRouter()
 
   useEffect(() => {
-    ;(async () => {
-      const storageToken = await AsyncStorage.getItem("token")
-      if (!storageToken) {
+    const verifyUser = async () => {
+      if (!state.user) {
         router.push("/")
       }
-    })()
+    }
+    verifyUser()
   }, [])
 
   return (

@@ -12,6 +12,7 @@ import agent from "../../api/agent"
 import { useAppContext } from "../../store/storeContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { shadowStyles } from "@/src/helpers/shadowStyles"
+import Loader from "@/src/components/Loader"
 
 interface AuthTypes {
   email: string
@@ -25,6 +26,7 @@ export default function Home() {
   const router = useRouter()
   const colorScheme = useColorScheme()
 
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [inputValues, setInputValues] = useState<AuthTypes>({
     email: registrationEmail || "",
@@ -32,13 +34,36 @@ export default function Home() {
   })
 
   useEffect(() => {
-    ;(async () => {
-      const storageToken = await AsyncStorage.getItem("token")
-      if (storageToken) {
+    const getUser = async () => {
+      const token = await AsyncStorage.getItem("token")
+      if (!token) return
+      try {
+        setIsLoading(true)
+        const response = await agent.Auth.getUser()
+        dispatch({
+          type: "change_store",
+          payload: {
+            user: { _id: response.data._id, token: response.data.token },
+          },
+        })
+        await AsyncStorage.setItem("token", response.data.token)
         router.push("/(private)/home")
+      } catch (err) {
+        console.log("err:", err)
+      } finally {
+        setIsLoading(false)
       }
-    })()
+    }
+    getUser()
   }, [])
+
+  if (isLoading) {
+    return (
+      <Container>
+        <Loader size="large" />
+      </Container>
+    )
+  }
 
   const handleTextChange = (value: string, type: "email" | "password") => {
     setInputValues((prev) => ({
@@ -60,7 +85,7 @@ export default function Home() {
       return
     }
     try {
-      setIsLoading(true)
+      setIsLoginLoading(true)
       const response = await agent.Auth.login(inputValues)
       dispatch({
         type: "change_store",
@@ -77,7 +102,7 @@ export default function Home() {
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     } finally {
-      setIsLoading(false)
+      setIsLoginLoading(false)
     }
   }
 
@@ -111,8 +136,8 @@ export default function Home() {
           accessibilityLabel="login button"
           title={"Login"}
           onPress={handleLogin}
-          disabled={!inputValues.email || !inputValues.password || isLoading}
-          loading={isLoading}
+          disabled={!inputValues.email || !inputValues.password || isLoginLoading}
+          loading={isLoginLoading}
         />
       </View>
       <View

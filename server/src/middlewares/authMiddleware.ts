@@ -1,11 +1,7 @@
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import env from "../utils/validateEnv"
 import { AsyncRequestHandler } from "../utils/requestHandler"
 import User from "../models/userModel"
-
-interface CustomJwtPayload extends JwtPayload {
-  userId: string
-}
 
 const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
   const authHeader = req.headers.authorization
@@ -20,11 +16,23 @@ const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, env.JWT_SECRET)
-    const userId = (decoded as CustomJwtPayload).userId
-    const user = await User.findById(userId)
+    const decoded = jwt.verify(token, env.JWT_SECRET) as { userId: string }
+    const user = await User.findById(decoded.userId)
 
-    if (user) next()
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        statusCode: 401,
+        message: "Unauthorized.",
+      })
+    }
+
+    req.user = {
+      userId: user._id.toString(),
+      token,
+    }
+
+    next()
   } catch (error: any) {
     if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
       return res.status(401).json({

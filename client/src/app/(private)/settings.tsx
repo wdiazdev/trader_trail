@@ -44,6 +44,7 @@ export default function Settings() {
       },
     })
     await AsyncStorage.removeItem("token")
+    router.push("/(public)")
   }
 
   const handleDeleteAccount = async () => {

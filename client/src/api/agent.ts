@@ -79,6 +79,7 @@ const Auth = {
   login: (values: { email: string; password: string }) => requests.post("/auth/login", values),
   register: (values: { email: string; password: string }) => requests.post("/auth/signup", values),
   delete: (userId: string) => requests.delete(`/auth/delete/${userId}`),
+  getUser: () => requests.get("/auth/getUser"),
 }
 
 const Account = {

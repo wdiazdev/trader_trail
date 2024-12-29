@@ -108,3 +108,18 @@ export const deleteUser: AsyncRequestHandler = async (req, res, next) => {
     next(error)
   }
 }
+
+export const getUser: AsyncRequestHandler = async (req, res, next) => {
+  try {
+    const user = req.user
+    const response = {
+      success: true,
+      statusCode: 200,
+      message: "User retrieved successfully.",
+      data: { userId: user?.userId, token: user?.token },
+    }
+    res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
