@@ -43,7 +43,7 @@ export default function Home() {
         dispatch({
           type: "change_store",
           payload: {
-            user: { _id: response.data._id, token: response.data.token },
+            user: { _id: response.data.userId, token: response.data.token },
           },
         })
         await AsyncStorage.setItem("token", response.data.token)

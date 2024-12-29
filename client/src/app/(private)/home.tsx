@@ -34,7 +34,7 @@ export default function Home() {
       }
     }
     fetchData()
-  }, [state.user?._id])
+  }, [])
 
   useEffect(() => {
     if (accountsData && accountsData.length > 0) {
