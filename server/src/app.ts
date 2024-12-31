@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
 import authRouter from "./routes/authRoute"
-import accountRouter from "./routes/accountsRoute"
-import tradeRouter from "./routes/tradesRoute"
+import accountRouter from "./routes/accountRoute"
+import tradeRouter from "./routes/tradeRoute"
 import errorMiddleware from "./middlewares/errorMiddleware"
 
 const app = express()

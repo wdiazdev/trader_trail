@@ -1,5 +1,3 @@
-import mongoose from "mongoose"
-import Account from "../models/accountModel"
 import Trade from "../models/tradeModel"
 import { AsyncRequestHandler } from "../utils/requestHandler"
 
@@ -43,25 +41,7 @@ export const createTrade: AsyncRequestHandler = async (req, res, next) => {
 export const getTrades: AsyncRequestHandler = async (req, res, next) => {
   const { accountId } = req.params
 
-  if (!accountId || !mongoose.Types.ObjectId.isValid(accountId)) {
-    return res.status(400).json({
-      success: false,
-      statusCode: 400,
-      message: "Invalid or missing accountId",
-    })
-  }
-
   try {
-    const account = await Account.findById(accountId)
-
-    if (!account) {
-      return res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Account not found.",
-      })
-    }
-
     const trades = await Trade.find({ account: accountId })
 
     const response = {
