@@ -20,9 +20,9 @@ const responseBody = (response: AxiosResponse) => response.data
 
 apiClient.interceptors.request.use(
   async (config) => {
-    const authToken = await AsyncStorage.getItem("token")
-    if (authToken) {
-      config.headers.Authorization = `Bearer ${authToken}`
+    const access_token = await AsyncStorage.getItem("access_token")
+    if (access_token) {
+      config.headers.Authorization = `Bearer ${access_token}`
     }
     return config
   },

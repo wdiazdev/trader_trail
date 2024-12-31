@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express"
 export interface CustomRequest extends Request {
   user?: {
     userId: string
-    token: string
+    access_token: string
   }
 }
 

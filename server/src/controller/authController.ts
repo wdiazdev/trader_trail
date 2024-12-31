@@ -61,7 +61,7 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
 
     const userId = user._id.toString()
 
-    const token = jwt.sign({ userId }, env.JWT_SECRET, {
+    const access_token = jwt.sign({ userId }, env.JWT_SECRET, {
       expiresIn: "3d",
     })
 
@@ -69,7 +69,7 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
       success: true,
       statusCode: 200,
       message: "User logged in successfully",
-      data: { userId: user._id, token: token },
+      data: { userId: user._id, access_token },
     }
     res.status(200).json(response)
   } catch (error) {
@@ -116,7 +116,7 @@ export const getUser: AsyncRequestHandler = async (req, res, next) => {
       success: true,
       statusCode: 200,
       message: "User retrieved successfully.",
-      data: { userId: user?.userId, token: user?.token },
+      data: { userId: user?.userId, access_token: user?.access_token },
     }
     res.status(200).json(response)
   } catch (error) {

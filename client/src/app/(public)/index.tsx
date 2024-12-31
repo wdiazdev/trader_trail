@@ -35,18 +35,18 @@ export default function Home() {
 
   useEffect(() => {
     const getUser = async () => {
-      const token = await AsyncStorage.getItem("token")
-      if (!token) return
+      const access_token = await AsyncStorage.getItem("access_token")
+      if (!access_token) return
       try {
         setIsLoading(true)
         const response = await agent.Auth.getUser()
         dispatch({
           type: "change_store",
           payload: {
-            user: { _id: response.data.userId, token: response.data.token },
+            user: { userId: response.data.userId, access_token: response.data.access_token },
           },
         })
-        await AsyncStorage.setItem("token", response.data.token)
+        await AsyncStorage.setItem("access_token", response.data.access_token)
         router.push("/(private)/home")
       } catch (err) {
         console.log("err:", err)
@@ -90,11 +90,11 @@ export default function Home() {
       dispatch({
         type: "change_store",
         payload: {
-          user: { _id: response.data.userId, token: response.data.token },
+          user: { userId: response.data.userId, access_token: response.data.access_token },
           registrationEmail: null,
         },
       })
-      await AsyncStorage.setItem("token", response.data.token)
+      await AsyncStorage.setItem("access_token", response.data.access_token)
       showToast("success", "Login successful!")
       router.push("/(private)/home")
     } catch (error: any) {

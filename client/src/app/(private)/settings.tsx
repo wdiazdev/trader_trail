@@ -43,14 +43,14 @@ export default function Settings() {
         user: null,
       },
     })
-    await AsyncStorage.removeItem("token")
+    await AsyncStorage.removeItem("access_token")
     router.push("/(public)")
   }
 
   const handleDeleteAccount = async () => {
     try {
-      if (state.user && state.user._id) {
-        await agent.Auth.delete(state.user._id)
+      if (state.user && state.user.userId) {
+        await agent.Auth.delete(state.user.userId)
         dispatch({
           type: "change_store",
           payload: {
@@ -58,7 +58,7 @@ export default function Settings() {
           },
         })
       }
-      await AsyncStorage.removeItem("token")
+      await AsyncStorage.removeItem("access_token")
       showToast("success", "Account deleted successfully.")
       router.push("/(public)")
     } catch (error: any) {

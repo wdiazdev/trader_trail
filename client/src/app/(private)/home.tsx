@@ -21,10 +21,10 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (state.user?._id) {
-        setIsLoading(true)
+      if (state.user?.userId) {
         try {
-          const response = await agent.Account.getAccounts(state.user._id)
+          setIsLoading(true)
+          const response = await agent.Account.getAccounts(state.user.userId)
           setaAccountsData(response.data)
         } catch (error) {
           console.error("Error fetching accounts:", error)

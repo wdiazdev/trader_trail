@@ -6,8 +6,8 @@ interface ApiResponse<T> {
 }
 
 export interface User {
-  _id: string
-  token: string
+  userId: string
+  access_token: string
 }
 
 export interface UserAccount {

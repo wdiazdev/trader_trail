@@ -10,13 +10,13 @@ const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
     return res.status(401).json({
       success: false,
       statusCode: 401,
-      message: "Unauthorized. No access token provided.",
+      message: "Unauthorized. No access access_token provided.",
     })
   }
 
   try {
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, env.JWT_SECRET) as { userId: string }
+    const access_token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(access_token, env.JWT_SECRET) as { userId: string }
     const user = await User.findById(decoded.userId)
 
     if (!user) {
@@ -29,7 +29,7 @@ const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
 
     req.user = {
       userId: user._id.toString(),
-      token,
+      access_token,
     }
 
     next()
@@ -38,7 +38,7 @@ const authMiddleware: AsyncRequestHandler = async (req, res, next) => {
       return res.status(401).json({
         success: false,
         statusCode: 401,
-        message: "Unauthorized. Invalid or expired token.",
+        message: "Unauthorized. Invalid or expired access_token.",
       })
     }
 
