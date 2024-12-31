@@ -11,6 +11,7 @@ import { useAppContext } from "../../store/storeContext"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { shadowStyles } from "@/src/helpers/shadowStyles"
+import DismissKeyboard from "@/src/components/DismissKeyboard"
 
 interface AuthTypes {
   email: string
@@ -69,67 +70,71 @@ export default function Signup() {
   }
 
   return (
-    <Container paddingHorizontal={30}>
-      <Text>Hello! Register to get started</Text>
-      <View style={{ flexDirection: "column", gap: 16, marginVertical: 10 }}>
-        <Input
-          id="email"
-          accessibilityLabel="email input"
-          value={inputValues.email}
-          onChangeText={(value) => handleTextChange(value, "email")}
-          clearValue={() => clearValues("email")}
-          placeholder={"Email"}
-          leftIconName={"mail"}
-          rightIconVisible
-        />
-        <Input
-          id="password"
-          accessibilityLabel="password input"
-          value={inputValues.password}
-          onChangeText={(value) => handleTextChange(value, "password")}
-          clearValue={() => clearValues("password")}
-          placeholder="Password"
-          leftIconName={"lock-closed"}
-          rightIconVisible
-          secureTextEntry={true}
-        />
-        <Button
-          id="signup"
-          accessibilityLabel="signup button"
-          title={"Sign Up"}
-          onPress={handleSignup}
-          disabled={!inputValues.email || !inputValues.password}
-          loading={isLoading}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 12,
-          position: "absolute",
-          bottom: 60,
-        }}
-      >
-        <Text>Already have an account?</Text>
-        <Link
-          id="login"
-          accessibilityLabel="login link"
-          href="/"
+    <DismissKeyboard>
+      <Container paddingHorizontal={30}>
+        <Text>Hello! Register to get started</Text>
+        <View style={{ flexDirection: "column", gap: 16, marginVertical: 10 }}>
+          <Input
+            id="email"
+            accessibilityLabel="email input"
+            value={inputValues.email}
+            onChangeText={(value) => handleTextChange(value, "email")}
+            clearValue={() => clearValues("email")}
+            placeholder={"Email"}
+            leftIconName={"mail"}
+            rightIconVisible
+          />
+          <Input
+            id="password"
+            accessibilityLabel="password input"
+            value={inputValues.password}
+            onChangeText={(value) => handleTextChange(value, "password")}
+            clearValue={() => clearValues("password")}
+            placeholder="Password"
+            leftIconName={"lock-closed"}
+            rightIconVisible
+            secureTextEntry={true}
+            returnKeyType="go"
+            onSubmitEditing={handleSignup}
+          />
+          <Button
+            id="signup"
+            accessibilityLabel="signup button"
+            title={"Sign Up"}
+            onPress={handleSignup}
+            disabled={!inputValues.email || !inputValues.password}
+            loading={isLoading}
+          />
+        </View>
+        <View
           style={{
-            paddingHorizontal: 12,
-            paddingVertical: 6,
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: "transparent",
-            backgroundColor: COLORS[colorScheme].primaryBtnBackground,
-            color: COLORS[colorScheme].primaryBtnText,
-            ...shadowStyles(colorScheme),
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            position: "absolute",
+            bottom: 60,
           }}
         >
-          Login
-        </Link>
-      </View>
-    </Container>
+          <Text>Already have an account?</Text>
+          <Link
+            id="login"
+            accessibilityLabel="login link"
+            href="/"
+            style={{
+              paddingHorizontal: 12,
+              paddingVertical: 6,
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: "transparent",
+              backgroundColor: COLORS[colorScheme].primaryBtnBackground,
+              color: COLORS[colorScheme].primaryBtnText,
+              ...shadowStyles(colorScheme),
+            }}
+          >
+            Login
+          </Link>
+        </View>
+      </Container>
+    </DismissKeyboard>
   )
 }

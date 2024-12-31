@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import authRouter from "./routes/authRoute"
 import accountRouter from "./routes/accountsRoute"
+import tradeRouter from "./routes/tradesRoute"
 import errorMiddleware from "./middlewares/errorMiddleware"
 
 const app = express()
@@ -19,6 +20,7 @@ app.use(express.json())
 //Routes
 app.use("/api/auth", authRouter)
 app.use("/api/account", accountRouter)
+app.use("/api/trade", tradeRouter)
 
 app.get("/", (req, res) => {
   res.send("Hello world!")
