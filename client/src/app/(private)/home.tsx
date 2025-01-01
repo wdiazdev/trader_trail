@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import Container from "@/src/components/Container"
 import Text from "@/src/components/Text"
-import agent from "@/src/api/agent"
 import { useAppContext } from "@/src/store/storeContext"
 import { SelectOverlayOption, UserAccount } from "@/src/types"
 import Loader from "@/src/components/Loader"
@@ -10,39 +9,39 @@ import Button from "@/src/components/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { View } from "react-native"
+import useGetAccounts from "@/src/services/useGetAccounts"
 
 export default function Home() {
   const { state } = useAppContext()
   const colorScheme = useColorScheme()
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [accountsData, setaAccountsData] = useState<UserAccount[]>()
   const [selectedAccount, setSelectedAccount] = useState<UserAccount | undefined>(undefined)
 
+  const { accountsQuery, tradesQuery } = useGetAccounts(
+    state.user?.access_token,
+    state.user?.userId || "",
+    selectedAccount?.accountId || "",
+  )
+
+  const {
+    data: accountsData,
+    isLoading: isAccountsQueryLoading,
+    fetchStatus: accountsQueryFetchStatus,
+  } = accountsQuery
+
+  const {
+    data: tradesData,
+    isLoading: isTradesQueryLoading,
+    fetchStatus: tradesQueryFetchStatus,
+  } = tradesQuery
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (state.user?.userId) {
-        try {
-          setIsLoading(true)
-          const response = await agent.Account.getAccounts(state.user.userId)
-          setaAccountsData(response.data)
-        } catch (error) {
-          console.error("Error fetching accounts:", error)
-        } finally {
-          setIsLoading(false)
-        }
-      }
+    if (accountsData?.data && accountsData?.data?.length > 0) {
+      setSelectedAccount(accountsData.data[0])
     }
-    fetchData()
   }, [])
 
-  useEffect(() => {
-    if (accountsData && accountsData.length > 0) {
-      setSelectedAccount(accountsData[0])
-    }
-  }, [accountsData])
-
-  if (isLoading) {
+  if (isAccountsQueryLoading || accountsQueryFetchStatus === "fetching") {
     return (
       <Container>
         <Loader size="large" />
@@ -50,7 +49,28 @@ export default function Home() {
     )
   }
 
-  const selectOptions = accountsData?.map((account) => {
+  if (!accountsData?.data) {
+    return (
+      <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", gap: 16 }}>
+        <Text
+          style={{
+            textAlign: "center",
+            color: COLORS[colorScheme].altText,
+          }}
+        >
+          It looks like you don’t have any accounts logged yet. Start by creating a trading account
+          to track your trades and improve your performance!
+        </Text>
+        <Button
+          id="logAccount"
+          accessibilityLabel="Log a trading account"
+          title="Log a Trading Account"
+        />
+      </View>
+    )
+  }
+
+  const selectOptions = accountsData.data.map((account) => {
     return {
       label: account.accountName,
       description: account.accountId,
@@ -58,46 +78,38 @@ export default function Home() {
   })
 
   const handleSelectionChange = (selected: SelectOverlayOption | undefined) => {
-    if (selected && accountsData) {
-      const account = accountsData.find((account) => account.accountId === selected.description)
+    if (selected && accountsData?.data) {
+      const account = accountsData.data.find(
+        (account) => account.accountId === selected.description,
+      )
       if (account) setSelectedAccount(account)
     }
   }
 
   return (
     <Container justifyContent="flex-start">
-      {accountsData && accountsData.length > 0 ? (
+      <SelectOverlay
+        options={selectOptions}
+        onSelectionChange={handleSelectionChange}
+        selectedAccount={selectedAccount}
+      />
+      {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Loader size="large" />
+        </View>
+      ) : tradesData?.data && tradesData.data.length > 0 ? (
         <>
-          <SelectOverlay options={selectOptions} onSelectionChange={handleSelectionChange} />
-          <View
-            style={{
-              flex: 1,
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 12,
-            }}
-          >
-            <Text>Home</Text>
-            <Text>{selectedAccount?.accountName || "No account selected"}</Text>
-          </View>
+          {tradesData.data.map((trade) => {
+            return (
+              <View key={trade.tradeId}>
+                <Text>{trade.amount}</Text>
+              </View>
+            )
+          })}
         </>
       ) : (
-        <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", gap: 16 }}>
-          <Text
-            style={{
-              textAlign: "center",
-              color: COLORS[colorScheme].altText,
-            }}
-          >
-            It looks like you don’t have any accounts logged yet. Start by creating a trading
-            account to track your trades and improve your performance!
-          </Text>
-          <Button
-            id="logAccount"
-            accessibilityLabel="Log a trading account"
-            title="Log a Trading Account"
-          />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Text>No trades found</Text>
         </View>
       )}
     </Container>

@@ -16,6 +16,12 @@ export interface UserAccount {
   nickname: string
   createdAt: string
 }
+export interface Trade {
+  accountId: string
+  amount: number
+  createdAt: string
+  tradeId: string
+}
 
 export interface SelectOverlayOption {
   label: string

@@ -3,28 +3,25 @@ import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-nati
 import Text from "./Text"
 import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
-import { SelectOverlayOption } from "../types"
+import { SelectOverlayOption, UserAccount } from "../types"
 import { Ionicons } from "@expo/vector-icons"
 import { shadowStyles } from "../helpers/shadowStyles"
 
 type Props = {
   options: SelectOverlayOption[] | undefined
   onSelectionChange: (selected: SelectOverlayOption | undefined) => void
+  selectedAccount: UserAccount | undefined
 }
 
-export default function SelectOverlay({ options, onSelectionChange }: Props) {
+export default function SelectOverlay({ options, onSelectionChange, selectedAccount }: Props) {
   const colorScheme = useColorScheme()
   const [isOverlayVisible, setIsOverlayVisible] = useState(false)
-  const [selectedOption, setSelectedOption] = useState<SelectOverlayOption | undefined>(
-    options?.[0],
-  )
 
   const toggleOverlay = () => {
     setIsOverlayVisible((prev) => !prev)
   }
 
   const handleOptionSelect = (selected: SelectOverlayOption) => {
-    setSelectedOption(selected)
     onSelectionChange(selected)
     setIsOverlayVisible(false)
   }
@@ -51,7 +48,7 @@ export default function SelectOverlay({ options, onSelectionChange }: Props) {
           justifyContent: "space-between",
         }}
       >
-        <Text>{selectedOption?.label}</Text>
+        <Text>{selectedAccount?.accountName}</Text>
         <Ionicons
           name={isOverlayVisible ? "chevron-up" : "chevron-down"}
           size={22}
@@ -100,14 +97,14 @@ export default function SelectOverlay({ options, onSelectionChange }: Props) {
                       style={{
                         fontSize: 16,
                         color:
-                          opt.description === selectedOption?.description
+                          opt.description === selectedAccount?.accountId
                             ? COLORS[colorScheme].icon
                             : COLORS[colorScheme].text,
                       }}
                     >
                       {opt.label}
                     </Text>
-                    {opt.description === selectedOption?.description && (
+                    {opt.description === selectedAccount?.accountId && (
                       <Ionicons name="checkmark" size={22} color={COLORS[colorScheme].icon} />
                     )}
                   </Pressable>

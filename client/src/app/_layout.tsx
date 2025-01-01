@@ -13,9 +13,12 @@ import { ToastProvider } from "../context/toastContext"
 import { StatusBar } from "react-native"
 import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
+import { Query, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 // Prevent auto hide splash screen
 SplashScreen.preventAutoHideAsync()
+
+const queryClient = new QueryClient()
 
 const InitialLayout = () => {
   const colorScheme = useColorScheme()
@@ -44,11 +47,13 @@ const InitialLayout = () => {
         barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
         backgroundColor={COLORS[colorScheme].background}
       />
-      <AppContextProvider>
-        <ToastProvider>
-          <Slot />
-        </ToastProvider>
-      </AppContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppContextProvider>
+          <ToastProvider>
+            <Slot />
+          </ToastProvider>
+        </AppContextProvider>
+      </QueryClientProvider>
     </>
   )
 }

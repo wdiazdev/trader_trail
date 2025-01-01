@@ -92,9 +92,16 @@ const Account = {
   deleteAccount: (accountId: string) => requests.delete(`/account/delete/${accountId}`),
 }
 
+const Trade = {
+  createTrade: (body: { userId: string; accountId: string; amount: number }) =>
+    requests.post("/trade/create", body),
+  getTrades: (accountId: string) => requests.get(`/trade/get/${accountId}`),
+}
+
 const agent = {
   Auth,
   Account,
+  Trade,
 }
 
 export default agent
