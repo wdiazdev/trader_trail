@@ -15,7 +15,7 @@ export const signupUser: AsyncRequestHandler = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         statusCode: 400,
-        message: "Email already in use.",
+        message: "There was an issue with your signup. Please try again.",
       })
     }
 
@@ -84,7 +84,7 @@ export const deleteUser: AsyncRequestHandler = async (req, res, next) => {
     return res.status(400).json({
       success: false,
       statusCode: 400,
-      message: "accountId is required",
+      message: "userId is required",
     })
   }
 

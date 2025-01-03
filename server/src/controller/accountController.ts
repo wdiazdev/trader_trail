@@ -130,8 +130,7 @@ export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
-  const { accountId } = req.params
-  const { nickname } = req.body
+  const { accountId, nickname } = req.body
 
   if (!accountId || !nickname) {
     return res.status(400).json({

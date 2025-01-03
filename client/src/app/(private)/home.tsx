@@ -36,10 +36,10 @@ export default function Home() {
   } = tradesQuery
 
   useEffect(() => {
-    if (accountsData?.data && accountsData?.data?.length > 0) {
+    if (accountsData?.data && accountsData.data.length > 0) {
       setSelectedAccount(accountsData.data[0])
     }
-  }, [])
+  }, [accountsData?.data])
 
   if (isAccountsQueryLoading || accountsQueryFetchStatus === "fetching") {
     return (
