@@ -1,6 +1,7 @@
 import { AsyncRequestHandler } from "../utils/requestHandler"
 import User from "../models/userModel"
 import Account from "../models/accountModel"
+import Trade from "../models/tradeModel"
 
 export const createAccount: AsyncRequestHandler = async (req, res, next) => {
   const { userId, nickname } = req.body
@@ -60,7 +61,7 @@ export const createAccount: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-export const getAccounts: AsyncRequestHandler = async (req, res, next) => {
+export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
   const { userId } = req.params
 
   if (!userId) {

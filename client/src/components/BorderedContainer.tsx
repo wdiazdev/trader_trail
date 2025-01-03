@@ -7,13 +7,17 @@ type BorderedContainerProps = ViewProps & {
   children?: React.ReactNode
   padding?: number
   flexDirection?: ViewStyle["flexDirection"]
+  justifyContent?: ViewStyle["justifyContent"]
+  alignItems?: ViewStyle["alignItems"]
   fullWidth?: boolean
 }
 
 export default function BorderedContainer({
   children,
   padding = 12,
-  flexDirection = "column",
+  flexDirection,
+  justifyContent,
+  alignItems,
   fullWidth,
   ...rest
 }: BorderedContainerProps) {
@@ -24,6 +28,8 @@ export default function BorderedContainer({
       style={{
         width: fullWidth ? "100%" : undefined,
         flexDirection: flexDirection,
+        justifyContent: justifyContent,
+        alignItems: alignItems,
         padding: padding,
         borderRadius: 10,
         backgroundColor: COLORS[colorScheme].background,

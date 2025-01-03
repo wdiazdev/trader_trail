@@ -1,6 +1,11 @@
 import Trade from "../models/tradeModel"
 import { AsyncRequestHandler } from "../utils/requestHandler"
 
+type BestWorstDay = {
+  bestDay: { date: Date; amount: number } | null
+  worstDay: { date: Date; amount: number } | null
+}
+
 export const createTrade: AsyncRequestHandler = async (req, res, next) => {
   const { userId, accountId, amount } = req.body
 
@@ -42,18 +47,52 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
   const { accountId } = req.params
 
   try {
-    const trades = await Trade.find({ account: accountId })
+    const accountTrades = await Trade.find({ account: accountId })
+
+    const trades = accountTrades.map((trade) => ({
+      tradeId: trade._id,
+      amount: trade.amount,
+      createdAt: trade.createdAt,
+    }))
+
+    const balance = parseFloat(trades.reduce((acc, trade) => acc + trade.amount, 0).toFixed(2))
+
+    const totalTrades = trades.length
+
+    const avgWin = trades.filter((trade) => trade.amount > 0).length / totalTrades
+
+    const avgLoss = trades.filter((trade) => trade.amount < 0).length / totalTrades
+
+    const bestWorstDay = trades.reduce<BestWorstDay>(
+      (acc, trade) => {
+        const tradeDate = new Date(trade.createdAt)
+
+        if (!acc.bestDay || trade.amount > acc.bestDay.amount) {
+          acc.bestDay = { date: tradeDate, amount: trade.amount }
+        }
+
+        if (!acc.worstDay || trade.amount < acc.worstDay.amount) {
+          acc.worstDay = { date: tradeDate, amount: trade.amount }
+        }
+
+        return acc
+      },
+      { bestDay: null, worstDay: null },
+    )
 
     const response = {
       success: true,
       statusCode: 200,
       message: "User trades retrieved successfully",
-      data: trades.map((trade) => ({
-        tradeId: trade._id,
-        amount: trade.amount,
-        accountId: trade.account,
-        createdAt: trade.createdAt,
-      })),
+      data: {
+        accountId: accountId,
+        balance,
+        totalTrades,
+        avgWin,
+        avgLoss,
+        bestWorstDay,
+        trades,
+      },
     }
     res.status(200).json(response)
   } catch (error) {

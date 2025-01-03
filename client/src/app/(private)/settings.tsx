@@ -59,6 +59,7 @@ export default function Settings() {
         })
       }
       await AsyncStorage.removeItem("access_token")
+      await AsyncStorage.removeItem("balanceVisible")
       showToast("success", "Account deleted successfully.")
       router.push("/(public)")
     } catch (error: any) {
@@ -78,7 +79,7 @@ export default function Settings() {
       >
         <View style={{ marginTop: 20, gap: 10 }}>
           <Text style={{ fontWeight: "bold" }}>App</Text>
-          <BorderedContainer>
+          <BorderedContainer fullWidth>
             <View
               style={{
                 minHeight: 50,

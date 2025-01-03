@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react"
 import Container from "@/src/components/Container"
 import Text from "@/src/components/Text"
 import { useAppContext } from "@/src/store/storeContext"
-import { SelectOverlayOption, UserAccount } from "@/src/types"
+import { AccountsData, SelectOverlayOption } from "@/src/types"
 import Loader from "@/src/components/Loader"
 import SelectOverlay from "@/src/components/SelectOverlay"
 import Button from "@/src/components/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { View } from "react-native"
+import { Pressable, View } from "react-native"
 import useGetAccounts from "@/src/services/useGetAccounts"
+import { Ionicons } from "@expo/vector-icons"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import BorderedContainer from "@/src/components/BorderedContainer"
 
 export default function Home() {
   const { state } = useAppContext()
   const colorScheme = useColorScheme()
 
-  const [selectedAccount, setSelectedAccount] = useState<UserAccount | undefined>(undefined)
+  const [selectedAccount, setSelectedAccount] = useState<AccountsData | undefined>(undefined)
+  const [isBalanceVisible, setIsBalanceVisible] = useState(true)
 
   const { accountsQuery, tradesQuery } = useGetAccounts(
     state.user?.access_token,
@@ -86,6 +90,18 @@ export default function Home() {
     }
   }
 
+  const toggleBalanceVisible = async () => {
+    setIsBalanceVisible((prev) => {
+      const newValue = !prev
+      AsyncStorage.setItem("isBalanceVisible", JSON.stringify(newValue))
+      return newValue
+    })
+  }
+
+  const trades = tradesData?.data?.trades || []
+
+  const accountBalance = tradesData?.data?.balance ?? 0
+
   return (
     <Container justifyContent="flex-start">
       <SelectOverlay
@@ -93,25 +109,53 @@ export default function Home() {
         onSelectionChange={handleSelectionChange}
         selectedAccount={selectedAccount}
       />
-      {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <Loader size="large" />
-        </View>
-      ) : tradesData?.data && tradesData.data.length > 0 ? (
-        <>
-          {tradesData.data.map((trade) => {
-            return (
-              <View key={trade.tradeId}>
-                <Text>{trade.amount}</Text>
-              </View>
-            )
-          })}
-        </>
-      ) : (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <Text>No trades found</Text>
-        </View>
-      )}
+      <View style={{ flexDirection: "column", marginTop: 30 }}>
+        <BorderedContainer
+          fullWidth
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          padding={14}
+        >
+          <Text>Balance</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text>{isBalanceVisible ? `$${accountBalance}` : "*******"}</Text>
+            <Pressable onPress={toggleBalanceVisible}>
+              <Ionicons
+                name="eye-outline"
+                size={22}
+                color={COLORS[colorScheme].text}
+                style={{ marginLeft: 10 }}
+              />
+            </Pressable>
+          </View>
+        </BorderedContainer>
+
+        {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Loader size="large" />
+          </View>
+        ) : trades.length > 0 ? (
+          <>
+            {trades.map((trade) => {
+              return (
+                <View key={trade.tradeId}>
+                  <Text>{trade.amount}</Text>
+                </View>
+              )
+            })}
+          </>
+        ) : (
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <Text>No trades found</Text>
+          </View>
+        )}
+      </View>
     </Container>
   )
 }

@@ -10,17 +10,39 @@ export interface User {
   access_token: string
 }
 
-export interface UserAccount {
+export interface AccountsData {
   accountId: string
   accountName: string
   nickname: string
   createdAt: string
 }
 export interface Trade {
-  accountId: string
+  tradeId: string
   amount: number
   createdAt: string
-  tradeId: string
+}
+
+export interface BestWorstDay {
+  bestDay: {
+    date: Date
+    amount: number
+  } | null
+  worstDay:
+    | {
+        date: Date
+        amount: number
+      }
+    | mull
+}
+
+export interface TradesData {
+  accountId: string
+  balance: number | null
+  totalTrades: number | null
+  avgWin: number | null
+  avgLoss: number | null
+  bestWorstDay: BestWorstDay
+  trades: Trade[]
 }
 
 export interface SelectOverlayOption {

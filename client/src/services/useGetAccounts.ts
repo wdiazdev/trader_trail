@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query"
 import agent from "../api/agent"
-import { Trade, UserAccount } from "../types"
+import { AccountsData, TradesData } from "../types"
 
 export default function useGetAccounts(
   access_token: string | undefined,
@@ -8,13 +8,13 @@ export default function useGetAccounts(
   accountId: string,
 ): {
   accountsQuery: UseQueryResult<{
-    data: UserAccount[] | undefined
+    data: AccountsData[] | undefined
     message: string
     statusCode: number
     success: boolean
   }>
   tradesQuery: UseQueryResult<{
-    data: Trade[] | undefined
+    data: TradesData | undefined
     message: string
     statusCode: number
     success: boolean
@@ -24,7 +24,7 @@ export default function useGetAccounts(
     accountsQuery: useQuery({
       queryKey: ["getAccounts", userId],
       queryFn: async () => {
-        return await agent.Account.getAccounts(userId)
+        return await agent.Account.getAllAccounts(userId)
       },
       enabled: !!access_token && !!userId,
     }),

@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios"
-import { UserAccount, ApiResponse } from "../types"
 
 interface ErrorResponse {
   message?: string
@@ -85,8 +84,7 @@ const Auth = {
 const Account = {
   createAccount: (body: { userId: string; nickname?: string }) =>
     requests.post("/account/create", body),
-  getAccounts: (userId: string): Promise<ApiResponse<UserAccount[]>> =>
-    requests.get(`/account/user/${userId}`),
+  getAllAccounts: (userId: string) => requests.get(`/account/user/${userId}`),
   updateAccount: (accountId: string, body: { nickname: string }) =>
     requests.patch(`/account/update/${accountId}`, body),
   deleteAccount: (accountId: string) => requests.delete(`/account/delete/${accountId}`),

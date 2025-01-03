@@ -3,14 +3,14 @@ import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-nati
 import Text from "./Text"
 import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
-import { SelectOverlayOption, UserAccount } from "../types"
+import { SelectOverlayOption, AccountsData } from "../types"
 import { Ionicons } from "@expo/vector-icons"
 import { shadowStyles } from "../helpers/shadowStyles"
 
 type Props = {
   options: SelectOverlayOption[] | undefined
   onSelectionChange: (selected: SelectOverlayOption | undefined) => void
-  selectedAccount: UserAccount | undefined
+  selectedAccount: AccountsData | undefined
 }
 
 export default function SelectOverlay({ options, onSelectionChange, selectedAccount }: Props) {
