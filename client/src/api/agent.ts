@@ -82,9 +82,8 @@ const Auth = {
 }
 
 const Account = {
-  createAccount: (body: { userId: string; nickname?: string }) =>
-    requests.post("/account/create", body),
-  getAllAccounts: (userId: string) => requests.get(`/account/user/${userId}`),
+  createAccount: (body: { nickname?: string }) => requests.post("/account/create", body),
+  getAllAccounts: () => requests.get(`/account/getAccounts`),
   updateAccount: (accountId: string, body: { nickname: string }) =>
     requests.patch(`/account/update/${accountId}`, body),
   deleteAccount: (accountId: string) => requests.delete(`/account/delete/${accountId}`),

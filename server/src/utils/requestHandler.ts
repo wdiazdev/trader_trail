@@ -4,6 +4,13 @@ export interface CustomRequest extends Request {
     userId: string
     access_token: string
   }
+  account?: {
+    accountId: string
+    accountName: string
+    nickname: string | undefined | null
+    createdAt: string
+    user: string
+  }
 }
 
 export type AsyncRequestHandler = (

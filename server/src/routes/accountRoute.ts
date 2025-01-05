@@ -6,12 +6,13 @@ import {
   updateAccount,
 } from "../controller/accountController"
 import authMiddleware from "../middlewares/authMiddleware"
+import validateAccountMiddleware from "../middlewares/validateAccountMiddleware"
 
 const router = express.Router()
 
 router.post("/create", authMiddleware, createAccount)
-router.get("/user/:userId", authMiddleware, getAllAccounts)
-router.delete("/delete/:accountId", authMiddleware, deleteAccount)
-router.patch("/update", authMiddleware, updateAccount)
+router.get("/getAccounts", authMiddleware, getAllAccounts)
+router.delete("/delete/:accountId", authMiddleware, validateAccountMiddleware, deleteAccount)
+router.patch("/update", authMiddleware, validateAccountMiddleware, updateAccount)
 
 export default router

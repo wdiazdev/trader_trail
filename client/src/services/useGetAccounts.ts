@@ -24,7 +24,7 @@ export default function useGetAccounts(
     accountsQuery: useQuery({
       queryKey: ["getAccounts", userId],
       queryFn: async () => {
-        return await agent.Account.getAllAccounts(userId)
+        return await agent.Account.getAllAccounts()
       },
       enabled: !!access_token && !!userId,
     }),

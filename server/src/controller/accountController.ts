@@ -1,30 +1,11 @@
 import { AsyncRequestHandler } from "../utils/requestHandler"
-import User from "../models/userModel"
 import Account from "../models/accountModel"
-import Trade from "../models/tradeModel"
 
 export const createAccount: AsyncRequestHandler = async (req, res, next) => {
-  const { userId, nickname } = req.body
-
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      statusCode: 400,
-      message: "userId is required",
-    })
-  }
+  const { nickname } = req.body
+  const userId = req.user?.userId
 
   try {
-    const user = await User.findById({ _id: userId })
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "User not found.",
-      })
-    }
-
     const createdDate = new Date()
     const month = createdDate.toLocaleString("en-US", { month: "short" }).toUpperCase()
     const day = createdDate.getDate()
@@ -62,28 +43,19 @@ export const createAccount: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
-  const { userId } = req.params
-
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      statusCode: 400,
-      message: "userId is required",
-    })
-  }
+  const userId = req.user?.userId
 
   try {
-    const user = await User.findById({ _id: userId })
+    const accounts = await Account.find({ user: userId })
 
-    if (!user) {
+    if (accounts.length === 0) {
       return res.status(404).json({
         success: false,
         statusCode: 404,
-        message: "User not found.",
+        message: "No accounts found for this user.",
+        data: [],
       })
     }
-
-    const accounts = await Account.find({ user: userId })
 
     const response = {
       success: true,
@@ -103,24 +75,20 @@ export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
-  const { accountId } = req.params
-
-  if (!accountId) {
-    return res.status(400).json({
-      success: false,
-      statusCode: 400,
-      message: "A valid accountId is required.",
-    })
-  }
-
   try {
-    const account = await Account.findByIdAndDelete({ _id: accountId })
+    if (!req.account) {
+      return res.status(400).json({
+        success: false,
+        message: "No account found in the request context.",
+      })
+    }
 
-    if (!account) {
+    const deletedAccount = await Account.findByIdAndDelete(req.account.accountId)
+
+    if (!deletedAccount) {
       return res.status(404).json({
         success: false,
-        statusCode: 404,
-        message: "Account not found.",
+        message: "Account not found or already deleted.",
       })
     }
 
@@ -131,19 +99,26 @@ export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
-  const { accountId, nickname } = req.body
+  const { nickname } = req.body
 
-  if (!accountId || !nickname) {
+  if (!nickname) {
     return res.status(400).json({
       success: false,
       statusCode: 400,
-      message: !accountId ? "accountId is required" : "nickname is required",
+      message: "nickname is required",
     })
   }
 
   try {
+    if (!req.account) {
+      return res.status(400).json({
+        success: false,
+        message: "No account found in the request context.",
+      })
+    }
+
     const updatedAccount = await Account.findByIdAndUpdate(
-      accountId,
+      req.account.accountId,
       { $set: { nickname } },
       { new: true },
     )
@@ -152,7 +127,7 @@ export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         statusCode: 404,
-        message: "Account not found.",
+        message: "Account not found or update failed.",
       })
     }
 

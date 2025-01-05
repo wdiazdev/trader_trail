@@ -99,3 +99,42 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
     next(error)
   }
 }
+
+export const deleteTrade: AsyncRequestHandler = async (req, res, next) => {
+  const { tradeId } = req.params
+
+  const userId = req.user?.userId
+
+  if (!tradeId) {
+    return res.status(400).json({
+      success: false,
+      statusCode: 400,
+      message: "A valid tradeId is required.",
+    })
+  }
+
+  try {
+    const trade = await Trade.findById(tradeId)
+
+    if (!trade) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Trade not found.",
+      })
+    }
+
+    if (trade.user.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        statusCode: 403,
+        message: "You are not authorized to delete this trade.",
+      })
+    }
+
+    await trade.deleteOne()
+    res.status(204).end()
+  } catch (error) {
+    next(error)
+  }
+}
