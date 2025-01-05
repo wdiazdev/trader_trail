@@ -4,6 +4,8 @@ import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import env from "../utils/validateEnv"
 import Account from "../models/accountModel"
+import Trade from "../models/tradeModel"
+import mongoose from "mongoose"
 
 export const signupUser: AsyncRequestHandler = async (req, res, next) => {
   const { email, password } = req.body
@@ -78,34 +80,22 @@ export const loginUser: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const deleteUser: AsyncRequestHandler = async (req, res, next) => {
-  const { userId } = req.params
+  const userId = req.user?.userId
 
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      statusCode: 400,
-      message: "userId is required",
-    })
-  }
-
+  const session = await mongoose.startSession()
+  session.startTransaction()
   try {
-    const user = await User.findById(userId)
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "User not found.",
-      })
-    }
-
+    await Trade.deleteMany({ user: userId })
     await Account.deleteMany({ user: userId })
-
     await User.findByIdAndDelete(userId)
 
+    await session.commitTransaction()
     res.status(204).end()
   } catch (error) {
+    await session.abortTransaction()
     next(error)
+  } finally {
+    session.endSession()
   }
 }
 

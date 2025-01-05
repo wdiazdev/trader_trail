@@ -50,7 +50,7 @@ export default function Settings() {
   const handleDeleteAccount = async () => {
     try {
       if (state.user && state.user.userId) {
-        await agent.Auth.delete(state.user.userId)
+        await agent.Auth.delete()
         dispatch({
           type: "change_store",
           payload: {

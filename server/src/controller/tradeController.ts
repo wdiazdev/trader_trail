@@ -7,7 +7,8 @@ type BestWorstDay = {
 }
 
 export const createTrade: AsyncRequestHandler = async (req, res, next) => {
-  const { userId, accountId, amount } = req.body
+  const { accountId, amount } = req.body
+  const userId = req.user?.userId
 
   if (!amount || typeof amount !== "number") {
     return res.status(400).json({
@@ -35,6 +36,7 @@ export const createTrade: AsyncRequestHandler = async (req, res, next) => {
         amount: savedTrade.amount,
         accountId: savedTrade.account,
         createdAt: savedTrade.createdAt,
+        userId: savedTrade.user,
       },
     }
     res.status(200).json(response)
@@ -59,20 +61,24 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
 
     const totalTrades = trades.length
 
-    const avgWin = trades.filter((trade) => trade.amount > 0).length / totalTrades
+    const avgWin = parseFloat(
+      (trades.filter((trade) => trade.amount > 0).length / totalTrades).toFixed(2),
+    )
 
-    const avgLoss = trades.filter((trade) => trade.amount < 0).length / totalTrades
+    const avgLoss = parseFloat(
+      (trades.filter((trade) => trade.amount < 0).length / totalTrades).toFixed(2),
+    )
 
     const bestWorstDay = trades.reduce<BestWorstDay>(
       (acc, trade) => {
         const tradeDate = new Date(trade.createdAt)
 
         if (!acc.bestDay || trade.amount > acc.bestDay.amount) {
-          acc.bestDay = { date: tradeDate, amount: trade.amount }
+          acc.bestDay = { date: tradeDate, amount: parseFloat(trade.amount.toFixed(2)) }
         }
 
         if (!acc.worstDay || trade.amount < acc.worstDay.amount) {
-          acc.worstDay = { date: tradeDate, amount: trade.amount }
+          acc.worstDay = { date: tradeDate, amount: parseFloat(trade.amount.toFixed(2)) }
         }
 
         return acc
@@ -134,6 +140,44 @@ export const deleteTrade: AsyncRequestHandler = async (req, res, next) => {
 
     await trade.deleteOne()
     res.status(204).end()
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateTrade: AsyncRequestHandler = async (req, res, next) => {
+  const { tradeId, amount } = req.body
+
+  if (!amount || typeof amount !== "number") {
+    return res.status(400).json({
+      success: false,
+      statusCode: 400,
+      message: "Invalid or missing amount",
+    })
+  }
+
+  try {
+    const updatedTrade = await Trade.findByIdAndUpdate(tradeId, { $set: { amount } }, { new: true })
+
+    if (!updatedTrade) {
+      return res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Trade not found or update failed.",
+      })
+    }
+
+    const response = {
+      success: true,
+      statusCode: 200,
+      message: "Trade updated successfully",
+      data: {
+        tradeId: updatedTrade._id,
+        amount: updatedTrade.amount,
+        createdAt: updatedTrade.createdAt,
+      },
+    }
+    res.status(200).json(response)
   } catch (error) {
     next(error)
   }

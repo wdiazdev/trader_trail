@@ -1,5 +1,6 @@
 import { AsyncRequestHandler } from "../utils/requestHandler"
 import Account from "../models/accountModel"
+import Trade from "../models/tradeModel"
 
 export const createAccount: AsyncRequestHandler = async (req, res, next) => {
   const { nickname } = req.body
@@ -48,15 +49,6 @@ export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
   try {
     const accounts = await Account.find({ user: userId })
 
-    if (accounts.length === 0) {
-      return res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "No accounts found for this user.",
-        data: [],
-      })
-    }
-
     const response = {
       success: true,
       statusCode: 200,
@@ -66,6 +58,7 @@ export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
         accountName: account.accountName,
         nickname: account.nickname,
         createdAt: account.createdAt,
+        userId: account.user,
       })),
     }
     res.status(200).json(response)
@@ -75,15 +68,19 @@ export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
-  try {
-    if (!req.account) {
-      return res.status(400).json({
-        success: false,
-        message: "No account found in the request context.",
-      })
-    }
+  const account = req.account
 
-    const deletedAccount = await Account.findByIdAndDelete(req.account.accountId)
+  if (!account) {
+    return res.status(400).json({
+      success: false,
+      message: "No account found in the request context.",
+    })
+  }
+
+  try {
+    await Trade.deleteMany({ account: account.accountId })
+
+    const deletedAccount = await Account.findByIdAndDelete(account.accountId)
 
     if (!deletedAccount) {
       return res.status(404).json({
@@ -101,6 +98,8 @@ export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
 export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
   const { nickname } = req.body
 
+  const account = req.account
+
   if (!nickname) {
     return res.status(400).json({
       success: false,
@@ -109,16 +108,16 @@ export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
     })
   }
 
-  try {
-    if (!req.account) {
-      return res.status(400).json({
-        success: false,
-        message: "No account found in the request context.",
-      })
-    }
+  if (!account) {
+    return res.status(400).json({
+      success: false,
+      message: "No account found in the request context.",
+    })
+  }
 
+  try {
     const updatedAccount = await Account.findByIdAndUpdate(
-      req.account.accountId,
+      account.accountId,
       { $set: { nickname } },
       { new: true },
     )
@@ -140,6 +139,7 @@ export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
         accountName: updatedAccount.accountName,
         nickname: updatedAccount.nickname,
         createdAt: updatedAccount.createdAt,
+        userId: updatedAccount.user,
       },
     }
     res.status(200).json(response)

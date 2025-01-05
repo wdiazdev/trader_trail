@@ -77,20 +77,20 @@ const requests = {
 const Auth = {
   login: (values: { email: string; password: string }) => requests.post("/auth/login", values),
   register: (values: { email: string; password: string }) => requests.post("/auth/signup", values),
-  delete: (userId: string) => requests.delete(`/auth/delete/${userId}`),
+  delete: () => requests.delete("/auth/delete"),
   getUser: () => requests.get("/auth/getUser"),
 }
 
 const Account = {
   createAccount: (body: { nickname?: string }) => requests.post("/account/create", body),
-  getAllAccounts: () => requests.get(`/account/getAccounts`),
+  getAllAccounts: () => requests.get("/account/getAccounts"),
   updateAccount: (accountId: string, body: { nickname: string }) =>
     requests.patch(`/account/update/${accountId}`, body),
   deleteAccount: (accountId: string) => requests.delete(`/account/delete/${accountId}`),
 }
 
 const Trade = {
-  createTrade: (body: { userId: string; accountId: string; amount: number }) =>
+  createTrade: (body: { accountId: string; amount: number }) =>
     requests.post("/trade/create", body),
   getTrades: (accountId: string) => requests.get(`/trade/get/${accountId}`),
 }
