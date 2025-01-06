@@ -53,7 +53,7 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
 
     const trades = accountTrades.map((trade) => ({
       tradeId: trade._id,
-      amount: trade.amount,
+      amount: parseFloat(trade.amount.toFixed(2)),
       createdAt: trade.createdAt,
     }))
 
@@ -106,35 +106,66 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-export const deleteTrade: AsyncRequestHandler = async (req, res, next) => {
-  const { tradeId } = req.params
+export const updateTrade: AsyncRequestHandler = async (req, res, next) => {
+  const { accountId, tradeId, amount } = req.body
 
-  const userId = req.user?.userId
-
-  if (!tradeId) {
+  if (!amount || typeof amount !== "number" || !tradeId) {
     return res.status(400).json({
       success: false,
       statusCode: 400,
-      message: "A valid tradeId is required.",
+      message: "A valid tradeId and amount are required.",
     })
   }
 
   try {
-    const trade = await Trade.findById(tradeId)
+    const trade = await Trade.findOne({ _id: tradeId, account: accountId })
 
     if (!trade) {
-      return res.status(404).json({
+      return res.status(403).json({
         success: false,
-        statusCode: 404,
+        statusCode: 403,
         message: "Trade not found.",
       })
     }
 
-    if (trade.user.toString() !== userId) {
+    trade.amount = amount
+    await trade.save()
+
+    const response = {
+      success: true,
+      statusCode: 200,
+      message: "Trade updated successfully",
+      data: {
+        tradeId: trade._id,
+        amount: trade.amount,
+        createdAt: trade.createdAt,
+      },
+    }
+    res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteTrade: AsyncRequestHandler = async (req, res, next) => {
+  const { accountId, tradeId } = req.params
+
+  if (!tradeId || !accountId) {
+    return res.status(400).json({
+      success: false,
+      statusCode: 400,
+      message: "A valid accountId and tradeId are required.",
+    })
+  }
+
+  try {
+    const trade = await Trade.findOne({ _id: tradeId, account: accountId })
+
+    if (!trade) {
       return res.status(403).json({
         success: false,
         statusCode: 403,
-        message: "You are not authorized to delete this trade.",
+        message: "Trade not found.",
       })
     }
 
@@ -145,39 +176,22 @@ export const deleteTrade: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-export const updateTrade: AsyncRequestHandler = async (req, res, next) => {
-  const { tradeId, amount } = req.body
-
-  if (!amount || typeof amount !== "number") {
-    return res.status(400).json({
-      success: false,
-      statusCode: 400,
-      message: "Invalid or missing amount",
-    })
-  }
+export const deleteAllTrades: AsyncRequestHandler = async (req, res, next) => {
+  const { accountId } = req.params
 
   try {
-    const updatedTrade = await Trade.findByIdAndUpdate(tradeId, { $set: { amount } }, { new: true })
+    const trades = await Trade.find({ account: accountId })
 
-    if (!updatedTrade) {
+    if (!trades.length) {
       return res.status(404).json({
         success: false,
         statusCode: 404,
-        message: "Trade not found or update failed.",
+        message: "No trades found for this account.",
       })
     }
 
-    const response = {
-      success: true,
-      statusCode: 200,
-      message: "Trade updated successfully",
-      data: {
-        tradeId: updatedTrade._id,
-        amount: updatedTrade.amount,
-        createdAt: updatedTrade.createdAt,
-      },
-    }
-    res.status(200).json(response)
+    await Trade.deleteMany({ account: accountId })
+    res.status(204).end()
   } catch (error) {
     next(error)
   }

@@ -67,34 +67,6 @@ export const getAllAccounts: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
-  const account = req.account
-
-  if (!account) {
-    return res.status(400).json({
-      success: false,
-      message: "No account found in the request context.",
-    })
-  }
-
-  try {
-    await Trade.deleteMany({ account: account.accountId })
-
-    const deletedAccount = await Account.findByIdAndDelete(account.accountId)
-
-    if (!deletedAccount) {
-      return res.status(404).json({
-        success: false,
-        message: "Account not found or already deleted.",
-      })
-    }
-
-    res.status(204).end()
-  } catch (error) {
-    next(error)
-  }
-}
-
 export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
   const { nickname } = req.body
 
@@ -143,6 +115,34 @@ export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
       },
     }
     res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteAccount: AsyncRequestHandler = async (req, res, next) => {
+  const account = req.account
+
+  if (!account) {
+    return res.status(400).json({
+      success: false,
+      message: "No account found in the request context.",
+    })
+  }
+
+  try {
+    await Trade.deleteMany({ account: account.accountId })
+
+    const deletedAccount = await Account.findByIdAndDelete(account.accountId)
+
+    if (!deletedAccount) {
+      return res.status(404).json({
+        success: false,
+        message: "Account not found or already deleted.",
+      })
+    }
+
+    res.status(204).end()
   } catch (error) {
     next(error)
   }
