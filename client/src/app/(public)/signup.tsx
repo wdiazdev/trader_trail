@@ -1,17 +1,17 @@
 import { useState } from "react"
 import { View } from "react-native"
 import { Link, useRouter } from "expo-router"
-import Button from "@/src/components/Button"
-import Container from "@/src/components/Container"
-import Input from "@/src/components/Input"
-import Text from "@/src/components/Text"
+import Button from "@/src/shared/Button"
+import Container from "@/src/shared/Container"
+import Input from "@/src/shared/Input"
+import Text from "@/src/shared/Text"
 import { useToast } from "../../context/toastContext"
 import agent from "../../api/agent"
 import { useAppContext } from "../../store/storeContext"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { shadowStyles } from "@/src/helpers/shadowStyles"
-import DismissKeyboard from "@/src/components/DismissKeyboard"
+import DismissKeyboard from "@/src/shared/DismissKeyboard"
 
 interface AuthTypes {
   email: string

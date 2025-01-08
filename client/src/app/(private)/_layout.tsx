@@ -4,7 +4,7 @@ import { useAppContext } from "@/src/store/storeContext"
 import { Ionicons } from "@expo/vector-icons"
 import { COLORS } from "@/src/constants/Colors"
 import { useEffect } from "react"
-import Text from "@/src/components/Text"
+import Text from "@/src/shared/Text"
 
 export default function TabsLayout() {
   const { state } = useAppContext()

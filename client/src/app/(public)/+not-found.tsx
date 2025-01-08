@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, Stack } from "expo-router"
-import Container from "@/src/components/Container"
-import Text from "@/src/components/Text"
+import Container from "@/src/shared/Container"
+import Text from "@/src/shared/Text"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { COLORS } from "@/src/constants/Colors"
 

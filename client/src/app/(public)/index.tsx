@@ -1,7 +1,7 @@
-import Button from "@/src/components/Button"
-import Container from "@/src/components/Container"
-import Input from "@/src/components/Input"
-import Text from "@/src/components/Text"
+import Button from "@/src/shared/Button"
+import Container from "@/src/shared/Container"
+import Input from "@/src/shared/Input"
+import Text from "@/src/shared/Text"
 import { useEffect, useState } from "react"
 import { View } from "react-native"
 import { useToast } from "../../context/toastContext"
@@ -12,8 +12,8 @@ import agent from "../../api/agent"
 import { useAppContext } from "../../store/storeContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { shadowStyles } from "@/src/helpers/shadowStyles"
-import Loader from "@/src/components/Loader"
-import DismissKeyboard from "@/src/components/DismissKeyboard"
+import Loader from "@/src/shared/Loader"
+import DismissKeyboard from "@/src/shared/DismissKeyboard"
 
 interface AuthTypes {
   email: string

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react"
-import Container from "@/src/components/Container"
-import Text from "@/src/components/Text"
+import Container from "@/src/shared/Container"
+import Text from "@/src/shared/Text"
 import { useAppContext } from "@/src/store/storeContext"
 import { AccountsData, SelectOverlayOption } from "@/src/types"
-import Loader from "@/src/components/Loader"
-import SelectOverlay from "@/src/components/SelectOverlay"
-import Button from "@/src/components/Button"
+import Loader from "@/src/shared/Loader"
+import SelectOverlay from "@/src/shared/SelectOverlay"
+import Button from "@/src/shared/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { Pressable, View } from "react-native"
+import { View } from "react-native"
 import useGetAccounts from "@/src/services/useGetAccounts"
-import { Ionicons } from "@expo/vector-icons"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import BorderedContainer from "@/src/components/BorderedContainer"
+import Balance from "./components/Balance"
+import DayPerformance from "./components/DayPerformance"
+import WinRate from "./components/WinRate"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -101,8 +102,6 @@ export default function Home() {
     })
   }
 
-  const trades = tradesData?.data?.trades || []
-
   const {
     balance: accountBalance,
     bestWorstDay,
@@ -110,8 +109,6 @@ export default function Home() {
     avgLoss,
     totalTrades,
   } = tradesData?.data ?? {}
-
-  const { bestDay, worstDay } = bestWorstDay ?? {}
 
   return (
     <Container justifyContent="flex-start">
@@ -122,125 +119,25 @@ export default function Home() {
           selectedAccount={selectedAccount}
         />
       )}
-      <View style={{ flexDirection: "column", marginTop: 12 }}>
-        <BorderedContainer
-          fullWidth
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          padding={14}
-        >
-          <Text>Balance</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            {typeof accountBalance === "number" && (
-              <Text
-                style={{
-                  color: accountBalance > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
-                }}
-              >
-                {isBalanceVisible ? `$${accountBalance.toFixed(2)}` : "*******"}
-              </Text>
-            )}
-            <Pressable onPress={toggleBalanceVisible}>
-              <Ionicons
-                name="eye-outline"
-                size={22}
-                color={COLORS[colorScheme].text}
-                style={{ marginLeft: 8 }}
-              />
-            </Pressable>
-          </View>
-        </BorderedContainer>
 
-        {bestDay && worstDay && totalTrades && (
-          <BorderedContainer flexDirection="row" justifyContent="space-between" marginVertical={12}>
-            <View
-              style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
-            >
-              <Text>Best day</Text>
-              <Text
-                style={{
-                  color: bestDay.amount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
-                }}
-              >
-                {isBalanceVisible ? `${bestDay.amount.toFixed(2)}` : "*******"}
-              </Text>
-            </View>
-            <View
-              style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
-            >
-              <Text>Total trades</Text>
-              <Text>{totalTrades}</Text>
-            </View>
-            <View
-              style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
-            >
-              <Text>Worst day</Text>
-              <Text
-                style={{
-                  color: worstDay.amount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
-                }}
-              >
-                {isBalanceVisible ? `${worstDay.amount.toFixed(2)}` : "*******"}
-              </Text>
-            </View>
-          </BorderedContainer>
+      <View style={{ width: "100%", flexDirection: "column", marginTop: 12, gap: 8 }}>
+        {accountBalance && (
+          <Balance
+            accountBalance={accountBalance}
+            isBalanceVisible={isBalanceVisible}
+            toggleBalanceVisible={toggleBalanceVisible}
+          />
         )}
 
-        {avgWin && avgLoss && (
-          <View style={{ justifyContent: "center", alignItems: "center", marginTop: 6 }}>
-            <Text style={{ marginBottom: 4 }}>{`${avgWin}% Win/Loss Ratio ${avgLoss}%`}</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                height: 10,
-                borderRadius: 10,
-                overflow: "hidden",
-                borderWidth: 1,
-                borderColor: COLORS[colorScheme].border,
-              }}
-            >
-              <View
-                style={{
-                  flex: avgWin,
-                  backgroundColor: "green",
-                }}
-              />
-              <View
-                style={{
-                  flex: avgLoss,
-                  backgroundColor: "red",
-                }}
-              />
-            </View>
-          </View>
+        {bestWorstDay && totalTrades && (
+          <DayPerformance
+            isBalanceVisible={isBalanceVisible}
+            totalTrades={totalTrades}
+            bestWorstDay={bestWorstDay}
+          />
         )}
 
-        {/* {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <Loader size="large" />
-          </View>
-        ) : trades.length > 0 ? (
-          <>
-            {trades.map((trade) => {
-              return (
-                <View key={trade.tradeId}>
-                  <Text>{trade.amount}</Text>
-                </View>
-              )
-            })}
-          </>
-        ) : (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Text>No trades found</Text>
-          </View>
-        )} */}
+        {avgWin && avgLoss && <WinRate avgWin={avgWin} avgLoss={avgLoss} />}
       </View>
     </Container>
   )

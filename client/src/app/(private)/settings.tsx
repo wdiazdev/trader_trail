@@ -1,18 +1,18 @@
 import React, { useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
-import Container from "@/src/components/Container"
+import Container from "@/src/shared/Container"
 import { useAppContext } from "@/src/store/storeContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import useColorScheme from "@/src/hooks/useColorScheme"
 import { COLORS } from "@/src/constants/Colors"
 import { Ionicons } from "@expo/vector-icons"
-import Text from "@/src/components/Text"
-import CustomAlert from "@/src/components/AlertModal"
+import Text from "@/src/shared/Text"
+import CustomAlert from "@/src/shared/AlertModal"
 import agent from "@/src/api/agent"
 import { useRouter } from "expo-router"
 import { useToast } from "@/src/context/toastContext"
-import Switch from "@/src/components/Switch"
-import BorderedContainer from "@/src/components/BorderedContainer"
+import Switch from "@/src/shared/Switch"
+import BorderedContainer from "@/src/shared/BorderedContainer"
 
 export default function Settings() {
   const { state, dispatch } = useAppContext()

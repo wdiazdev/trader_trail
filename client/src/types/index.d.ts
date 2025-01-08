@@ -27,12 +27,10 @@ export interface BestWorstDay {
     date: Date
     amount: number
   } | null
-  worstDay:
-    | {
-        date: Date
-        amount: number
-      }
-    | mull
+  worstDay: {
+    date: Date
+    amount: number
+  } | null
 }
 
 export interface TradesData {
