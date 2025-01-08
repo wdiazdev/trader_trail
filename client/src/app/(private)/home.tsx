@@ -168,7 +168,7 @@ export default function Home() {
                   color: bestDay.amount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
                 }}
               >
-                {bestDay.amount.toFixed(2)}
+                {isBalanceVisible ? `${bestDay.amount.toFixed(2)}` : "*******"}
               </Text>
             </View>
             <View
@@ -186,15 +186,15 @@ export default function Home() {
                   color: worstDay.amount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
                 }}
               >
-                {worstDay.amount.toFixed(2)}
+                {isBalanceVisible ? `${worstDay.amount.toFixed(2)}` : "*******"}
               </Text>
             </View>
           </BorderedContainer>
         )}
 
         {avgWin && avgLoss && (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text style={{ marginBottom: 4 }}>Win/Loss Ratio</Text>
+          <View style={{ justifyContent: "center", alignItems: "center", marginTop: 6 }}>
+            <Text style={{ marginBottom: 4 }}>{`${avgWin}% Win/Loss Ratio ${avgLoss}%`}</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -222,25 +222,25 @@ export default function Home() {
           </View>
         )}
 
-        {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
+        {/* {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
           <View style={{ flex: 1, justifyContent: "center" }}>
             <Loader size="large" />
           </View>
         ) : trades.length > 0 ? (
           <>
-            {/* {trades.map((trade) => {
+            {trades.map((trade) => {
               return (
                 <View key={trade.tradeId}>
                   <Text>{trade.amount}</Text>
                 </View>
               )
-            })} */}
+            })}
           </>
         ) : (
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Text>No trades found</Text>
           </View>
-        )}
+        )} */}
       </View>
     </Container>
   )
