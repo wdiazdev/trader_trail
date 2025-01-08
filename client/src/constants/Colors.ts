@@ -10,6 +10,8 @@ export const COLORS = {
     primaryBtnBackground: "#3490D8",
     primaryBtnText: "#FFFFFF",
     border: "#D1D1D1",
+    red: "#EA3943",
+    green: "#16C784",
   },
   dark: {
     text: "#FFFFFF",
@@ -22,5 +24,7 @@ export const COLORS = {
     primaryBtnBackground: "#90D5FF",
     primaryBtnText: "#181818",
     border: "#3C3C3C",
+    red: "#EA3943",
+    green: "#16C784",
   },
 }

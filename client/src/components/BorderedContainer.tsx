@@ -10,6 +10,7 @@ type BorderedContainerProps = ViewProps & {
   justifyContent?: ViewStyle["justifyContent"]
   alignItems?: ViewStyle["alignItems"]
   fullWidth?: boolean
+  marginVertical?: ViewStyle["marginVertical"]
 }
 
 export default function BorderedContainer({
@@ -19,6 +20,7 @@ export default function BorderedContainer({
   justifyContent,
   alignItems,
   fullWidth,
+  marginVertical,
   ...rest
 }: BorderedContainerProps) {
   const colorScheme = useColorScheme()
@@ -27,10 +29,11 @@ export default function BorderedContainer({
       {...rest}
       style={{
         width: fullWidth ? "100%" : undefined,
-        flexDirection: flexDirection,
-        justifyContent: justifyContent,
-        alignItems: alignItems,
-        padding: padding,
+        flexDirection,
+        justifyContent,
+        alignItems,
+        padding,
+        marginVertical,
         borderRadius: 10,
         backgroundColor: COLORS[colorScheme].background,
         borderWidth: StyleSheet.hairlineWidth,

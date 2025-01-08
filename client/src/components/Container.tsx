@@ -19,6 +19,7 @@ export default function Container({
   paddingHorizontal = 18,
   justifyContent = "center",
   alignItems = "center",
+
   ...props
 }: Props) {
   const colorScheme = useColorScheme()

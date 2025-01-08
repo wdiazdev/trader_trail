@@ -34,7 +34,7 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
         padding: 12,
         borderWidth: StyleSheet.hairlineWidth,
         borderRadius: 10,
-        borderColor: COLORS[colorScheme].altText,
+        borderColor: COLORS[colorScheme].border,
         backgroundColor: COLORS[colorScheme].background,
         ...shadowStyles(colorScheme),
       }}

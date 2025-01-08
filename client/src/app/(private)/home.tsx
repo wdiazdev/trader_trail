@@ -53,24 +53,27 @@ export default function Home() {
     )
   }
 
-  if (!accountsData?.data) {
+  if (!accountsData?.data?.length) {
     return (
-      <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", gap: 16 }}>
-        <Text
-          style={{
-            textAlign: "center",
-            color: COLORS[colorScheme].altText,
-          }}
-        >
-          It looks like you don’t have any accounts logged yet. Start by creating a trading account
-          to track your trades and improve your performance!
-        </Text>
-        <Button
-          id="logAccount"
-          accessibilityLabel="Log a trading account"
-          title="Log a Trading Account"
-        />
-      </View>
+      <Container>
+        <View style={{ width: "100%" }}>
+          <Text
+            style={{
+              textAlign: "center",
+              color: COLORS[colorScheme].altText,
+              marginBottom: 12,
+            }}
+          >
+            It looks like you don’t have any accounts logged yet. Start by creating a trading
+            account to track your trades and improve your performance!
+          </Text>
+          <Button
+            id="logAccount"
+            accessibilityLabel="Log a trading account"
+            title="Log a Trading Account"
+          />
+        </View>
+      </Container>
     )
   }
 
@@ -100,16 +103,26 @@ export default function Home() {
 
   const trades = tradesData?.data?.trades || []
 
-  const accountBalance = tradesData?.data?.balance ?? 0
+  const {
+    balance: accountBalance,
+    bestWorstDay,
+    avgWin,
+    avgLoss,
+    totalTrades,
+  } = tradesData?.data ?? {}
+
+  const { bestDay, worstDay } = bestWorstDay ?? {}
 
   return (
     <Container justifyContent="flex-start">
-      <SelectOverlay
-        options={selectOptions}
-        onSelectionChange={handleSelectionChange}
-        selectedAccount={selectedAccount}
-      />
-      <View style={{ flexDirection: "column", marginTop: 30 }}>
+      {accountsData.data.length > 0 && (
+        <SelectOverlay
+          options={selectOptions}
+          onSelectionChange={handleSelectionChange}
+          selectedAccount={selectedAccount}
+        />
+      )}
+      <View style={{ flexDirection: "column", marginTop: 12 }}>
         <BorderedContainer
           fullWidth
           flexDirection="row"
@@ -124,17 +137,90 @@ export default function Home() {
               alignItems: "center",
             }}
           >
-            <Text>{isBalanceVisible ? `$${accountBalance}` : "*******"}</Text>
+            {typeof accountBalance === "number" && (
+              <Text
+                style={{
+                  color: accountBalance > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
+                }}
+              >
+                {isBalanceVisible ? `$${accountBalance.toFixed(2)}` : "*******"}
+              </Text>
+            )}
             <Pressable onPress={toggleBalanceVisible}>
               <Ionicons
                 name="eye-outline"
                 size={22}
                 color={COLORS[colorScheme].text}
-                style={{ marginLeft: 10 }}
+                style={{ marginLeft: 8 }}
               />
             </Pressable>
           </View>
         </BorderedContainer>
+
+        {bestDay && worstDay && totalTrades && (
+          <BorderedContainer flexDirection="row" justifyContent="space-between" marginVertical={12}>
+            <View
+              style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+            >
+              <Text>Best day</Text>
+              <Text
+                style={{
+                  color: bestDay.amount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
+                }}
+              >
+                {bestDay.amount.toFixed(2)}
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+            >
+              <Text>Total trades</Text>
+              <Text>{totalTrades}</Text>
+            </View>
+            <View
+              style={{ flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+            >
+              <Text>Worst day</Text>
+              <Text
+                style={{
+                  color: worstDay.amount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
+                }}
+              >
+                {worstDay.amount.toFixed(2)}
+              </Text>
+            </View>
+          </BorderedContainer>
+        )}
+
+        {avgWin && avgLoss && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ marginBottom: 4 }}>Win/Loss Ratio</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                height: 10,
+                borderRadius: 10,
+                overflow: "hidden",
+                borderWidth: 1,
+                borderColor: COLORS[colorScheme].border,
+              }}
+            >
+              <View
+                style={{
+                  flex: avgWin,
+                  backgroundColor: "green",
+                }}
+              />
+              <View
+                style={{
+                  flex: avgLoss,
+                  backgroundColor: "red",
+                }}
+              />
+            </View>
+          </View>
+        )}
 
         {isTradesQueryLoading || tradesQueryFetchStatus === "fetching" ? (
           <View style={{ flex: 1, justifyContent: "center" }}>
@@ -142,16 +228,16 @@ export default function Home() {
           </View>
         ) : trades.length > 0 ? (
           <>
-            {trades.map((trade) => {
+            {/* {trades.map((trade) => {
               return (
                 <View key={trade.tradeId}>
                   <Text>{trade.amount}</Text>
                 </View>
               )
-            })}
+            })} */}
           </>
         ) : (
-          <View style={{ flex: 1, justifyContent: "center" }}>
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Text>No trades found</Text>
           </View>
         )}
