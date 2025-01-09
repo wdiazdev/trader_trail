@@ -11,9 +11,10 @@ import useColorScheme from "@/src/hooks/useColorScheme"
 import { View } from "react-native"
 import useGetAccounts from "@/src/services/useGetAccounts"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import Balance from "./components/Balance"
-import DayPerformance from "./components/DayPerformance"
-import WinRate from "./components/WinRate"
+import Balance from "../../components/Balance"
+import DayPerformance from "../../components/DayPerformance"
+import WinRate from "../../components/WinRate"
+import TradesAreaChart from "@/src/components/TradesAreaChart"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -71,7 +72,7 @@ export default function Home() {
           <Button
             id="logAccount"
             accessibilityLabel="Log a trading account"
-            title="Log a Trading Account"
+            title="Create a Trading Account"
           />
         </View>
       </Container>
@@ -108,6 +109,7 @@ export default function Home() {
     avgWin,
     avgLoss,
     totalTrades,
+    trades,
   } = tradesData?.data ?? {}
 
   return (
@@ -120,8 +122,8 @@ export default function Home() {
         />
       )}
 
-      <View style={{ width: "100%", flexDirection: "column", marginTop: 12, gap: 8 }}>
-        {accountBalance && (
+      <View style={{ flex: 1, width: "100%", flexDirection: "column", marginTop: 12, gap: 8 }}>
+        {accountBalance != null && (
           <Balance
             accountBalance={accountBalance}
             isBalanceVisible={isBalanceVisible}
@@ -129,7 +131,7 @@ export default function Home() {
           />
         )}
 
-        {bestWorstDay && totalTrades && (
+        {bestWorstDay?.bestDay && bestWorstDay?.worstDay && totalTrades && (
           <DayPerformance
             isBalanceVisible={isBalanceVisible}
             totalTrades={totalTrades}
@@ -137,7 +139,15 @@ export default function Home() {
           />
         )}
 
-        {avgWin && avgLoss && <WinRate avgWin={avgWin} avgLoss={avgLoss} />}
+        {avgWin != null && avgLoss != null && <WinRate avgWin={avgWin} avgLoss={avgLoss} />}
+
+        {tradesQueryFetchStatus === "fetching" || isTradesQueryLoading ? (
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Loader />
+          </View>
+        ) : trades && trades.length > 0 ? (
+          <TradesAreaChart trades={trades} />
+        ) : null}
       </View>
     </Container>
   )

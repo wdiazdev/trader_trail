@@ -61,13 +61,11 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
 
     const totalTrades = trades.length
 
-    const avgWin = parseFloat(
-      (trades.filter((trade) => trade.amount > 0).length / totalTrades).toFixed(2),
-    )
+    const winCount = trades.filter((trade) => trade.amount > 0).length
+    const lossCount = trades.filter((trade) => trade.amount < 0).length
 
-    const avgLoss = parseFloat(
-      (trades.filter((trade) => trade.amount < 0).length / totalTrades).toFixed(2),
-    )
+    const avgWin = totalTrades > 0 ? parseFloat(((winCount / totalTrades) * 100).toFixed(2)) : 0
+    const avgLoss = totalTrades > 0 ? parseFloat(((lossCount / totalTrades) * 100).toFixed(2)) : 0
 
     const bestWorstDay = trades.reduce<BestWorstDay>(
       (acc, trade) => {

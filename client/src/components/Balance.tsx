@@ -21,7 +21,7 @@ export default function Balance({ accountBalance, isBalanceVisible, toggleBalanc
       alignItems="center"
       padding={14}
     >
-      <Text>Balance</Text>
+      <Text>Total P&L</Text>
       <View
         style={{
           flexDirection: "row",
@@ -30,10 +30,21 @@ export default function Balance({ accountBalance, isBalanceVisible, toggleBalanc
       >
         <Text
           style={{
-            color: accountBalance > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
+            color:
+              accountBalance === 0
+                ? COLORS[colorScheme].text
+                : accountBalance > 0
+                ? COLORS[colorScheme].green
+                : COLORS[colorScheme].red,
           }}
         >
-          {isBalanceVisible ? `$${accountBalance.toFixed(2)}` : "*******"}
+          {isBalanceVisible
+            ? accountBalance > 0
+              ? `$${Math.abs(accountBalance).toFixed(2)}`
+              : `-$${Math.abs(accountBalance).toFixed(2)}`
+            : "*******"}
+
+          {/* {isBalanceVisible ? `$${accountBalance.toFixed(2)}` : "*******"} */}
         </Text>
         <Pressable onPress={toggleBalanceVisible}>
           <Ionicons

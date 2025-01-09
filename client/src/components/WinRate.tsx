@@ -13,9 +13,21 @@ export default function WinRate({ avgWin, avgLoss }: Props) {
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginBottom: 4 }}>
-        <Text>{avgWin}%</Text>
+        <Text
+          style={{
+            color: avgWin === 0 ? COLORS[colorScheme].text : COLORS[colorScheme].green,
+          }}
+        >
+          {avgWin}%
+        </Text>
         <Text style={{ marginHorizontal: 8 }}>Win Rate</Text>
-        <Text>{avgLoss}%</Text>
+        <Text
+          style={{
+            color: avgLoss === 0 ? COLORS[colorScheme].text : COLORS[colorScheme].red,
+          }}
+        >
+          {avgLoss}%
+        </Text>
       </View>
 
       <View
