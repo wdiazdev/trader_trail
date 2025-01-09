@@ -13,7 +13,7 @@ import { ToastProvider } from "../context/toastContext"
 import { StatusBar } from "react-native"
 import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
-import { Query, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 // Prevent auto hide splash screen
 SplashScreen.preventAutoHideAsync()

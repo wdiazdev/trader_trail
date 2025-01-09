@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import Balance from "../../components/Balance"
 import DayPerformance from "../../components/DayPerformance"
 import WinRate from "../../components/WinRate"
-import TradesAreaChart from "@/src/components/TradesAreaChart"
+import TradesChart from "@/src/components/TradesChart"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -145,8 +145,8 @@ export default function Home() {
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Loader />
           </View>
-        ) : trades && trades.length > 0 ? (
-          <TradesAreaChart trades={trades} />
+        ) : trades && trades.length > 0 && accountBalance ? (
+          <TradesChart trades={trades} accountBalance={accountBalance} />
         ) : null}
       </View>
     </Container>
