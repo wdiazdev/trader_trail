@@ -57,31 +57,45 @@ export const getTrades: AsyncRequestHandler = async (req, res, next) => {
       createdAt: trade.createdAt,
     }))
 
-    const balance = parseFloat(trades.reduce((acc, trade) => acc + trade.amount, 0).toFixed(2))
+    const balance = parseFloat(
+      trades.reduce((acc, trade) => acc + trade.amount, 0).toFixed(2)
+    )
 
     const totalTrades = trades.length
 
     const winCount = trades.filter((trade) => trade.amount > 0).length
     const lossCount = trades.filter((trade) => trade.amount < 0).length
 
-    const avgWin = totalTrades > 0 ? parseFloat(((winCount / totalTrades) * 100).toFixed(2)) : 0
-    const avgLoss = totalTrades > 0 ? parseFloat(((lossCount / totalTrades) * 100).toFixed(2)) : 0
+    const avgWin =
+      totalTrades > 0
+        ? parseFloat(((winCount / totalTrades) * 100).toFixed(2))
+        : 0
+    const avgLoss =
+      totalTrades > 0
+        ? parseFloat(((lossCount / totalTrades) * 100).toFixed(2))
+        : 0
 
     const bestWorstDay = trades.reduce<BestWorstDay>(
       (acc, trade) => {
         const tradeDate = new Date(trade.createdAt)
 
         if (!acc.bestDay || trade.amount > acc.bestDay.amount) {
-          acc.bestDay = { date: tradeDate, amount: parseFloat(trade.amount.toFixed(2)) }
+          acc.bestDay = {
+            date: tradeDate,
+            amount: parseFloat(trade.amount.toFixed(2)),
+          }
         }
 
         if (!acc.worstDay || trade.amount < acc.worstDay.amount) {
-          acc.worstDay = { date: tradeDate, amount: parseFloat(trade.amount.toFixed(2)) }
+          acc.worstDay = {
+            date: tradeDate,
+            amount: parseFloat(trade.amount.toFixed(2)),
+          }
         }
 
         return acc
       },
-      { bestDay: null, worstDay: null },
+      { bestDay: null, worstDay: null }
     )
 
     const response = {

@@ -8,7 +8,9 @@ export const createAccount: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     const createdDate = new Date()
-    const month = createdDate.toLocaleString("en-US", { month: "short" }).toUpperCase()
+    const month = createdDate
+      .toLocaleString("en-US", { month: "short" })
+      .toUpperCase()
     const day = createdDate.getDate()
     const year = createdDate.getFullYear()
     const accountName = `${month}${day}${year.toString().slice(-2)}`
@@ -91,7 +93,7 @@ export const updateAccount: AsyncRequestHandler = async (req, res, next) => {
     const updatedAccount = await Account.findByIdAndUpdate(
       account.accountId,
       { $set: { nickname } },
-      { new: true },
+      { new: true }
     )
 
     if (!updatedAccount) {

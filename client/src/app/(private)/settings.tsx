@@ -7,7 +7,7 @@ import useColorScheme from "@/src/hooks/useColorScheme"
 import { COLORS } from "@/src/constants/Colors"
 import { Ionicons } from "@expo/vector-icons"
 import Text from "@/src/shared/Text"
-import CustomAlert from "@/src/shared/AlertModal"
+import CustomAlert from "@/src/shared/CustomAlert"
 import agent from "@/src/api/agent"
 import { useRouter } from "expo-router"
 import { useToast } from "@/src/context/toastContext"
@@ -22,7 +22,8 @@ export default function Settings() {
 
   const [isFaceIdEnabled, setIsFaceIdEnable] = useState(false)
   const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false)
-  const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false)
+  const [deleteAccountModalVisible, setDeleteAccountModalVisible] =
+    useState(false)
 
   const toggleSwitch = (type: string) => {
     if (type === "fadeId") {
@@ -63,7 +64,8 @@ export default function Settings() {
       showToast("success", "Account deleted successfully.")
       router.push("/(public)")
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || "Error deleting account"
+      const errorMessage =
+        error?.response?.data?.message || "Error deleting account"
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     }
@@ -138,7 +140,11 @@ export default function Settings() {
               onPress={handleModalVisible}
             >
               <Text>Delete Account</Text>
-              <Ionicons name="chevron-forward" size={22} color={COLORS[colorScheme].text} />
+              <Ionicons
+                name="chevron-forward"
+                size={22}
+                color={COLORS[colorScheme].text}
+              />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -154,12 +160,18 @@ export default function Settings() {
               onPress={handleLogOut}
             >
               <Text>Log Out</Text>
-              <Ionicons name="exit-outline" size={22} color={COLORS[colorScheme].text} />
+              <Ionicons
+                name="exit-outline"
+                size={22}
+                color={COLORS[colorScheme].text}
+              />
             </TouchableOpacity>
           </BorderedContainer>
         </View>
       </View>
       <CustomAlert
+        title="Delete Account"
+        message="Deleting your account is permanent, and our support team will not be able to recover it. Are you sure you want to delete your account?"
         visible={deleteAccountModalVisible}
         onCancel={handleModalVisible}
         onConfirm={handleDeleteAccount}

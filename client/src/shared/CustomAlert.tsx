@@ -8,12 +8,29 @@ type Props = {
   visible: boolean
   onCancel: () => void
   onConfirm: () => void
+  title: string
+  message: string
+  leftBtnText?: string
+  RightBtnText?: string
 }
 
-export default function CustomAlert({ visible, onCancel, onConfirm }: Props) {
+export default function CustomAlert({
+  visible,
+  onCancel,
+  onConfirm,
+  message,
+  title,
+  leftBtnText = "Cancel",
+  RightBtnText = "Delete",
+}: Props) {
   const colorScheme = useColorScheme()
   return (
-    <Modal transparent={true} visible={visible} animationType="slide" onRequestClose={onCancel}>
+    <Modal
+      transparent={true}
+      visible={visible}
+      animationType="slide"
+      onRequestClose={onCancel}
+    >
       <View
         style={{
           flex: 1,
@@ -31,13 +48,32 @@ export default function CustomAlert({ visible, onCancel, onConfirm }: Props) {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10, textAlign: "center" }}>
-            Delete Account
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              marginBottom: 10,
+              textAlign: "center",
+            }}
+          >
+            {title}
           </Text>
-          <Text style={{ color: COLORS[colorScheme].text, textAlign: "center", marginBottom: 20 }}>
-            Are you sure you want to delete your account?
+          <Text
+            style={{
+              color: COLORS[colorScheme].text,
+              textAlign: "center",
+              marginBottom: 20,
+            }}
+          >
+            {message}
           </Text>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
             <TouchableOpacity
               style={{
                 backgroundColor: "#DDDDDD",
@@ -47,7 +83,7 @@ export default function CustomAlert({ visible, onCancel, onConfirm }: Props) {
               }}
               onPress={onCancel}
             >
-              <Text style={{ color: "#111111" }}>Cancel</Text>
+              <Text style={{ color: "#111111" }}>{leftBtnText}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -58,7 +94,7 @@ export default function CustomAlert({ visible, onCancel, onConfirm }: Props) {
               }}
               onPress={onConfirm}
             >
-              <Text style={{ color: "#FFFFFF" }}>Delete</Text>
+              <Text style={{ color: "#FFFFFF" }}>{RightBtnText}</Text>
             </TouchableOpacity>
           </View>
         </View>
