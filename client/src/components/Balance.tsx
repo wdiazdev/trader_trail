@@ -11,7 +11,11 @@ type Props = {
   toggleBalanceVisible: () => void
 }
 
-export default function Balance({ accountBalance, isBalanceVisible, toggleBalanceVisible }: Props) {
+export default function Balance({
+  accountBalance,
+  isBalanceVisible,
+  toggleBalanceVisible,
+}: Props) {
   const colorScheme = useColorScheme()
   return (
     <BorderedContainer
@@ -43,8 +47,6 @@ export default function Balance({ accountBalance, isBalanceVisible, toggleBalanc
               ? `$${Math.abs(accountBalance).toFixed(2)}`
               : `-$${Math.abs(accountBalance).toFixed(2)}`
             : "*******"}
-
-          {/* {isBalanceVisible ? `$${accountBalance.toFixed(2)}` : "*******"} */}
         </Text>
         <Pressable onPress={toggleBalanceVisible}>
           <Ionicons

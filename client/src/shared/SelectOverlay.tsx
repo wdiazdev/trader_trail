@@ -1,5 +1,11 @@
-import { useState } from "react"
-import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native"
+import React, { useState } from "react"
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native"
 import Text from "./Text"
 import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
@@ -13,7 +19,11 @@ type Props = {
   selectedAccount: AccountsData | undefined
 }
 
-export default function SelectOverlay({ options, onSelectionChange, selectedAccount }: Props) {
+export default function SelectOverlay({
+  options,
+  onSelectionChange,
+  selectedAccount,
+}: Props) {
   const colorScheme = useColorScheme()
   const [isOverlayVisible, setIsOverlayVisible] = useState(false)
 
@@ -27,34 +37,35 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
   }
 
   return (
-    <TouchableOpacity
-      onPress={toggleOverlay}
-      style={{
-        width: "100%",
-        padding: 12,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderRadius: 10,
-        borderColor: COLORS[colorScheme].border,
-        backgroundColor: COLORS[colorScheme].background,
-        ...shadowStyles(colorScheme),
-      }}
-      disabled={!options?.length}
-    >
-      <View
+    <>
+      <TouchableOpacity
+        onPress={toggleOverlay}
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 6,
-          justifyContent: "space-between",
+          width: "100%",
+          padding: 20,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderRadius: 10,
+          borderColor: COLORS[colorScheme].border,
+          backgroundColor: COLORS[colorScheme].background,
+          ...shadowStyles(colorScheme),
         }}
       >
-        <Text>{selectedAccount?.accountName}</Text>
-        <Ionicons
-          name={isOverlayVisible ? "chevron-up" : "chevron-down"}
-          size={22}
-          color={COLORS[colorScheme].text}
-        />
-      </View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 6,
+            justifyContent: "space-between",
+          }}
+        >
+          <Text>{selectedAccount?.accountName}</Text>
+          <Ionicons
+            name={isOverlayVisible ? "chevron-up" : "chevron-down"}
+            size={22}
+            color={COLORS[colorScheme].text}
+          />
+        </View>
+      </TouchableOpacity>
       {isOverlayVisible && (
         <Modal
           animationType="fade"
@@ -86,7 +97,10 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
                       flexDirection: "row",
                       justifyContent: "space-between",
                       paddingVertical: 12,
-                      borderBottomWidth: index < options.length - 1 ? StyleSheet.hairlineWidth : 0,
+                      borderBottomWidth:
+                        index < options.length - 1
+                          ? StyleSheet.hairlineWidth
+                          : 0,
                       borderColor: COLORS[colorScheme].inputPlaceholder,
                       ...(index === 0 && { paddingTop: 0 }),
                       ...(index === options.length - 1 && { paddingBottom: 0 }),
@@ -105,7 +119,11 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
                       {opt.label}
                     </Text>
                     {opt.description === selectedAccount?.accountId && (
-                      <Ionicons name="checkmark" size={22} color={COLORS[colorScheme].icon} />
+                      <Ionicons
+                        name="checkmark"
+                        size={22}
+                        color={COLORS[colorScheme].icon}
+                      />
                     )}
                   </Pressable>
                 ))}
@@ -113,6 +131,6 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
           </Pressable>
         </Modal>
       )}
-    </TouchableOpacity>
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Container from "@/src/shared/Container"
 import Text from "@/src/shared/Text"
 import { useAppContext } from "@/src/store/storeContext"
@@ -8,25 +8,30 @@ import SelectOverlay from "@/src/shared/SelectOverlay"
 import Button from "@/src/shared/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { View } from "react-native"
+import { View, ScrollView } from "react-native"
 import useGetAccounts from "@/src/services/useGetAccounts"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Balance from "../../components/Balance"
 import DayPerformance from "../../components/DayPerformance"
 import WinRate from "../../components/WinRate"
 import TradesChart from "@/src/components/TradesChart"
+import BottomSheet, { BottomSheetMethods } from "@devvie/bottom-sheet"
 
 export default function Home() {
   const { state } = useAppContext()
   const colorScheme = useColorScheme()
 
-  const [selectedAccount, setSelectedAccount] = useState<AccountsData | undefined>(undefined)
+  const addTradeSheetRef = useRef<BottomSheetMethods>(null)
+
+  const [selectedAccount, setSelectedAccount] = useState<
+    AccountsData | undefined
+  >(undefined)
   const [isBalanceVisible, setIsBalanceVisible] = useState(true)
 
   const { accountsQuery, tradesQuery } = useGetAccounts(
     state.user?.access_token,
     state.user?.userId || "",
-    selectedAccount?.accountId || "",
+    selectedAccount?.accountId || ""
   )
 
   const {
@@ -66,8 +71,9 @@ export default function Home() {
               marginBottom: 12,
             }}
           >
-            It looks like you don’t have any accounts logged yet. Start by creating a trading
-            account to track your trades and improve your performance!
+            It looks like you don’t have any accounts logged yet. Start by
+            creating a trading account to track your trades and improve your
+            performance!
           </Text>
           <Button
             id="logAccount"
@@ -89,7 +95,7 @@ export default function Home() {
   const handleSelectionChange = (selected: SelectOverlayOption | undefined) => {
     if (selected && accountsData?.data) {
       const account = accountsData.data.find(
-        (account) => account.accountId === selected.description,
+        (account) => account.accountId === selected.description
       )
       if (account) setSelectedAccount(account)
     }
@@ -113,42 +119,76 @@ export default function Home() {
   } = tradesData?.data ?? {}
 
   return (
-    <Container justifyContent="flex-start">
-      {accountsData.data.length > 0 && (
-        <SelectOverlay
-          options={selectOptions}
-          onSelectionChange={handleSelectionChange}
-          selectedAccount={selectedAccount}
+    <>
+      <Container>
+        {selectOptions?.length && (
+          <SelectOverlay
+            options={selectOptions}
+            onSelectionChange={handleSelectionChange}
+            selectedAccount={selectedAccount}
+          />
+        )}
+
+        <ScrollView
+          style={{
+            flex: 1,
+            marginTop: 12,
+          }}
+        >
+          {accountBalance != null && (
+            <Balance
+              accountBalance={accountBalance}
+              isBalanceVisible={isBalanceVisible}
+              toggleBalanceVisible={toggleBalanceVisible}
+            />
+          )}
+
+          {bestWorstDay?.bestDay && bestWorstDay?.worstDay && totalTrades && (
+            <DayPerformance
+              isBalanceVisible={isBalanceVisible}
+              totalTrades={totalTrades}
+              bestWorstDay={bestWorstDay}
+            />
+          )}
+
+          {avgWin != null && avgLoss != null && (
+            <WinRate avgWin={avgWin} avgLoss={avgLoss} />
+          )}
+
+          {tradesQueryFetchStatus === "fetching" || isTradesQueryLoading ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Loader />
+            </View>
+          ) : trades && trades.length > 0 && accountBalance ? (
+            <TradesChart trades={trades} accountBalance={accountBalance} />
+          ) : null}
+        </ScrollView>
+
+        <Button
+          fullWidth
+          id="logTrade"
+          accessibilityLabel="Log a trade button"
+          title={"Add Trade"}
+          onPress={() => addTradeSheetRef.current?.open()}
+          //  disabled={!inputValues.email || !inputValues.password || isLoginLoading}
+          //  loading={isLoginLoading}
         />
-      )}
-
-      <View style={{ flex: 1, width: "100%", flexDirection: "column", marginTop: 12, gap: 8 }}>
-        {accountBalance != null && (
-          <Balance
-            accountBalance={accountBalance}
-            isBalanceVisible={isBalanceVisible}
-            toggleBalanceVisible={toggleBalanceVisible}
-          />
-        )}
-
-        {bestWorstDay?.bestDay && bestWorstDay?.worstDay && totalTrades && (
-          <DayPerformance
-            isBalanceVisible={isBalanceVisible}
-            totalTrades={totalTrades}
-            bestWorstDay={bestWorstDay}
-          />
-        )}
-
-        {avgWin != null && avgLoss != null && <WinRate avgWin={avgWin} avgLoss={avgLoss} />}
-
-        {tradesQueryFetchStatus === "fetching" || isTradesQueryLoading ? (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <Loader />
-          </View>
-        ) : trades && trades.length > 0 && accountBalance ? (
-          <TradesChart trades={trades} accountBalance={accountBalance} />
-        ) : null}
-      </View>
-    </Container>
+      </Container>
+      <BottomSheet
+        ref={addTradeSheetRef}
+        height="50%"
+        style={{ backgroundColor: COLORS[colorScheme].background }}
+      >
+        <Text>
+          The smart 😎, tiny 📦, and flexible 🎗 bottom sheet your app craves 🚀
+        </Text>
+      </BottomSheet>
+    </>
   )
 }

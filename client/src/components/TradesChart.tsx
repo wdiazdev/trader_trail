@@ -19,7 +19,7 @@ export default function TradesChart({ trades, accountBalance }: Props) {
   }))
 
   return (
-    <View style={{ height: 200, width: "100%", marginTop: 4 }}>
+    <View style={{ height: 200, width: "100%", marginTop: 12 }}>
       <CartesianChart
         data={transformedData}
         xKey="date"
@@ -29,7 +29,11 @@ export default function TradesChart({ trades, accountBalance }: Props) {
         {({ points }) => (
           <Line
             points={points.amount}
-            color={accountBalance > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red}
+            color={
+              accountBalance > 0
+                ? COLORS[colorScheme].green
+                : COLORS[colorScheme].red
+            }
             strokeWidth={2}
             animate={{ type: "timing", duration: 500 }}
             connectMissingData={true}

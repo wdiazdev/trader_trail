@@ -1,8 +1,10 @@
 import React from "react"
-import { View, Modal, TouchableOpacity } from "react-native"
+import { View, Modal, TouchableOpacity, Dimensions } from "react-native"
 import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
 import Text from "./Text"
+
+const { width } = Dimensions.get("window")
 
 type Props = {
   visible: boolean
@@ -41,7 +43,7 @@ export default function CustomAlert({
       >
         <View
           style={{
-            width: 300,
+            width: width * 0.92,
             backgroundColor: COLORS[colorScheme].background,
             borderRadius: 10,
             padding: 20,
@@ -51,9 +53,9 @@ export default function CustomAlert({
           <Text
             style={{
               fontSize: 18,
+              textAlign: "center",
               fontWeight: "bold",
               marginBottom: 10,
-              textAlign: "center",
             }}
           >
             {title}
@@ -70,8 +72,8 @@ export default function CustomAlert({
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
+              justifyContent: "center",
+              gap: 26,
             }}
           >
             <TouchableOpacity

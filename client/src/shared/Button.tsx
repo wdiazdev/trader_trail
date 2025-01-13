@@ -8,9 +8,16 @@ import { shadowStyles } from "../helpers/shadowStyles"
 interface ButtonProps extends TouchableOpacityProps {
   title: string
   loading?: boolean
+  fullWidth?: boolean
 }
 
-export default function Button({ title, loading, disabled, ...props }: ButtonProps) {
+export default function Button({
+  title,
+  loading,
+  disabled,
+  fullWidth,
+  ...props
+}: ButtonProps) {
   const colorScheme = useColorScheme()
 
   return (
@@ -18,6 +25,7 @@ export default function Button({ title, loading, disabled, ...props }: ButtonPro
       {...props}
       disabled={disabled}
       style={{
+        width: fullWidth ? "100%" : undefined,
         backgroundColor: COLORS[colorScheme].primaryBtnBackground,
         borderWidth: 1,
         borderColor: "transparent",
