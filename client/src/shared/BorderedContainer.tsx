@@ -1,7 +1,7 @@
 import { StyleSheet, View, ViewProps, ViewStyle } from "react-native"
 import { COLORS } from "../constants/Colors"
-import useColorScheme from "../hooks/useColorScheme"
 import { shadowStyles } from "../helpers/shadowStyles"
+import useColorScheme from "../hooks/useColorScheme"
 
 type BorderedContainerProps = ViewProps & {
   children?: React.ReactNode

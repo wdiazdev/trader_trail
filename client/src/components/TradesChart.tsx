@@ -1,9 +1,9 @@
 import React from "react"
 import { CartesianChart, Line } from "victory-native"
 import { Trade } from "../types"
-import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
 import { View } from "react-native"
+import useColorScheme from "../hooks/useColorScheme"
 
 type Props = {
   trades: Trade[]

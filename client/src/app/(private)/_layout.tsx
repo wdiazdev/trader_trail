@@ -40,7 +40,9 @@ export default function TabsLayout() {
             backgroundColor: COLORS[colorScheme].background,
           },
           headerTitleAlign: "center",
-          tabBarIcon: ({ color }) => <Ionicons name="home-outline" size={22} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="home-outline" size={22} color={color} />
+          ),
         }}
       />
 
@@ -53,7 +55,9 @@ export default function TabsLayout() {
             backgroundColor: COLORS[colorScheme].background,
           },
           headerTitleAlign: "center",
-          tabBarIcon: ({ color }) => <Ionicons name="settings-outline" size={22} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="settings-outline" size={22} color={color} />
+          ),
         }}
       />
     </Tabs>

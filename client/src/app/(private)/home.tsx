@@ -8,7 +8,7 @@ import SelectOverlay from "@/src/shared/SelectOverlay"
 import Button from "@/src/shared/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { View, ScrollView } from "react-native"
+import { View, ScrollView, Dimensions } from "react-native"
 import useGetAccounts from "@/src/services/useGetAccounts"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Balance from "../../components/Balance"
@@ -16,6 +16,9 @@ import DayPerformance from "../../components/DayPerformance"
 import WinRate from "../../components/WinRate"
 import TradesChart from "@/src/components/TradesChart"
 import BottomSheet, { BottomSheetMethods } from "@devvie/bottom-sheet"
+import AddTradeBtn from "@/src/shared/AddTradeBtn"
+
+const { height } = Dimensions.get("window")
 
 export default function Home() {
   const { state } = useAppContext()
@@ -176,18 +179,25 @@ export default function Home() {
           accessibilityLabel="Log a trade button"
           title={"Add Trade"}
           onPress={() => addTradeSheetRef.current?.open()}
-          //  disabled={!inputValues.email || !inputValues.password || isLoginLoading}
           //  loading={isLoginLoading}
         />
       </Container>
       <BottomSheet
         ref={addTradeSheetRef}
-        height="50%"
-        style={{ backgroundColor: COLORS[colorScheme].background }}
+        height={height * 0.4}
+        style={{
+          backgroundColor: COLORS[colorScheme].background,
+          padding: 14,
+        }}
       >
-        <Text>
-          The smart 😎, tiny 📦, and flexible 🎗 bottom sheet your app craves 🚀
+        <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 18 }}>
+          Add New trade
         </Text>
+        <AddTradeBtn
+          RightBtnText="Add"
+          onCancel={() => addTradeSheetRef.current?.close()}
+          onConfirm={() => console.log("trade added")}
+        />
       </BottomSheet>
     </>
   )

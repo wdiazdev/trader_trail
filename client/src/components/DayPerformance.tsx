@@ -1,11 +1,11 @@
 import React from "react"
 import { COLORS } from "@/src/constants/Colors"
-import useColorScheme from "@/src/hooks/useColorScheme"
 import BorderedContainer from "@/src/shared/BorderedContainer"
 import Text from "@/src/shared/Text"
 import { BestWorstDay } from "@/src/types"
 import { View } from "react-native"
 import dayjs from "dayjs"
+import useColorScheme from "../hooks/useColorScheme"
 
 type Props = {
   isBalanceVisible: boolean
@@ -29,7 +29,7 @@ export default function DayPerformance({
     <BorderedContainer
       flexDirection="row"
       justifyContent="space-between"
-      padding={14}
+      padding={20}
       marginVertical={12}
     >
       <View
@@ -39,7 +39,7 @@ export default function DayPerformance({
           alignItems: "center",
         }}
       >
-        <Text>Best day</Text>
+        <Text style={{ fontWeight: "bold" }}>Best day</Text>
         {bestDayAmount > 0 ? (
           <>
             <Text
@@ -76,7 +76,7 @@ export default function DayPerformance({
           alignItems: "center",
         }}
       >
-        <Text>Total trades</Text>
+        <Text style={{ fontWeight: "bold" }}>Total trades</Text>
         <Text>{totalTrades}</Text>
       </View>
 
@@ -87,7 +87,7 @@ export default function DayPerformance({
           alignItems: "center",
         }}
       >
-        <Text>Worst day</Text>
+        <Text style={{ fontWeight: "bold" }}>Worst day</Text>
         {worstDayAmount < 0 ? (
           <>
             <Text

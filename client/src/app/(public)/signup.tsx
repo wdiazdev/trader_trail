@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { Link, useRouter } from "expo-router"
 import Button from "@/src/shared/Button"
 import Container from "@/src/shared/Container"
@@ -61,7 +61,8 @@ export default function Signup() {
       router.push("/")
     } catch (error: any) {
       const errorMessage =
-        error?.response?.data?.message || "Registration failed. Please try again."
+        error?.response?.data?.message ||
+        "Registration failed. Please try again."
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     } finally {
@@ -124,9 +125,10 @@ export default function Signup() {
               paddingHorizontal: 12,
               paddingVertical: 6,
               borderRadius: 10,
-              borderWidth: 1,
               borderColor: "transparent",
-              backgroundColor: COLORS[colorScheme].primaryBtnBackground,
+              borderWidth: StyleSheet.hairlineWidth,
+              fontWeight: "bold",
+              backgroundColor: COLORS[colorScheme].blue,
               color: COLORS[colorScheme].primaryBtnText,
               ...shadowStyles(colorScheme),
             }}

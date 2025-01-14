@@ -1,9 +1,14 @@
 import { COLORS } from "@/src/constants/Colors"
-import useColorScheme from "@/src/hooks/useColorScheme"
-import { Pressable, TextInput as DefaultTextInput, TextInputProps, StyleSheet } from "react-native"
+import {
+  Pressable,
+  TextInput as DefaultTextInput,
+  TextInputProps,
+  StyleSheet,
+} from "react-native"
 import { ReactNode, useRef } from "react"
 import { Ionicons } from "@expo/vector-icons"
 import { shadowStyles } from "../helpers/shadowStyles"
+import useColorScheme from "../hooks/useColorScheme"
 
 type IoniconName = React.ComponentProps<typeof Ionicons>["name"]
 

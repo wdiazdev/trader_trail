@@ -1,7 +1,7 @@
 import { COLORS } from "@/src/constants/Colors"
-import useColorScheme from "@/src/hooks/useColorScheme"
 import { ReactNode } from "react"
 import { View, ViewProps, ViewStyle } from "react-native"
+import useColorScheme from "../hooks/useColorScheme"
 
 interface Props extends ViewProps {
   children: ReactNode
@@ -15,8 +15,8 @@ interface Props extends ViewProps {
 export default function Container({
   children,
   flex = 1,
-  paddingVertical = 16,
-  paddingHorizontal = 18,
+  paddingVertical = 14,
+  paddingHorizontal = 14,
   justifyContent = "center",
   alignItems = "center",
 

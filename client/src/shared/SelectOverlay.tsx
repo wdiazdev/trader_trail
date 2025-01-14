@@ -7,11 +7,11 @@ import {
   View,
 } from "react-native"
 import Text from "./Text"
-import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
 import { SelectOverlayOption, AccountsData } from "../types"
 import { Ionicons } from "@expo/vector-icons"
 import { shadowStyles } from "../helpers/shadowStyles"
+import useColorScheme from "../hooks/useColorScheme"
 
 type Props = {
   options: SelectOverlayOption[] | undefined
@@ -58,7 +58,9 @@ export default function SelectOverlay({
             justifyContent: "space-between",
           }}
         >
-          <Text>{selectedAccount?.accountName}</Text>
+          <Text style={{ fontWeight: "bold" }}>
+            {selectedAccount?.accountName}
+          </Text>
           <Ionicons
             name={isOverlayVisible ? "chevron-up" : "chevron-down"}
             size={22}
@@ -78,12 +80,12 @@ export default function SelectOverlay({
             style={{
               flex: 1,
               backgroundColor: "rgba(0, 0, 0, 0.5)",
-              paddingHorizontal: 18,
+              paddingHorizontal: 14,
             }}
           >
             <View
               style={{
-                marginTop: 160,
+                marginTop: 150,
                 backgroundColor: COLORS[colorScheme].background,
                 padding: 20,
                 borderRadius: 10,
@@ -114,6 +116,10 @@ export default function SelectOverlay({
                           opt.description === selectedAccount?.accountId
                             ? COLORS[colorScheme].icon
                             : COLORS[colorScheme].text,
+                        fontWeight:
+                          opt.description === selectedAccount?.accountId
+                            ? "bold"
+                            : undefined,
                       }}
                     >
                       {opt.label}

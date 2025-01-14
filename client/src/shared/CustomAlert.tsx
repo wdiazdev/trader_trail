@@ -1,8 +1,8 @@
 import React from "react"
 import { View, Modal, TouchableOpacity, Dimensions } from "react-native"
-import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
 import Text from "./Text"
+import useColorScheme from "../hooks/useColorScheme"
 
 const { width } = Dimensions.get("window")
 
@@ -78,25 +78,43 @@ export default function CustomAlert({
           >
             <TouchableOpacity
               style={{
+                flex: 1,
                 backgroundColor: "#DDDDDD",
-                paddingVertical: 10,
+                paddingVertical: 14,
                 paddingHorizontal: 20,
                 borderRadius: 10,
               }}
               onPress={onCancel}
             >
-              <Text style={{ color: "#111111" }}>{leftBtnText}</Text>
+              <Text
+                style={{
+                  color: "#111111",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {leftBtnText}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
+                flex: 1,
                 backgroundColor: "#FF5252",
-                paddingVertical: 10,
+                paddingVertical: 14,
                 paddingHorizontal: 20,
                 borderRadius: 8,
               }}
               onPress={onConfirm}
             >
-              <Text style={{ color: "#FFFFFF" }}>{RightBtnText}</Text>
+              <Text
+                style={{
+                  color: "#FFFFFF",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {RightBtnText}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

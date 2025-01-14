@@ -27,7 +27,9 @@ export default function NotFound() {
       />
       <Container>
         <Link href="/">
-          <Text style={{ color: COLORS[colorScheme].altText }}>Go to home screen</Text>
+          <Text style={{ color: COLORS[colorScheme].altText }}>
+            Go to home screen
+          </Text>
         </Link>
       </Container>
     </>

@@ -1,5 +1,5 @@
 import { COLORS } from "@/src/constants/Colors"
-import useColorScheme from "@/src/hooks/useColorScheme"
+import useColorScheme from "../hooks/useColorScheme"
 import BorderedContainer from "@/src/shared/BorderedContainer"
 import Text from "@/src/shared/Text"
 import { Ionicons } from "@expo/vector-icons"
@@ -23,9 +23,9 @@ export default function Balance({
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      padding={14}
+      padding={20}
     >
-      <Text>Total P&L</Text>
+      <Text style={{ fontWeight: "bold" }}>Total P&L</Text>
       <View
         style={{
           flexDirection: "row",

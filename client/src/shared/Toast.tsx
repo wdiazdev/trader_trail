@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons"
 import React, { useEffect } from "react"
 import { Text, Animated } from "react-native"
+import { COLORS } from "../constants/Colors"
+import useColorScheme from "../hooks/useColorScheme"
 
 type IoniconName = React.ComponentProps<typeof Ionicons>["name"]
 
@@ -11,11 +13,12 @@ interface ToastProps {
 }
 
 const Toast = ({ type, message, onHide }: ToastProps) => {
+  const colorScheme = useColorScheme()
   const opacity = new Animated.Value(0)
 
   const toastStyles = {
     success: {
-      backgroundColor: "#4CAF50",
+      backgroundColor: COLORS[colorScheme].green,
       textColor: "#FFFFFF",
       iconName: "checkmark-circle-outline",
     },
@@ -25,7 +28,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
       iconName: "alert-circle-outline",
     },
     error: {
-      backgroundColor: "#F44336",
+      backgroundColor: COLORS[colorScheme].red,
       textColor: "#FFFFFF",
       iconName: "close-circle-outline",
     },
@@ -55,7 +58,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
         left: 20,
         right: 20,
         backgroundColor: toastStyles[type].backgroundColor,
-        padding: 10,
+        padding: 14,
         borderRadius: 16,
         flexDirection: "row",
         alignItems: "center",

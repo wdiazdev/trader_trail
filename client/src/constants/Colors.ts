@@ -12,6 +12,7 @@ export const COLORS = {
     border: "#D1D1D1",
     red: "#EA3943",
     green: "#16C784",
+    blue: "#3490D8",
   },
   dark: {
     text: "#FFFFFF",
@@ -26,5 +27,6 @@ export const COLORS = {
     border: "#3C3C3C",
     red: "#EA3943",
     green: "#16C784",
+    blue: "#90D5FF",
   },
 }

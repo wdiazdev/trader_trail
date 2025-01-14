@@ -3,7 +3,7 @@ import Container from "@/src/shared/Container"
 import Input from "@/src/shared/Input"
 import Text from "@/src/shared/Text"
 import { useEffect, useState } from "react"
-import { View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { useToast } from "../../context/toastContext"
 import { Link, useRouter } from "expo-router"
 import { COLORS } from "@/src/constants/Colors"
@@ -44,7 +44,10 @@ export default function Home() {
         dispatch({
           type: "change_store",
           payload: {
-            user: { userId: response.data.userId, access_token: response.data.access_token },
+            user: {
+              userId: response.data.userId,
+              access_token: response.data.access_token,
+            },
           },
         })
         await AsyncStorage.setItem("access_token", response.data.access_token)
@@ -91,7 +94,10 @@ export default function Home() {
       dispatch({
         type: "change_store",
         payload: {
-          user: { userId: response.data.userId, access_token: response.data.access_token },
+          user: {
+            userId: response.data.userId,
+            access_token: response.data.access_token,
+          },
           registrationEmail: null,
         },
       })
@@ -99,7 +105,8 @@ export default function Home() {
       showToast("success", "Login successful!")
       router.push("/(private)/home")
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || "Login failed, please try again."
+      const errorMessage =
+        error?.response?.data?.message || "Login failed, please try again."
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     } finally {
@@ -140,7 +147,9 @@ export default function Home() {
             accessibilityLabel="login button"
             title={"Login"}
             onPress={handleLogin}
-            disabled={!inputValues.email || !inputValues.password || isLoginLoading}
+            disabled={
+              !inputValues.email || !inputValues.password || isLoginLoading
+            }
             loading={isLoginLoading}
           />
         </View>
@@ -162,9 +171,10 @@ export default function Home() {
               paddingHorizontal: 12,
               paddingVertical: 6,
               borderRadius: 10,
-              borderWidth: 1,
               borderColor: "transparent",
-              backgroundColor: COLORS[colorScheme].primaryBtnBackground,
+              borderWidth: StyleSheet.hairlineWidth,
+              fontWeight: "bold",
+              backgroundColor: COLORS[colorScheme].blue,
               color: COLORS[colorScheme].primaryBtnText,
               ...shadowStyles(colorScheme),
             }}

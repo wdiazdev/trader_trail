@@ -1,13 +1,18 @@
 import { Switch as DefaultSwitch, SwitchProps } from "react-native"
-import useColorScheme from "../hooks/useColorScheme"
 import { COLORS } from "../constants/Colors"
+import useColorScheme from "../hooks/useColorScheme"
 
-interface CustomSwitchProps extends Omit<SwitchProps, "value" | "onValueChange"> {
+interface CustomSwitchProps
+  extends Omit<SwitchProps, "value" | "onValueChange"> {
   value: boolean
   onValueChange: (value: boolean) => void
 }
 
-export default function Switch({ value, onValueChange, ...rest }: CustomSwitchProps) {
+export default function Switch({
+  value,
+  onValueChange,
+  ...rest
+}: CustomSwitchProps) {
   const colorScheme = useColorScheme()
   return (
     <DefaultSwitch

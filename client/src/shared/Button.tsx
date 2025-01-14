@@ -1,9 +1,10 @@
 import { COLORS } from "@/src/constants/Colors"
-import useColorScheme from "@/src/hooks/useColorScheme"
 import React from "react"
-import { TouchableOpacity, Text, TouchableOpacityProps } from "react-native"
+import { TouchableOpacity, TouchableOpacityProps } from "react-native"
 import Loader from "./Loader"
 import { shadowStyles } from "../helpers/shadowStyles"
+import Text from "./Text"
+import useColorScheme from "../hooks/useColorScheme"
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string
@@ -37,8 +38,8 @@ export default function Button({
     >
       <Text
         style={{
-          fontFamily: "DMSans_400Regular",
           textAlign: "center",
+          fontWeight: "bold",
           color: COLORS[colorScheme].primaryBtnText,
         }}
       >
