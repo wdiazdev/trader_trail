@@ -45,7 +45,7 @@ export default function DayPerformance({
             <Text
               style={{
                 color: COLORS[colorScheme].altText,
-                fontSize: 10,
+                fontSize: 12,
                 marginVertical: 2,
               }}
             >
@@ -93,7 +93,7 @@ export default function DayPerformance({
             <Text
               style={{
                 color: COLORS[colorScheme].altText,
-                fontSize: 10,
+                fontSize: 12,
                 marginVertical: 2,
               }}
             >

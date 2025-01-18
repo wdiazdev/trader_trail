@@ -127,6 +127,7 @@ export default function Signup() {
               borderRadius: 10,
               borderColor: "transparent",
               borderWidth: StyleSheet.hairlineWidth,
+              fontSize: 16,
               fontWeight: "bold",
               backgroundColor: COLORS[colorScheme].blue,
               color: COLORS[colorScheme].primaryBtnText,

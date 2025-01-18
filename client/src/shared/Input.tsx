@@ -44,7 +44,7 @@ export default function TextInput({
         width: "100%",
         borderWidth: 1,
         borderColor: COLORS[colorScheme].inputPlaceholder,
-        padding: 8,
+        padding: 18,
         borderRadius: 10,
         backgroundColor: COLORS[colorScheme].inputBackground,
         ...shadowStyles(colorScheme),
@@ -54,7 +54,7 @@ export default function TextInput({
         <Ionicons
           name={leftIconName}
           color={COLORS[colorScheme].icon}
-          size={16}
+          size={20}
           style={{ marginHorizontal: 6 }}
         />
       )}
@@ -67,6 +67,7 @@ export default function TextInput({
         placeholderTextColor={COLORS[colorScheme].inputPlaceholder}
         style={{
           flex: 1,
+          fontSize: 16,
           color: COLORS[colorScheme].inputText,
           fontFamily: "DMSans_400Regular",
         }}
@@ -75,7 +76,7 @@ export default function TextInput({
         <Ionicons
           name={"close-circle"}
           color={COLORS[colorScheme].icon}
-          size={16}
+          size={20}
           style={{ marginHorizontal: 6 }}
           onPress={clearValue}
         />

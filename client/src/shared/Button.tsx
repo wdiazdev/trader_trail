@@ -30,7 +30,7 @@ export default function Button({
         backgroundColor: COLORS[colorScheme].primaryBtnBackground,
         borderWidth: 1,
         borderColor: "transparent",
-        padding: 14,
+        padding: 18,
         borderRadius: 10,
         opacity: disabled ? 0.5 : 1,
         ...shadowStyles(colorScheme),
@@ -38,6 +38,7 @@ export default function Button({
     >
       <Text
         style={{
+          fontSize: 16,
           textAlign: "center",
           fontWeight: "bold",
           color: COLORS[colorScheme].primaryBtnText,

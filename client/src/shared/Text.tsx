@@ -12,6 +12,7 @@ export default function Text({ style, ...props }: CustomTextProps) {
       allowFontScaling={false}
       style={[
         {
+          fontSize: 16,
           fontFamily: "DMSans_400Regular",
           color: COLORS[colorScheme].text,
         },

@@ -8,7 +8,7 @@ import SelectOverlay from "@/src/shared/SelectOverlay"
 import Button from "@/src/shared/Button"
 import { COLORS } from "@/src/constants/Colors"
 import useColorScheme from "@/src/hooks/useColorScheme"
-import { View, ScrollView, Dimensions } from "react-native"
+import { View, ScrollView, Dimensions, TextInput } from "react-native"
 import useGetAccounts from "@/src/services/useGetAccounts"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Balance from "../../components/Balance"
@@ -16,7 +16,7 @@ import DayPerformance from "../../components/DayPerformance"
 import WinRate from "../../components/WinRate"
 import TradesChart from "@/src/components/TradesChart"
 import BottomSheet, { BottomSheetMethods } from "@devvie/bottom-sheet"
-import AddTradeBtn from "@/src/shared/AddTradeBtn"
+import AddTradeBtn from "@/src/components/AddTradeBtn"
 
 const { height } = Dimensions.get("window")
 
@@ -30,6 +30,10 @@ export default function Home() {
     AccountsData | undefined
   >(undefined)
   const [isBalanceVisible, setIsBalanceVisible] = useState(true)
+  const [decimalShift, setDecimalShift] = useState("")
+  const [selectedButton, setSelectedButton] = useState<"winner" | "loser">(
+    "winner"
+  )
 
   const { accountsQuery, tradesQuery } = useGetAccounts(
     state.user?.access_token,
@@ -112,6 +116,32 @@ export default function Home() {
     })
   }
 
+  const handleTextChange = (text: string) => {
+    let amount = text.replace(/[^0-9]/g, "").replace(/^0+/, "")
+
+    if (amount.length > 0) {
+      const length = amount.length
+      let formattedAmount
+
+      if (length === 1) {
+        formattedAmount = `$0.0${amount}`
+      } else if (length === 2) {
+        formattedAmount = `$0.${amount}`
+      } else {
+        formattedAmount = `$${amount.slice(0, length - 2)}.${amount.slice(
+          length - 2
+        )}`
+      }
+      setDecimalShift(formattedAmount)
+    } else {
+      setDecimalShift("")
+    }
+  }
+
+  const handleButtonChange = (selected: "winner" | "loser") => {
+    setSelectedButton(selected)
+  }
+
   const {
     balance: accountBalance,
     bestWorstDay,
@@ -124,13 +154,13 @@ export default function Home() {
   return (
     <>
       <Container>
-        {selectOptions?.length && (
+        {selectOptions?.length ? (
           <SelectOverlay
             options={selectOptions}
             onSelectionChange={handleSelectionChange}
             selectedAccount={selectedAccount}
           />
-        )}
+        ) : null}
 
         <ScrollView
           style={{
@@ -138,25 +168,25 @@ export default function Home() {
             marginTop: 12,
           }}
         >
-          {accountBalance != null && (
+          {accountBalance != null ? (
             <Balance
               accountBalance={accountBalance}
               isBalanceVisible={isBalanceVisible}
               toggleBalanceVisible={toggleBalanceVisible}
             />
-          )}
+          ) : null}
 
-          {bestWorstDay?.bestDay && bestWorstDay?.worstDay && totalTrades && (
+          {bestWorstDay?.bestDay && bestWorstDay?.worstDay && totalTrades ? (
             <DayPerformance
               isBalanceVisible={isBalanceVisible}
               totalTrades={totalTrades}
               bestWorstDay={bestWorstDay}
             />
-          )}
+          ) : null}
 
-          {avgWin != null && avgLoss != null && (
+          {avgWin != null && avgLoss != null ? (
             <WinRate avgWin={avgWin} avgLoss={avgLoss} />
-          )}
+          ) : null}
 
           {tradesQueryFetchStatus === "fetching" || isTradesQueryLoading ? (
             <View
@@ -182,21 +212,55 @@ export default function Home() {
           //  loading={isLoginLoading}
         />
       </Container>
+
       <BottomSheet
         ref={addTradeSheetRef}
-        height={height * 0.4}
+        height={height * 0.38}
         style={{
           backgroundColor: COLORS[colorScheme].secondaryBackground,
           padding: 14,
         }}
       >
-        <Text style={{ fontSize: 24, textAlign: "center", marginBottom: 18 }}>
-          Add New trade
-        </Text>
-        <AddTradeBtn
-          RightBtnText="Add"
-          onCancel={() => addTradeSheetRef.current?.close()}
-          onConfirm={() => console.log("trade added")}
+        <View style={{ flexDirection: "column" }}>
+          <Text
+            style={{ fontSize: 24, textAlign: "center", marginVertical: 12 }}
+          >
+            Add New Trade
+          </Text>
+
+          <AddTradeBtn handleButtonChange={handleButtonChange} />
+
+          <TextInput
+            keyboardType="number-pad"
+            placeholder="$0.00"
+            placeholderTextColor={COLORS[colorScheme].inputPlaceholder}
+            value={decimalShift}
+            onChangeText={handleTextChange}
+            style={{
+              marginTop: 18,
+              marginBottom: 44,
+              width: "100%",
+              height: 70,
+              borderRadius: 10,
+              backgroundColor: COLORS[colorScheme].inputBackground,
+              fontSize: 48,
+              textAlign: "center",
+              fontWeight: "bold",
+              color:
+                selectedButton === "winner"
+                  ? COLORS[colorScheme].green
+                  : COLORS[colorScheme].red,
+            }}
+          />
+        </View>
+
+        <Button
+          fullWidth
+          id="addTrade"
+          accessibilityLabel="Add trade button"
+          title={"Add"}
+          // onPress={() => addTradeSheetRef.current?.open()}
+          //  loading={isLoginLoading}
         />
       </BottomSheet>
     </>

@@ -80,8 +80,7 @@ export default function CustomAlert({
               style={{
                 flex: 1,
                 backgroundColor: "#DDDDDD",
-                paddingVertical: 14,
-                paddingHorizontal: 20,
+                padding: 18,
                 borderRadius: 10,
               }}
               onPress={onCancel}
@@ -91,6 +90,7 @@ export default function CustomAlert({
                   color: "#111111",
                   textAlign: "center",
                   fontWeight: "bold",
+                  fontSize: 16,
                 }}
               >
                 {leftBtnText}
@@ -99,9 +99,8 @@ export default function CustomAlert({
             <TouchableOpacity
               style={{
                 flex: 1,
-                backgroundColor: "#FF5252",
-                paddingVertical: 14,
-                paddingHorizontal: 20,
+                backgroundColor: COLORS[colorScheme].red,
+                padding: 18,
                 borderRadius: 8,
               }}
               onPress={onConfirm}
@@ -111,6 +110,7 @@ export default function CustomAlert({
                   color: "#FFFFFF",
                   textAlign: "center",
                   fontWeight: "bold",
+                  fontSize: 16,
                 }}
               >
                 {RightBtnText}

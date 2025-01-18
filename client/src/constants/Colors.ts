@@ -19,7 +19,7 @@ export const COLORS = {
     text: "#FFFFFF",
     altText: "#BBBBBB",
     background: "#181818",
-    secondaryBackground: "#282828",
+    secondaryBackground: "#1E1E1E",
     inputBackground: "#F0F0FF",
     primaryBtnBackground: "#90D5FF",
     icon: "#90D5FF",

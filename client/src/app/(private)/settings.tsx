@@ -80,7 +80,7 @@ export default function Settings() {
         }}
       >
         <View style={{ marginTop: 20, gap: 10 }}>
-          <Text style={{ fontWeight: "bold" }}>App</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>App</Text>
           <BorderedContainer fullWidth>
             <View
               style={{
@@ -123,7 +123,7 @@ export default function Settings() {
         </View>
 
         <View style={{ marginTop: 20, gap: 10 }}>
-          <Text style={{ fontWeight: "bold" }}>Account</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>Account</Text>
           <BorderedContainer>
             <TouchableOpacity
               id="deleteAccount"
