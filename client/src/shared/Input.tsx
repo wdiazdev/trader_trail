@@ -3,7 +3,6 @@ import {
   Pressable,
   TextInput as DefaultTextInput,
   TextInputProps,
-  StyleSheet,
 } from "react-native"
 import { ReactNode, useRef } from "react"
 import { Ionicons } from "@expo/vector-icons"
@@ -43,11 +42,11 @@ export default function TextInput({
         flexDirection: "row",
         alignItems: "center",
         width: "100%",
-        borderWidth: StyleSheet.hairlineWidth,
+        borderWidth: 1,
         borderColor: COLORS[colorScheme].inputPlaceholder,
         padding: 8,
         borderRadius: 10,
-        backgroundColor: COLORS[colorScheme].secondaryBackground,
+        backgroundColor: COLORS[colorScheme].inputBackground,
         ...shadowStyles(colorScheme),
       }}
     >

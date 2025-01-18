@@ -186,7 +186,7 @@ export default function Home() {
         ref={addTradeSheetRef}
         height={height * 0.4}
         style={{
-          backgroundColor: COLORS[colorScheme].background,
+          backgroundColor: COLORS[colorScheme].secondaryBackground,
           padding: 14,
         }}
       >
