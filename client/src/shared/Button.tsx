@@ -30,7 +30,7 @@ export default function Button({
         backgroundColor: COLORS[colorScheme].primaryBtnBackground,
         borderWidth: 1,
         borderColor: "transparent",
-        padding: 18,
+        padding: 14,
         borderRadius: 10,
         opacity: disabled ? 0.5 : 1,
         ...shadowStyles(colorScheme),

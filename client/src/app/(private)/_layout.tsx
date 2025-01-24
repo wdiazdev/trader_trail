@@ -26,7 +26,11 @@ export default function TabsLayout() {
         tabBarActiveTintColor: COLORS[colorScheme].icon,
         tabBarInactiveTintColor: COLORS[colorScheme].altText,
         tabBarStyle: {
-          backgroundColor: COLORS[colorScheme].background,
+          backgroundColor: COLORS[colorScheme].secondaryBackground,
+          height: 70,
+        },
+        tabBarItemStyle: {
+          margin: 16,
         },
         tabBarShowLabel: false,
       }}
@@ -41,7 +45,7 @@ export default function TabsLayout() {
           },
           headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={22} color={color} />
+            <Ionicons name="home-outline" size={26} color={color} />
           ),
         }}
       />
@@ -56,7 +60,7 @@ export default function TabsLayout() {
           },
           headerTitleAlign: "center",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="settings-outline" size={22} color={color} />
+            <Ionicons name="settings-outline" size={26} color={color} />
           ),
         }}
       />

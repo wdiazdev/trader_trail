@@ -2,7 +2,7 @@ export const COLORS = {
   light: {
     text: "#11181C",
     altText: "#2A3339",
-    background: "#FFFFFF",
+    background: "#FAFAFA",
     secondaryBackground: "#FFFFFF",
     inputBackground: "#FFFFFF",
     primaryBtnBackground: "#3490D8",
@@ -18,8 +18,8 @@ export const COLORS = {
   dark: {
     text: "#FFFFFF",
     altText: "#BBBBBB",
-    background: "#181818",
-    secondaryBackground: "#1E1E1E",
+    background: "#000000",
+    secondaryBackground: "#181818",
     inputBackground: "#F0F0FF",
     primaryBtnBackground: "#90D5FF",
     icon: "#90D5FF",

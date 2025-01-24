@@ -79,7 +79,7 @@ export default function Settings() {
           flex: 1,
         }}
       >
-        <View style={{ marginTop: 20, gap: 10 }}>
+        <View style={{ marginTop: 20, gap: 18 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>App</Text>
           <BorderedContainer fullWidth>
             <View
@@ -122,7 +122,7 @@ export default function Settings() {
           </BorderedContainer>
         </View>
 
-        <View style={{ marginTop: 20, gap: 10 }}>
+        <View style={{ marginTop: 20, gap: 18 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>Account</Text>
           <BorderedContainer>
             <TouchableOpacity

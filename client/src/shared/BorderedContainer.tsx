@@ -35,7 +35,7 @@ export default function BorderedContainer({
         padding,
         marginVertical,
         borderRadius: 10,
-        backgroundColor: COLORS[colorScheme].background,
+        backgroundColor: COLORS[colorScheme].secondaryBackground,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: COLORS[colorScheme].border,
         ...shadowStyles(colorScheme),

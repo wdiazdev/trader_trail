@@ -165,7 +165,6 @@ export default function Home() {
         <ScrollView
           style={{
             flex: 1,
-            marginTop: 12,
           }}
         >
           {accountBalance != null ? (
@@ -215,7 +214,7 @@ export default function Home() {
 
       <BottomSheet
         ref={addTradeSheetRef}
-        height={height * 0.38}
+        height={height * 0.34}
         style={{
           backgroundColor: COLORS[colorScheme].secondaryBackground,
           padding: 14,
@@ -223,7 +222,7 @@ export default function Home() {
       >
         <View style={{ flexDirection: "column" }}>
           <Text
-            style={{ fontSize: 24, textAlign: "center", marginVertical: 12 }}
+            style={{ fontSize: 18, textAlign: "center", marginVertical: 12 }}
           >
             Add New Trade
           </Text>
@@ -237,19 +236,20 @@ export default function Home() {
             value={decimalShift}
             onChangeText={handleTextChange}
             style={{
-              marginTop: 18,
-              marginBottom: 44,
+              marginTop: 20,
+              marginBottom: 40,
               width: "100%",
-              height: 70,
               borderRadius: 10,
               backgroundColor: COLORS[colorScheme].inputBackground,
-              fontSize: 48,
+              fontSize: 44,
               textAlign: "center",
               fontWeight: "bold",
               color:
                 selectedButton === "winner"
                   ? COLORS[colorScheme].green
                   : COLORS[colorScheme].red,
+              borderWidth: 1,
+              borderColor: COLORS[colorScheme].inputPlaceholder,
             }}
           />
         </View>

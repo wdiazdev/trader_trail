@@ -30,7 +30,6 @@ export default function DayPerformance({
       flexDirection="row"
       justifyContent="space-between"
       padding={20}
-      marginVertical={12}
     >
       <View
         style={{
@@ -46,7 +45,7 @@ export default function DayPerformance({
               style={{
                 color: COLORS[colorScheme].altText,
                 fontSize: 12,
-                marginVertical: 2,
+                marginVertical: 4,
               }}
             >
               {bestDay?.date ? dayjs(bestDay.date).format("MM-DD-YYYY") : "-"}
@@ -57,6 +56,7 @@ export default function DayPerformance({
                   bestDayAmount > 0
                     ? COLORS[colorScheme].green
                     : COLORS[colorScheme].red,
+                marginTop: 2,
               }}
             >
               {isBalanceVisible
@@ -74,6 +74,7 @@ export default function DayPerformance({
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          gap: 4,
         }}
       >
         <Text style={{ fontWeight: "bold" }}>Total trades</Text>
@@ -94,7 +95,7 @@ export default function DayPerformance({
               style={{
                 color: COLORS[colorScheme].altText,
                 fontSize: 12,
-                marginVertical: 2,
+                marginVertical: 4,
               }}
             >
               {worstDay?.date ? dayjs(worstDay.date).format("MM-DD-YYYY") : "-"}
@@ -105,6 +106,7 @@ export default function DayPerformance({
                   worstDayAmount > 0
                     ? COLORS[colorScheme].green
                     : COLORS[colorScheme].red,
+                marginTop: 2,
               }}
             >
               {isBalanceVisible

@@ -45,8 +45,8 @@ export default function SelectOverlay({
           padding: 20,
           borderWidth: StyleSheet.hairlineWidth,
           borderRadius: 10,
-          borderColor: COLORS[colorScheme].border,
-          backgroundColor: COLORS[colorScheme].background,
+          borderColor: COLORS[colorScheme].secondaryBackground,
+          backgroundColor: COLORS[colorScheme].secondaryBackground,
           ...shadowStyles(colorScheme),
         }}
       >
@@ -54,7 +54,6 @@ export default function SelectOverlay({
           style={{
             flexDirection: "row",
             alignItems: "center",
-            gap: 6,
             justifyContent: "space-between",
           }}
         >
@@ -86,7 +85,7 @@ export default function SelectOverlay({
             <View
               style={{
                 marginTop: 150,
-                backgroundColor: COLORS[colorScheme].background,
+                backgroundColor: COLORS[colorScheme].secondaryBackground,
                 padding: 20,
                 borderRadius: 10,
               }}

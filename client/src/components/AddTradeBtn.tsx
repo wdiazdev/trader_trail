@@ -35,7 +35,7 @@ export default function AddTradeBtn({ handleButtonChange }: Props) {
           flex: 1,
           backgroundColor: COLORS[colorScheme].red,
           opacity: selectedButton === "loser" ? 1 : 0.5,
-          padding: 18,
+          padding: 14,
           borderRadius: 10,
         }}
       >
@@ -56,7 +56,7 @@ export default function AddTradeBtn({ handleButtonChange }: Props) {
           flex: 1,
           backgroundColor: COLORS[colorScheme].green,
           opacity: selectedButton === "winner" ? 1 : 0.5,
-          padding: 18,
+          padding: 14,
           borderRadius: 10,
         }}
       >

@@ -11,12 +11,18 @@ type Props = {
 export default function WinRate({ avgWin, avgLoss }: Props) {
   const colorScheme = useColorScheme()
   return (
-    <View style={{ justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        marginVertical: 12,
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-evenly",
-          marginBottom: 4,
+          marginBottom: 8,
         }}
       >
         <Text

@@ -24,6 +24,7 @@ export default function Balance({
       justifyContent="space-between"
       alignItems="center"
       padding={20}
+      marginVertical={12}
     >
       <Text style={{ fontWeight: "bold" }}>Total P&L</Text>
       <View
@@ -51,7 +52,7 @@ export default function Balance({
         <Pressable onPress={toggleBalanceVisible}>
           <Ionicons
             name="eye-outline"
-            size={22}
+            size={18}
             color={COLORS[colorScheme].text}
             style={{ marginLeft: 8 }}
           />

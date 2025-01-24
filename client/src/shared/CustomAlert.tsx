@@ -80,7 +80,7 @@ export default function CustomAlert({
               style={{
                 flex: 1,
                 backgroundColor: "#DDDDDD",
-                padding: 18,
+                padding: 14,
                 borderRadius: 10,
               }}
               onPress={onCancel}
@@ -100,7 +100,7 @@ export default function CustomAlert({
               style={{
                 flex: 1,
                 backgroundColor: COLORS[colorScheme].red,
-                padding: 18,
+                padding: 14,
                 borderRadius: 8,
               }}
               onPress={onConfirm}
