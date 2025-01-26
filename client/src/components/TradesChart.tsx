@@ -19,7 +19,7 @@ export default function TradesChart({ trades, accountBalance }: Props) {
   }))
 
   return (
-    <View style={{ height: 200, width: "100%", marginTop: 6 }}>
+    <View style={{ height: 200, marginTop: 6 }}>
       <CartesianChart
         data={transformedData}
         xKey="date"

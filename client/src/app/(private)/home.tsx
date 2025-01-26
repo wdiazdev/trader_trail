@@ -190,7 +190,7 @@ export default function Home() {
           {tradesQueryFetchStatus === "fetching" || isTradesQueryLoading ? (
             <View
               style={{
-                flex: 1,
+                height: 200,
                 justifyContent: "center",
                 alignItems: "center",
               }}

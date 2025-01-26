@@ -44,7 +44,7 @@ export default function CustomAlert({
         <View
           style={{
             width: width * 0.92,
-            backgroundColor: COLORS[colorScheme].background,
+            backgroundColor: COLORS[colorScheme].secondaryBackground,
             borderRadius: 10,
             padding: 20,
             alignItems: "center",
