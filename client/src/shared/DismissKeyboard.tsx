@@ -1,4 +1,9 @@
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native"
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+} from "react-native"
 
 type Props = {
   children: React.ReactNode | React.ReactNode[]

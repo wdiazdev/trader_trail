@@ -222,7 +222,11 @@ export default function Home() {
       >
         <View style={{ flexDirection: "column" }}>
           <Text
-            style={{ fontSize: 18, textAlign: "center", marginVertical: 12 }}
+            style={{
+              fontSize: 18,
+              textAlign: "center",
+              marginVertical: 12,
+            }}
           >
             Add New Trade
           </Text>
