@@ -27,6 +27,8 @@ export default function Button({
       disabled={disabled}
       style={{
         width: fullWidth ? "100%" : undefined,
+        minHeight: 58,
+        justifyContent: "center",
         backgroundColor: COLORS[colorScheme].primaryBtnBackground,
         borderWidth: 1,
         borderColor: "transparent",
