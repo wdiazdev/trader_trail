@@ -57,6 +57,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
         top: 50,
         left: 20,
         right: 20,
+        height: 58,
         backgroundColor: toastStyles[type].backgroundColor,
         padding: 14,
         borderRadius: 16,
