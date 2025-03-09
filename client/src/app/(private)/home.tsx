@@ -26,19 +26,15 @@ export default function Home() {
 
   const addTradeSheetRef = useRef<BottomSheetMethods>(null)
 
-  const [selectedAccount, setSelectedAccount] = useState<
-    AccountsData | undefined
-  >(undefined)
+  const [selectedAccount, setSelectedAccount] = useState<AccountsData | undefined>(undefined)
   const [isBalanceVisible, setIsBalanceVisible] = useState(true)
   const [decimalShift, setDecimalShift] = useState("")
-  const [selectedButton, setSelectedButton] = useState<"winner" | "loser">(
-    "winner"
-  )
+  const [selectedButton, setSelectedButton] = useState<"winner" | "loser">("winner")
 
   const { accountsQuery, tradesQuery } = useGetAccounts(
     state.user?.access_token,
     state.user?.userId || "",
-    selectedAccount?.accountId || ""
+    selectedAccount?.accountId || "",
   )
 
   const {
@@ -78,9 +74,8 @@ export default function Home() {
               marginBottom: 12,
             }}
           >
-            It looks like you don’t have any accounts logged yet. Start by
-            creating a trading account to track your trades and improve your
-            performance!
+            It looks like you don’t have any accounts logged yet. Start by creating a trading
+            account to track your trades and improve your performance!
           </Text>
           <Button
             id="logAccount"
@@ -102,7 +97,7 @@ export default function Home() {
   const handleSelectionChange = (selected: SelectOverlayOption | undefined) => {
     if (selected && accountsData?.data) {
       const account = accountsData.data.find(
-        (account) => account.accountId === selected.description
+        (account) => account.accountId === selected.description,
       )
       if (account) setSelectedAccount(account)
     }
@@ -128,9 +123,7 @@ export default function Home() {
       } else if (length === 2) {
         formattedAmount = `$0.${amount}`
       } else {
-        formattedAmount = `$${amount.slice(0, length - 2)}.${amount.slice(
-          length - 2
-        )}`
+        formattedAmount = `$${amount.slice(0, length - 2)}.${amount.slice(length - 2)}`
       }
       setDecimalShift(formattedAmount)
     } else {
@@ -183,9 +176,7 @@ export default function Home() {
             />
           ) : null}
 
-          {avgWin != null && avgLoss != null ? (
-            <WinRate avgWin={avgWin} avgLoss={avgLoss} />
-          ) : null}
+          {avgWin != null && avgLoss != null ? <WinRate avgWin={avgWin} avgLoss={avgLoss} /> : null}
 
           {tradesQueryFetchStatus === "fetching" || isTradesQueryLoading ? (
             <View
@@ -249,9 +240,7 @@ export default function Home() {
               textAlign: "center",
               fontWeight: "bold",
               color:
-                selectedButton === "winner"
-                  ? COLORS[colorScheme].green
-                  : COLORS[colorScheme].red,
+                selectedButton === "winner" ? COLORS[colorScheme].green : COLORS[colorScheme].red,
               borderWidth: 1,
               borderColor: COLORS[colorScheme].inputPlaceholder,
             }}
@@ -263,7 +252,7 @@ export default function Home() {
           id="addTrade"
           accessibilityLabel="Add trade button"
           title={"Add"}
-          // onPress={() => addTradeSheetRef.current?.open()}
+          onPress={() => addTradeSheetRef.current?.close()}
           //  loading={isLoginLoading}
         />
       </BottomSheet>
