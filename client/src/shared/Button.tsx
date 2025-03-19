@@ -12,13 +12,7 @@ interface ButtonProps extends TouchableOpacityProps {
   fullWidth?: boolean
 }
 
-export default function Button({
-  title,
-  loading,
-  disabled,
-  fullWidth,
-  ...props
-}: ButtonProps) {
+export default function Button({ title, loading, disabled, fullWidth, ...props }: ButtonProps) {
   const colorScheme = useColorScheme()
 
   return (

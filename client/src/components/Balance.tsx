@@ -11,11 +11,7 @@ type Props = {
   toggleBalanceVisible: () => void
 }
 
-export default function Balance({
-  accountBalance,
-  isBalanceVisible,
-  toggleBalanceVisible,
-}: Props) {
+export default function Balance({ accountBalance, isBalanceVisible, toggleBalanceVisible }: Props) {
   const colorScheme = useColorScheme()
   return (
     <BorderedContainer
@@ -44,7 +40,7 @@ export default function Balance({
           }}
         >
           {isBalanceVisible
-            ? accountBalance > 0
+            ? accountBalance >= 0
               ? `$${Math.abs(accountBalance).toFixed(2)}`
               : `-$${Math.abs(accountBalance).toFixed(2)}`
             : "*******"}

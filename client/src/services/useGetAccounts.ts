@@ -4,8 +4,8 @@ import { AccountsData, TradesData } from "../types"
 
 export default function useGetAccounts(
   access_token: string | undefined,
-  userId: string,
-  accountId: string,
+  userId: string | undefined,
+  accountId: string | undefined,
 ): {
   accountsQuery: UseQueryResult<{
     data: AccountsData[] | undefined
@@ -31,6 +31,7 @@ export default function useGetAccounts(
     tradesQuery: useQuery({
       queryKey: ["getTrades", accountId],
       queryFn: async () => {
+        if (!accountId) return
         return await agent.Trade.getTrades(accountId)
       },
       enabled: !!access_token && !!accountId,
