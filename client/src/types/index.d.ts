@@ -15,6 +15,7 @@ export interface AccountsData {
   accountName: string
   nickname: string
   createdAt: string
+  userId: string
 }
 export interface Trade {
   tradeId: string

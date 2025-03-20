@@ -5,19 +5,30 @@ import Text from "../shared/Text"
 import { useState } from "react"
 import { COLORS } from "../constants/Colors"
 import useColorScheme from "../hooks/useColorScheme"
+import useGetTrades from "../services/useGetTrades"
+import { useToast } from "../context/toastContext"
 
 const { height } = Dimensions.get("window")
 
 type Props = {
   toggleAddNewTrade: () => void
   isNewTradeModalVisible: boolean
+  accountId: string
 }
 
-export default function AddTradeModal({ toggleAddNewTrade, isNewTradeModalVisible }: Props) {
+export default function AddTradeModal({
+  toggleAddNewTrade,
+  isNewTradeModalVisible,
+  accountId,
+}: Props) {
   const colorScheme = useColorScheme()
+  const { showToast } = useToast()
 
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [selectedButton, setSelectedButton] = useState<"winner" | "loser">("winner")
   const [decimalShift, setDecimalShift] = useState("")
+
+  const { createTradeMutation } = useGetTrades(accountId)
 
   const handleTextChange = (text: string) => {
     let amount = text.replace(/[^0-9]/g, "").replace(/^0+/, "")
@@ -41,6 +52,30 @@ export default function AddTradeModal({ toggleAddNewTrade, isNewTradeModalVisibl
 
   const handleButtonChange = (selected: "winner" | "loser") => {
     setSelectedButton(selected)
+  }
+
+  const handleAddTrade = async () => {
+    if (!accountId) return
+    try {
+      setIsLoginLoading(true)
+      let numericAmount = parseFloat(decimalShift.replace(/[^0-9.]/g, "")) || 0
+
+      if (selectedButton === "loser") {
+        numericAmount = numericAmount * -1
+      }
+
+      if (numericAmount === 0) return
+
+      await createTradeMutation.mutateAsync({ accountId: accountId, amount: numericAmount })
+      showToast("success", "Trade added successfully")
+    } catch (error) {
+      showToast("error", "Failed to add trade")
+      console.log("error:", error)
+    } finally {
+      toggleAddNewTrade()
+      setDecimalShift("")
+      setIsLoginLoading(false)
+    }
   }
 
   return (
@@ -103,7 +138,8 @@ export default function AddTradeModal({ toggleAddNewTrade, isNewTradeModalVisibl
             id="addTradeModalBtn"
             accessibilityLabel="Add trade Modal button"
             title={"Add"}
-            onPress={toggleAddNewTrade}
+            onPress={handleAddTrade}
+            loading={isLoginLoading}
           />
         </View>
       </View>

@@ -176,10 +176,13 @@ export default function Home() {
         />
       </Container>
 
-      <AddTradeModal
-        toggleAddNewTrade={toggleAddNewTrade}
-        isNewTradeModalVisible={isNewTradeModalVisible}
-      />
+      {selectedAccount?.accountId ? (
+        <AddTradeModal
+          toggleAddNewTrade={toggleAddNewTrade}
+          isNewTradeModalVisible={isNewTradeModalVisible}
+          accountId={selectedAccount.accountId}
+        />
+      ) : null}
     </>
   )
 }
