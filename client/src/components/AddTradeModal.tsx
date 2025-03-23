@@ -7,6 +7,7 @@ import { COLORS } from "../constants/Colors"
 import useColorScheme from "../hooks/useColorScheme"
 import useGetTrades from "../services/useGetTrades"
 import { useToast } from "../context/toastContext"
+import BorderedContainer from "../shared/BorderedContainer"
 
 const { height } = Dimensions.get("window")
 
@@ -72,9 +73,9 @@ export default function AddTradeModal({
       showToast("error", "Failed to add trade")
       console.log("error:", error)
     } finally {
-      toggleAddNewTrade()
       setDecimalShift("")
       setIsLoginLoading(false)
+      toggleAddNewTrade()
     }
   }
 
@@ -92,12 +93,8 @@ export default function AddTradeModal({
           paddingHorizontal: 14,
         }}
       >
-        <View
+        <BorderedContainer
           style={{
-            flexDirection: "column",
-            backgroundColor: COLORS[colorScheme].secondaryBackground,
-            padding: 14,
-            borderRadius: 10,
             marginTop: height * 0.2,
           }}
         >
@@ -141,7 +138,7 @@ export default function AddTradeModal({
             onPress={handleAddTrade}
             loading={isLoginLoading}
           />
-        </View>
+        </BorderedContainer>
       </View>
     </Modal>
   )

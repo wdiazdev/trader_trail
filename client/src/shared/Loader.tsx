@@ -4,16 +4,12 @@ import useColorScheme from "../hooks/useColorScheme"
 
 type Props = {
   size?: "small" | "large"
-  color?: string
 }
-export default function Loader({ size = "small", color }: Props) {
+export default function Loader({ size = "small" }: Props) {
   const colorScheme = useColorScheme()
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator
-        size={size}
-        color={color ?? COLORS[colorScheme].icon}
-      />
+      <ActivityIndicator size={size} color={COLORS[colorScheme].primaryBtnText} />
     </View>
   )
 }

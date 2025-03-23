@@ -11,6 +11,7 @@ type BorderedContainerProps = ViewProps & {
   alignItems?: ViewStyle["alignItems"]
   fullWidth?: boolean
   marginVertical?: ViewStyle["marginVertical"]
+  style?: ViewStyle
 }
 
 export default function BorderedContainer({
@@ -21,25 +22,29 @@ export default function BorderedContainer({
   alignItems,
   fullWidth,
   marginVertical,
+  style,
   ...rest
 }: BorderedContainerProps) {
   const colorScheme = useColorScheme()
   return (
     <View
       {...rest}
-      style={{
-        width: fullWidth ? "100%" : undefined,
-        flexDirection,
-        justifyContent,
-        alignItems,
-        padding,
-        marginVertical,
-        borderRadius: 10,
-        backgroundColor: COLORS[colorScheme].secondaryBackground,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: COLORS[colorScheme].border,
-        ...shadowStyles(colorScheme),
-      }}
+      style={[
+        {
+          width: fullWidth ? "100%" : undefined,
+          flexDirection,
+          justifyContent,
+          alignItems,
+          padding,
+          marginVertical,
+          borderRadius: 10,
+          backgroundColor: COLORS[colorScheme].secondaryBackground,
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: COLORS[colorScheme].border,
+          ...shadowStyles(colorScheme),
+        },
+        style,
+      ]}
     >
       {children}
     </View>
