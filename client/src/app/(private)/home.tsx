@@ -23,7 +23,6 @@ export default function Home() {
 
   const [selectedAccount, setSelectedAccount] = useState<AccountsData | undefined>(undefined)
   const [isBalanceVisible, setIsBalanceVisible] = useState(true)
-  const [isNewTradeModalVisible, setIsNewTradeModalVisible] = useState(false)
 
   const { accountsQuery, tradesQuery } = useGetAccounts(
     state.user?.access_token,
@@ -52,7 +51,7 @@ export default function Home() {
   if (isAccountsQueryLoading || accountsQueryFetchStatus === "fetching") {
     return (
       <Container>
-        <Loader size="large" />
+        <Loader size="large" btnSpinner={false} />
       </Container>
     )
   }
@@ -114,10 +113,6 @@ export default function Home() {
     trades,
   } = tradesData?.data ?? {}
 
-  const toggleAddNewTrade = () => {
-    setIsNewTradeModalVisible((prev) => !prev)
-  }
-
   return (
     <>
       <Container>
@@ -167,22 +162,10 @@ export default function Home() {
           ) : null}
         </ScrollView>
 
-        <Button
-          fullWidth
-          id="addTrade"
-          accessibilityLabel="Add trade button"
-          title={"Add Trade"}
-          onPress={toggleAddNewTrade}
-        />
+        {selectedAccount?.accountId ? (
+          <AddTradeModal accountId={selectedAccount.accountId} />
+        ) : null}
       </Container>
-
-      {selectedAccount?.accountId ? (
-        <AddTradeModal
-          toggleAddNewTrade={toggleAddNewTrade}
-          isNewTradeModalVisible={isNewTradeModalVisible}
-          accountId={selectedAccount.accountId}
-        />
-      ) : null}
     </>
   )
 }

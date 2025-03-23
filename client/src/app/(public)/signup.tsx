@@ -61,8 +61,7 @@ export default function Signup() {
       router.push("/")
     } catch (error: any) {
       const errorMessage =
-        error?.response?.data?.message ||
-        "Registration failed. Please try again."
+        error?.response?.data?.message || "Registration failed. Please try again."
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     } finally {

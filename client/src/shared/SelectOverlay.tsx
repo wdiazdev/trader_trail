@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native"
+import { Modal, Pressable, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import Text from "./Text"
 import { COLORS } from "../constants/Colors"
 import { SelectOverlayOption, AccountsData } from "../types"
@@ -24,12 +24,12 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
 
   const handleOptionSelect = (selected: SelectOverlayOption) => {
     onSelectionChange(selected)
-    setIsOverlayVisible(false)
+    toggleOverlay()
   }
 
   return (
     <>
-      <TouchableOpacity
+      <Pressable
         onPress={toggleOverlay}
         style={{
           width: "100%",
@@ -55,7 +55,7 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
             color={COLORS[colorScheme].text}
           />
         </View>
-      </TouchableOpacity>
+      </Pressable>
       {isOverlayVisible && (
         <Modal
           animationType="fade"
@@ -63,57 +63,59 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
           visible={isOverlayVisible}
           onRequestClose={toggleOverlay}
         >
-          <Pressable
-            onPress={toggleOverlay}
-            style={{
-              flex: 1,
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              paddingHorizontal: 14,
-            }}
-          >
+          <TouchableWithoutFeedback onPress={toggleOverlay}>
             <View
               style={{
-                marginTop: 150,
-                backgroundColor: COLORS[colorScheme].secondaryBackground,
-                padding: 20,
-                borderRadius: 10,
+                flex: 1,
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                paddingHorizontal: 14,
               }}
             >
-              {options &&
-                options.map((opt, index) => (
-                  <Pressable
-                    key={opt.description}
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      paddingVertical: 12,
-                      borderBottomWidth: index < options.length - 1 ? StyleSheet.hairlineWidth : 0,
-                      borderColor: COLORS[colorScheme].inputPlaceholder,
-                      ...(index === 0 && { paddingTop: 0 }),
-                      ...(index === options.length - 1 && { paddingBottom: 0 }),
-                    }}
-                    onPress={() => handleOptionSelect(opt)}
-                  >
-                    <Text
+              <View
+                style={{
+                  marginTop: 150,
+                  backgroundColor: COLORS[colorScheme].secondaryBackground,
+                  padding: 20,
+                  borderRadius: 10,
+                }}
+              >
+                {options &&
+                  options.map((opt, index) => (
+                    <Pressable
+                      key={opt.description}
                       style={{
-                        fontSize: 16,
-                        color:
-                          opt.description === selectedAccount?.accountId
-                            ? COLORS[colorScheme].icon
-                            : COLORS[colorScheme].text,
-                        fontWeight:
-                          opt.description === selectedAccount?.accountId ? "bold" : undefined,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        paddingVertical: 12,
+                        borderBottomWidth:
+                          index < options.length - 1 ? StyleSheet.hairlineWidth : 0,
+                        borderColor: COLORS[colorScheme].inputPlaceholder,
+                        ...(index === 0 && { paddingTop: 0 }),
+                        ...(index === options.length - 1 && { paddingBottom: 0 }),
                       }}
+                      onPress={() => handleOptionSelect(opt)}
                     >
-                      {opt.label}
-                    </Text>
-                    {opt.description === selectedAccount?.accountId && (
-                      <Ionicons name="checkmark" size={22} color={COLORS[colorScheme].icon} />
-                    )}
-                  </Pressable>
-                ))}
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color:
+                            opt.description === selectedAccount?.accountId
+                              ? COLORS[colorScheme].icon
+                              : COLORS[colorScheme].text,
+                          fontWeight:
+                            opt.description === selectedAccount?.accountId ? "bold" : undefined,
+                        }}
+                      >
+                        {opt.label}
+                      </Text>
+                      {opt.description === selectedAccount?.accountId && (
+                        <Ionicons name="checkmark" size={22} color={COLORS[colorScheme].icon} />
+                      )}
+                    </Pressable>
+                  ))}
+              </View>
             </View>
-          </Pressable>
+          </TouchableWithoutFeedback>
         </Modal>
       )}
     </>

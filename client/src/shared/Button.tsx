@@ -40,7 +40,7 @@ export default function Button({ title, loading, disabled, fullWidth, ...props }
           color: COLORS[colorScheme].primaryBtnText,
         }}
       >
-        {loading ? <Loader /> : title}
+        {loading ? <Loader btnSpinner /> : title}
       </Text>
     </TouchableOpacity>
   )

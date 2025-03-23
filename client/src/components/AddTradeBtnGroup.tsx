@@ -8,12 +8,10 @@ type Props = {
   handleButtonChange: (selected: "winner" | "loser") => void
 }
 
-export default function AddTradeBtn({ handleButtonChange }: Props) {
+export default function AddTradeBtnGroup({ handleButtonChange }: Props) {
   const colorScheme = useColorScheme()
 
-  const [selectedButton, setSelectedButton] = useState<"winner" | "loser">(
-    "winner"
-  )
+  const [selectedButton, setSelectedButton] = useState<"winner" | "loser">("winner")
 
   const handleButtonPress = (buttonType: "loser" | "winner") => {
     setSelectedButton(buttonType)
@@ -34,7 +32,7 @@ export default function AddTradeBtn({ handleButtonChange }: Props) {
         style={{
           flex: 1,
           backgroundColor: COLORS[colorScheme].red,
-          opacity: selectedButton === "loser" ? 1 : 0.5,
+          opacity: selectedButton === "loser" ? 1 : 0.3,
           padding: 14,
           borderRadius: 10,
         }}
@@ -55,7 +53,7 @@ export default function AddTradeBtn({ handleButtonChange }: Props) {
         style={{
           flex: 1,
           backgroundColor: COLORS[colorScheme].green,
-          opacity: selectedButton === "winner" ? 1 : 0.5,
+          opacity: selectedButton === "winner" ? 1 : 0.3,
           padding: 14,
           borderRadius: 10,
         }}

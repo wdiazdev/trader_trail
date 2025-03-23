@@ -46,7 +46,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
           duration: 300,
           useNativeDriver: true,
         }).start(onHide)
-      }, 2500)
+      }, 3000)
     })
   }, [])
 
@@ -59,7 +59,7 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
         right: 20,
         height: 58,
         backgroundColor: toastStyles[type].backgroundColor,
-        padding: 14,
+        padding: 10,
         borderRadius: 16,
         flexDirection: "row",
         alignItems: "center",
@@ -71,9 +71,15 @@ const Toast = ({ type, message, onHide }: ToastProps) => {
         name={toastStyles[type].iconName as IoniconName}
         size={20}
         color={toastStyles[type].textColor}
-        style={{ marginHorizontal: 8 }}
       />
-      <Text style={{ color: toastStyles[type].textColor }} numberOfLines={2}>
+      <Text
+        style={{
+          color: toastStyles[type].textColor,
+          marginLeft: 4,
+          flex: 1,
+        }}
+        numberOfLines={2}
+      >
         {message}
       </Text>
     </Animated.View>

@@ -105,8 +105,7 @@ export default function Home() {
       showToast("success", "Login successful!")
       router.push("/(private)/home")
     } catch (error: any) {
-      const errorMessage =
-        error?.response?.data?.message || "Login failed, please try again."
+      const errorMessage = error?.response?.data?.message || "Login failed, please try again."
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     } finally {
@@ -147,9 +146,7 @@ export default function Home() {
             accessibilityLabel="login button"
             title={"Login"}
             onPress={handleLogin}
-            disabled={
-              !inputValues.email || !inputValues.password || isLoginLoading
-            }
+            disabled={!inputValues.email || !inputValues.password || isLoginLoading}
             loading={isLoginLoading}
           />
         </View>

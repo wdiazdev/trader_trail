@@ -22,8 +22,7 @@ export default function Settings() {
 
   const [isFaceIdEnabled, setIsFaceIdEnable] = useState(false)
   const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false)
-  const [deleteAccountModalVisible, setDeleteAccountModalVisible] =
-    useState(false)
+  const [deleteAccountModalVisible, setDeleteAccountModalVisible] = useState(false)
 
   const toggleSwitch = (type: string) => {
     if (type === "fadeId") {
@@ -64,8 +63,7 @@ export default function Settings() {
       showToast("success", "Account deleted successfully.")
       router.push("/(public)")
     } catch (error: any) {
-      const errorMessage =
-        error?.response?.data?.message || "Error deleting account"
+      const errorMessage = error?.response?.data?.message || "Error deleting account"
       showToast("error", errorMessage)
       console.log("Error:", error?.response?.data)
     }
@@ -140,11 +138,7 @@ export default function Settings() {
               onPress={handleModalVisible}
             >
               <Text>Delete Account</Text>
-              <Ionicons
-                name="chevron-forward"
-                size={22}
-                color={COLORS[colorScheme].text}
-              />
+              <Ionicons name="chevron-forward" size={22} color={COLORS[colorScheme].text} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -160,11 +154,7 @@ export default function Settings() {
               onPress={handleLogOut}
             >
               <Text>Log Out</Text>
-              <Ionicons
-                name="exit-outline"
-                size={22}
-                color={COLORS[colorScheme].text}
-              />
+              <Ionicons name="exit-outline" size={22} color={COLORS[colorScheme].text} />
             </TouchableOpacity>
           </BorderedContainer>
         </View>
