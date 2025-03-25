@@ -16,6 +16,7 @@ import DayPerformance from "../../components/DayPerformance"
 import WinRate from "../../components/WinRate"
 import TradesChart from "@/src/components/TradesChart"
 import AddTradeModal from "@/src/components/AddTradeModal"
+import TradesList from "@/src/components/TradesList"
 
 export default function Home() {
   const { state } = useAppContext()
@@ -160,6 +161,7 @@ export default function Home() {
           ) : trades && trades.length > 0 && accountBalance ? (
             <TradesChart trades={trades} accountBalance={accountBalance} />
           ) : null}
+          {trades && trades.length > 0 ? <TradesList trades={trades} /> : null}
         </ScrollView>
 
         {selectedAccount?.accountId ? (

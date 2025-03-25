@@ -13,11 +13,7 @@ type Props = {
   bestWorstDay: BestWorstDay
 }
 
-export default function DayPerformance({
-  isBalanceVisible,
-  totalTrades,
-  bestWorstDay,
-}: Props) {
+export default function DayPerformance({ isBalanceVisible, totalTrades, bestWorstDay }: Props) {
   const colorScheme = useColorScheme()
 
   const { bestDay, worstDay } = bestWorstDay
@@ -26,11 +22,7 @@ export default function DayPerformance({
   const worstDayAmount = worstDay?.amount ?? 0
 
   return (
-    <BorderedContainer
-      flexDirection="row"
-      justifyContent="space-between"
-      padding={20}
-    >
+    <BorderedContainer flexDirection="row" justifyContent="space-between" padding={16}>
       <View
         style={{
           flexDirection: "column",
@@ -52,16 +44,11 @@ export default function DayPerformance({
             </Text>
             <Text
               style={{
-                color:
-                  bestDayAmount > 0
-                    ? COLORS[colorScheme].green
-                    : COLORS[colorScheme].red,
+                color: bestDayAmount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
                 marginTop: 2,
               }}
             >
-              {isBalanceVisible
-                ? `$${Math.abs(bestDayAmount).toFixed(2)}`
-                : "*******"}
+              {isBalanceVisible ? `$${Math.abs(bestDayAmount).toFixed(2)}` : "*******"}
             </Text>
           </>
         ) : (
@@ -102,16 +89,11 @@ export default function DayPerformance({
             </Text>
             <Text
               style={{
-                color:
-                  worstDayAmount > 0
-                    ? COLORS[colorScheme].green
-                    : COLORS[colorScheme].red,
+                color: worstDayAmount > 0 ? COLORS[colorScheme].green : COLORS[colorScheme].red,
                 marginTop: 2,
               }}
             >
-              {isBalanceVisible
-                ? `-$${Math.abs(worstDayAmount).toFixed(2)}`
-                : "*******"}
+              {isBalanceVisible ? `-$${Math.abs(worstDayAmount).toFixed(2)}` : "*******"}
             </Text>
           </>
         ) : (

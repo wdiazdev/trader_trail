@@ -19,7 +19,7 @@ export default function Balance({ accountBalance, isBalanceVisible, toggleBalanc
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      padding={20}
+      padding={16}
       marginVertical={12}
     >
       <Text style={{ fontWeight: "bold" }}>Total P&L</Text>

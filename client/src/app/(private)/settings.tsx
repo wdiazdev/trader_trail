@@ -86,7 +86,6 @@ export default function Settings() {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                paddingVertical: 8,
                 borderBottomWidth: StyleSheet.hairlineWidth,
                 borderColor: COLORS[colorScheme].border,
               }}
@@ -106,7 +105,6 @@ export default function Settings() {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                paddingVertical: 8,
               }}
             >
               <Text>Dark Mode</Text>
@@ -131,7 +129,6 @@ export default function Settings() {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                paddingVertical: 8,
                 borderBottomWidth: StyleSheet.hairlineWidth,
                 borderColor: COLORS[colorScheme].border,
               }}
@@ -149,7 +146,6 @@ export default function Settings() {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                paddingVertical: 8,
               }}
               onPress={handleLogOut}
             >

@@ -33,7 +33,7 @@ export default function SelectOverlay({ options, onSelectionChange, selectedAcco
         onPress={toggleOverlay}
         style={{
           width: "100%",
-          padding: 20,
+          padding: 16,
           borderWidth: StyleSheet.hairlineWidth,
           borderRadius: 10,
           borderColor: COLORS[colorScheme].secondaryBackground,
