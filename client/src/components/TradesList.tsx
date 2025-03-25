@@ -8,13 +8,11 @@ type Props = {
 }
 
 export default function TradesList({ trades }: Props) {
+  const renderItem = ({ item }: { item: Trade }) => <Text style={{}}>{item.tradeId}</Text>
+
   return (
     <View>
-      <FlashList
-        data={trades}
-        renderItem={({ item }) => <Text>{item.tradeId}</Text>}
-        estimatedItemSize={200}
-      />
+      <FlashList data={trades} renderItem={renderItem} estimatedItemSize={200} />
     </View>
   )
 }
