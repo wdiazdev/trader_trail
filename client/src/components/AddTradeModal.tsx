@@ -15,7 +15,7 @@ import useColorScheme from "../hooks/useColorScheme"
 import useGetTrades from "../services/useGetTrades"
 import { useToast } from "../context/toastContext"
 import AddTradeBtnGroup from "./AddTradeBtnGroup"
-import { FontAwesome6 } from "@expo/vector-icons"
+import { AntDesign } from "@expo/vector-icons"
 
 const { height } = Dimensions.get("window")
 
@@ -92,8 +92,14 @@ export default function AddTradeModal({ accountId }: Props) {
         id="addTrade"
         accessibilityLabel="Add trade button"
         onPress={toggleAddNewTradeModal}
+        style={{
+          borderWidth: 2.5,
+          borderColor: COLORS[colorScheme].blue,
+          borderRadius: 50,
+          padding: 4,
+        }}
       >
-        <FontAwesome6 name={"circle-plus"} size={44} color={COLORS[colorScheme].blue} />
+        <AntDesign name={"plus"} size={44} color={COLORS[colorScheme].blue} />
       </TouchableOpacity>
 
       {isNewTradeModalVisible ? (
